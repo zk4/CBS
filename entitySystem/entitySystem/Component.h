@@ -24,7 +24,7 @@ protected:
     virtual eComponentId GetId()const{assert(0);return ERROR;};
 	virtual bool HandleEvent(Component* c){assert(0);return false;};
     
-    virtual ~Component(){}
+    virtual ~Component();
     Component():_parent(NULL){}
     void    SetParent(Component* c)  //for listening
     {
@@ -35,6 +35,7 @@ protected:
     virtual void   GetComponent(eComponentId id,Component** cmp);
     virtual Component*   GetComponent(eComponentId id);
     virtual bool IfHasChild()const;
+	virtual void DeleteAllComponents();
     vector<Component*>   components;
 
 };

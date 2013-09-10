@@ -24,7 +24,8 @@ int main(int argc, const char * argv[])
     fighter->AddComponent(new HandComponent);
     fighter->AddComponent(new HandComponent);
 	 fighter->AddComponent(new AttackComponent(10));
-    
+   delete fighter;
+
      Component* fighter2=new Component();
     fighter2->AddComponent(new HpComponent(40,40));
     

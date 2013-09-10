@@ -49,3 +49,21 @@ void  Component::GetComponent(eComponentId id,Component** cmp)
     else  *cmp=NULL;
     
 }
+
+Component::~Component()
+{
+	DeleteAllComponents();
+}
+
+void Component::DeleteAllComponents()
+{
+	for(auto a: components)
+	{
+		if(a->components.size()>0)
+			{
+				a->DeleteAllComponents();	
+			}
+		delete a;
+		a=NULL;
+	}
+}
