@@ -31,6 +31,11 @@ public:
         _hp+=p;
         _hp=(_hp>_maxhp)?_maxhp:_hp;
     }
+	void Reset()
+	{
+		_hp=_maxhp;
+	}
+
     
   
 };

@@ -29,7 +29,10 @@ void Logic::Attack( Component& attack, Component& defender )
 		{
 			Component* c =p->GetItem(RELIVE);
 			if(c)
-				cout<<"¸´»î\n";
+			{
+				printf("relive\n");
+				((HpComponent*)defender.GetComponent(HP))->Reset();
+			}
 		}
 
 	}
@@ -107,7 +110,10 @@ void Logic::CastSkill( Component& caster,Component& skill, Component& suffer )
 				{
 					Component* c =p->GetItem(RELIVE);
 					if(c)
-						cout<<"¸´»î\n";
+						{
+							printf("relive\n");
+							((HpComponent*)suffer.GetComponent(HP))->Reset();
+					}
 			}
 	
 		}
