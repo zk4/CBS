@@ -1,0 +1,272 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CEED3C1617DEFDDC0003ABC0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C1517DEFDDC0003ABC0 /* main.cpp */; };
+		CEED3C1817DEFDDC0003ABC0 /* entitySystem.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = CEED3C1717DEFDDC0003ABC0 /* entitySystem.1 */; };
+		CEED3C2617DF03840003ABC0 /* IComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2417DF03840003ABC0 /* IComponent.cpp */; };
+		CEED3C2A17DF06260003ABC0 /* HpComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2817DF06260003ABC0 /* HpComponent.cpp */; };
+		CEED3C2D17DF0ABC0003ABC0 /* FighterComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2B17DF0ABC0003ABC0 /* FighterComponent.cpp */; };
+		CEED3C3017DF11B00003ABC0 /* PackageComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */; };
+		CEED3C3317DF120B0003ABC0 /* ItemComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3117DF120B0003ABC0 /* ItemComponent.cpp */; };
+		CEED3C3617DF14450003ABC0 /* HandComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3417DF14450003ABC0 /* HandComponent.cpp */; };
+		CEED3C3917DF15D90003ABC0 /* AttackComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3717DF15D90003ABC0 /* AttackComponent.cpp */; };
+		CEED3C3C17DF277E0003ABC0 /* DefenseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3A17DF277E0003ABC0 /* DefenseComponent.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CEED3C1017DEFDDC0003ABC0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				CEED3C1817DEFDDC0003ABC0 /* entitySystem.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CEED3C1217DEFDDC0003ABC0 /* entitySystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = entitySystem; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEED3C1517DEFDDC0003ABC0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		CEED3C1717DEFDDC0003ABC0 /* entitySystem.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = entitySystem.1; sourceTree = "<group>"; };
+		CEED3C2417DF03840003ABC0 /* IComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IComponent.cpp; sourceTree = "<group>"; };
+		CEED3C2517DF03840003ABC0 /* IComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IComponent.h; sourceTree = "<group>"; };
+		CEED3C2717DF03B30003ABC0 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		CEED3C2817DF06260003ABC0 /* HpComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HpComponent.cpp; sourceTree = "<group>"; };
+		CEED3C2917DF06260003ABC0 /* HpComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HpComponent.h; sourceTree = "<group>"; };
+		CEED3C2B17DF0ABC0003ABC0 /* FighterComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FighterComponent.cpp; sourceTree = "<group>"; };
+		CEED3C2C17DF0ABC0003ABC0 /* FighterComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FighterComponent.h; sourceTree = "<group>"; };
+		CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageComponent.cpp; sourceTree = "<group>"; };
+		CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageComponent.h; sourceTree = "<group>"; };
+		CEED3C3117DF120B0003ABC0 /* ItemComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemComponent.cpp; sourceTree = "<group>"; };
+		CEED3C3217DF120B0003ABC0 /* ItemComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemComponent.h; sourceTree = "<group>"; };
+		CEED3C3417DF14450003ABC0 /* HandComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HandComponent.cpp; sourceTree = "<group>"; };
+		CEED3C3517DF14450003ABC0 /* HandComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandComponent.h; sourceTree = "<group>"; };
+		CEED3C3717DF15D90003ABC0 /* AttackComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AttackComponent.cpp; sourceTree = "<group>"; };
+		CEED3C3817DF15D90003ABC0 /* AttackComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttackComponent.h; sourceTree = "<group>"; };
+		CEED3C3A17DF277E0003ABC0 /* DefenseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefenseComponent.cpp; sourceTree = "<group>"; };
+		CEED3C3B17DF277E0003ABC0 /* DefenseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefenseComponent.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CEED3C0F17DEFDDC0003ABC0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CEED3C0917DEFDDC0003ABC0 = {
+			isa = PBXGroup;
+			children = (
+				CEED3C1417DEFDDC0003ABC0 /* entitySystem */,
+				CEED3C1317DEFDDC0003ABC0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CEED3C1317DEFDDC0003ABC0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CEED3C1217DEFDDC0003ABC0 /* entitySystem */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CEED3C1417DEFDDC0003ABC0 /* entitySystem */ = {
+			isa = PBXGroup;
+			children = (
+				CEED3C1517DEFDDC0003ABC0 /* main.cpp */,
+				CEED3C2417DF03840003ABC0 /* IComponent.cpp */,
+				CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */,
+				CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */,
+				CEED3C2517DF03840003ABC0 /* IComponent.h */,
+				CEED3C1717DEFDDC0003ABC0 /* entitySystem.1 */,
+				CEED3C2717DF03B30003ABC0 /* Config.h */,
+				CEED3C2817DF06260003ABC0 /* HpComponent.cpp */,
+				CEED3C2917DF06260003ABC0 /* HpComponent.h */,
+				CEED3C2B17DF0ABC0003ABC0 /* FighterComponent.cpp */,
+				CEED3C2C17DF0ABC0003ABC0 /* FighterComponent.h */,
+				CEED3C3117DF120B0003ABC0 /* ItemComponent.cpp */,
+				CEED3C3217DF120B0003ABC0 /* ItemComponent.h */,
+				CEED3C3417DF14450003ABC0 /* HandComponent.cpp */,
+				CEED3C3517DF14450003ABC0 /* HandComponent.h */,
+				CEED3C3717DF15D90003ABC0 /* AttackComponent.cpp */,
+				CEED3C3817DF15D90003ABC0 /* AttackComponent.h */,
+				CEED3C3A17DF277E0003ABC0 /* DefenseComponent.cpp */,
+				CEED3C3B17DF277E0003ABC0 /* DefenseComponent.h */,
+			);
+			path = entitySystem;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CEED3C1117DEFDDC0003ABC0 /* entitySystem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEED3C1B17DEFDDC0003ABC0 /* Build configuration list for PBXNativeTarget "entitySystem" */;
+			buildPhases = (
+				CEED3C0E17DEFDDC0003ABC0 /* Sources */,
+				CEED3C0F17DEFDDC0003ABC0 /* Frameworks */,
+				CEED3C1017DEFDDC0003ABC0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = entitySystem;
+			productName = entitySystem;
+			productReference = CEED3C1217DEFDDC0003ABC0 /* entitySystem */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CEED3C0A17DEFDDC0003ABC0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = user;
+			};
+			buildConfigurationList = CEED3C0D17DEFDDC0003ABC0 /* Build configuration list for PBXProject "entitySystem" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CEED3C0917DEFDDC0003ABC0;
+			productRefGroup = CEED3C1317DEFDDC0003ABC0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CEED3C1117DEFDDC0003ABC0 /* entitySystem */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CEED3C0E17DEFDDC0003ABC0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEED3C1617DEFDDC0003ABC0 /* main.cpp in Sources */,
+				CEED3C2617DF03840003ABC0 /* IComponent.cpp in Sources */,
+				CEED3C2A17DF06260003ABC0 /* HpComponent.cpp in Sources */,
+				CEED3C2D17DF0ABC0003ABC0 /* FighterComponent.cpp in Sources */,
+				CEED3C3017DF11B00003ABC0 /* PackageComponent.cpp in Sources */,
+				CEED3C3317DF120B0003ABC0 /* ItemComponent.cpp in Sources */,
+				CEED3C3617DF14450003ABC0 /* HandComponent.cpp in Sources */,
+				CEED3C3917DF15D90003ABC0 /* AttackComponent.cpp in Sources */,
+				CEED3C3C17DF277E0003ABC0 /* DefenseComponent.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		CEED3C1917DEFDDC0003ABC0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CEED3C1A17DEFDDC0003ABC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		CEED3C1C17DEFDDC0003ABC0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CEED3C1D17DEFDDC0003ABC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CEED3C0D17DEFDDC0003ABC0 /* Build configuration list for PBXProject "entitySystem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEED3C1917DEFDDC0003ABC0 /* Debug */,
+				CEED3C1A17DEFDDC0003ABC0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEED3C1B17DEFDDC0003ABC0 /* Build configuration list for PBXNativeTarget "entitySystem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEED3C1C17DEFDDC0003ABC0 /* Debug */,
+				CEED3C1D17DEFDDC0003ABC0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CEED3C0A17DEFDDC0003ABC0 /* Project object */;
+}
