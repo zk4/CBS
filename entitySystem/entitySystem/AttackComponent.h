@@ -9,14 +9,14 @@
 #ifndef __entitySystem__AttackComponent__
 #define __entitySystem__AttackComponent__
 
-#include "IComponent.h"
-class AttackComponent:public IComponent
+#include "Component.h"
+class AttackComponent:public Component
 {
     int _atk;
     public :
     AttackComponent(int atk):_atk(atk){}
     eComponentId GetId()const{return ATTACK;}
-     bool HandleEvent(IComponent* c)
+     bool HandleEvent(Component* c)
     {
         return false;
     }

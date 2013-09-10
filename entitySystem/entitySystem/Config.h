@@ -11,6 +11,7 @@
 
 enum eComponentId
 {
+  ERROR,
   HP,
   ATTACK,
   DEFENSE,

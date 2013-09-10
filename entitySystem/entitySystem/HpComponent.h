@@ -9,9 +9,9 @@
 #ifndef __entitySystem__HpComponent__
 #define __entitySystem__HpComponent__
 
-#include "IComponent.h"//
+#include "Component.h"//
 
-class HpComponent:public IComponent
+class HpComponent:public Component
 {
     int _hp;
     int _maxhp;
@@ -26,11 +26,6 @@ public:
 
     bool DropHp(int p){
         _hp-=p;
-        
-        if(_parent)
-        {
-            _parent->HandleEvent(this);
-        }
         return _hp>0;
     }
     int GetHp()const
@@ -40,14 +35,9 @@ public:
     void Addhp(int p){
         _hp+=p;
         _hp=(_hp>_maxhp)?_maxhp:_hp;
-        
-        if(_parent)
-        {
-            _parent->HandleEvent(this);
-        }
     }
     
-    bool HandleEvent(IComponent* c) 
+    bool HandleEvent(Component* c) 
     {
   
         return false;

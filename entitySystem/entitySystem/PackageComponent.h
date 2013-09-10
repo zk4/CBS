@@ -9,19 +9,20 @@
 #ifndef __entitySystem__PackageComponent__
 #define __entitySystem__PackageComponent__
 
-#include "IComponent.h"
-class PackageComponent :public IComponent
+#include "Component.h"
+#include <algorithm>
+class PackageComponent :public Component
 {
-    vector<IComponent*>  package;
+    vector<Component*>  package;
     const int max_size;
 public:
     PackageComponent(int size):max_size(size){};
-    bool ExistItem(IComponent* c)
+    bool ExistItem(Component* c)
     {
-        auto a=find_if(package.begin(), package.end(), [&c](IComponent* cc){return c==cc;});
+        auto a=find_if(package.begin(), package.end(), [&c](Component* cc){return c==cc;});
         return a!=package.end();
     }
-    bool AddItem(IComponent* c)
+    bool AddItem(Component* c)
     {
         if(c->GetId()==ITEM && !ExistItem(c) && package.size()<max_size)
         {
@@ -30,7 +31,7 @@ public:
         }
         return false;
     }
-   IComponent* GetItem(int i)
+   Component* GetItem(int i)
     {
         if(package.size()>i)
             return package[i];
@@ -41,7 +42,7 @@ public:
     {
         return  PACKAGE;
     }
-    bool HandleEvent(IComponent* c)
+    bool HandleEvent(Component* c)
     {
         return false;
     }

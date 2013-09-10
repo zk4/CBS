@@ -9,32 +9,28 @@
 #ifndef __entitySystem__HandComponent__
 #define __entitySystem__HandComponent__
 
-#include "IComponent.h"
-#include "AttackComponent.h"
-class HandComponent :public IComponent
+#include "Component.h"
+class HandComponent :public Component
 {
      
-    IComponent* _holding_item;
+    Component* _holding_item;
 public:
-
-    eComponentId GetId()const{return HAND;}
-    IComponent* Hold(IComponent* i)
+	HandComponent():_holding_item(0){}
+    eComponentId GetId()const override {return HAND;}
+    Component* Hold(Component* i)
     {
-        if(i->GetId()==ITEM)
-        {
-            IComponent* old=_holding_item;
+       
+            Component* old=_holding_item;
             _holding_item=i;
             return old;
-        }
-        else
-            return NULL;
+    
         
     }
-    IComponent* GetHolder()const
+    Component* GetHolder()const
     {
         return _holding_item;
     }
-    bool HandleEvent(IComponent* c)
+    bool HandleEvent(Component* c)
     {
         return false;
     }

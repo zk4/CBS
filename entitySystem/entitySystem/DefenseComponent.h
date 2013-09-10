@@ -9,13 +9,13 @@
 #ifndef __entitySystem__DefenseComponent__
 #define __entitySystem__DefenseComponent__
 
-#include "IComponent.h"
-class DefenseComponent:public IComponent
+#include "Component.h"
+class DefenseComponent:public Component
 {
     int _defense;
 public:
     virtual eComponentId GetId()const{return  DEFENSE;}
-    virtual bool HandleEvent(IComponent* c)
+    virtual bool HandleEvent(Component* c)
     {
         return false;
     }

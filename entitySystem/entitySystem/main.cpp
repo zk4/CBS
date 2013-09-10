@@ -7,44 +7,47 @@
 //
 
 #include <iostream>
-#include "FighterComponent.h"
+#include "Component.h"
 #include "HpComponent.h"
 #include "PackageComponent.h"
 #include "HandComponent.h"
-#include "ItemComponent.h"
 #include "AttackComponent.h"
 #include "DefenseComponent.h"
-
+#include "AttackLogic.h"
 int main(int argc, const char * argv[])
 {
-    FighterComponent* fighter=new FighterComponent();
+    Component* fighter=new Component();
     
     fighter->AddComponent(new HpComponent(40,40));
     fighter->AddComponent(new PackageComponent(3));
     fighter->AddComponent(new DefenseComponent(3));
     fighter->AddComponent(new HandComponent);
     fighter->AddComponent(new HandComponent);
+	 fighter->AddComponent(new AttackComponent(10));
     
-     FighterComponent* fighter2=new FighterComponent();
+     Component* fighter2=new Component();
     fighter2->AddComponent(new HpComponent(40,40));
     
-    IComponent* weapon=new ItemComponent();
+    Component* weapon=new Component();
     weapon->AddComponent(new AttackComponent(4));
     
-    IComponent* defense=new ItemComponent();
+    Component* defense=new Component();
     defense->AddComponent(new DefenseComponent(5));
     
-    vector<IComponent*> cps;
+    vector<Component*> cps;
     
 
      fighter->GetComponents(HAND,cps);
  
-    ((HandComponent*)cps[0])->Hold(weapon);
+ /*   ((HandComponent*)cps[0])->Hold(weapon);
     ((HandComponent*)cps[1])->Hold(defense);
     cps.resize(0);
- 
-    fighter->Attack(fighter2);
- 
+ */
+    AttackLogic::Equip(*fighter,*weapon,0);
+	AttackLogic::Equip(*fighter,*defense,1);
+	AttackLogic::Attack(*fighter,*fighter2);
+	cout<<AttackLogic::GetHp(*fighter2)<<"\n";
+	getchar();
     return 0;
 }
 
