@@ -6,6 +6,7 @@
 #include "AttackComponent.h"
 #include "DefenseComponent.h"
 #include "HpComponent.h"
+#include "PackageComponent.h"
 Logic::Logic(void)
 {
 }
@@ -20,7 +21,19 @@ void Logic::Attack( Component& attack, Component& defender )
 	int ats=GetAttack(attack);
 	int def=GetDefense(defender);
 	int hp_diff=ats-def;
-	DropHp(defender,hp_diff);
+	int ret=DropHp(defender,hp_diff);
+	if(ret<0)
+	{ 
+		PackageComponent*  p=(PackageComponent*)defender.GetComponent(SKILLPACKAGE);
+		if(p)
+		{
+			Component* c =p->GetItem(RELIVE);
+			if(c)
+				cout<<"¸´»î\n";
+		}
+
+	}
+
 }
 
 int Logic::GetAttack( Component& e )
@@ -64,9 +77,9 @@ int  Logic::GetDefense(Component& e )
 	return defense;
 }
 
-void Logic::DropHp( Component& e,int hp )
+int Logic::DropHp( Component& e,int hp )
 {
-	((HpComponent*)e.GetComponent(HP))->DropHp(hp);
+	return ((HpComponent*)e.GetComponent(HP))->DropHp(hp);
 }
 
 void Logic::Equip( Component& holder,Component& equip,int which_hand )
@@ -86,6 +99,27 @@ void Logic::CastSkill( Component& caster,Component& skill, Component& suffer )
 	int ats=GetAttack(skill);
 	int def=GetDefense(suffer);
 	int hp_diff=ats-def;
-	DropHp(suffer,hp_diff);
+	bool ret=DropHp(suffer,hp_diff);
+	if(ret<0)
+		{ 
+			PackageComponent*  p=(PackageComponent*)suffer.GetComponent(SKILLPACKAGE);
+			if(p)
+				{
+					Component* c =p->GetItem(RELIVE);
+					if(c)
+						cout<<"¸´»î\n";
+			}
+	
+		}
+ 
+}
 
+void Logic::EquipSKill( Component& holder,Component& skill )
+{
+	PackageComponent* p=(PackageComponent*)holder.GetComponent(SKILLPACKAGE);
+	if(p)
+	{
+		p->AddItem(&skill);
+	}
+	
 }

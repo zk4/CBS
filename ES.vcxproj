@@ -72,7 +72,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="entitysystem\entitysystem\AttackComponent.cpp" />
-    <ClCompile Include="entitySystem\entitySystem\AttackLogic.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\Logic.cpp" />
     <ClCompile Include="entitysystem\entitysystem\DefenseComponent.cpp" />
     <ClCompile Include="entitysystem\entitysystem\HandComponent.cpp" />
     <ClCompile Include="entitysystem\entitysystem\HpComponent.cpp" />
@@ -81,14 +81,17 @@
     <ClCompile Include="entitysystem\entitysystem\PackageComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entitySystem\entitySystem\AllComponents.h" />
     <ClInclude Include="entitysystem\entitysystem\AttackComponent.h" />
-    <ClInclude Include="entitySystem\entitySystem\AttackLogic.h" />
+    <ClInclude Include="entitySystem\entitySystem\Logic.h" />
     <ClInclude Include="entitysystem\entitysystem\Config.h" />
     <ClInclude Include="entitysystem\entitysystem\DefenseComponent.h" />
+    <ClInclude Include="entitySystem\entitySystem\Factory.h" />
     <ClInclude Include="entitysystem\entitysystem\HandComponent.h" />
     <ClInclude Include="entitysystem\entitysystem\HpComponent.h" />
     <ClInclude Include="entitysystem\entitysystem\Component.h" />
     <ClInclude Include="entitysystem\entitysystem\PackageComponent.h" />
+    <ClInclude Include="entitySystem\entitySystem\SpriteComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

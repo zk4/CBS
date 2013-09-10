@@ -14,12 +14,8 @@ class DefenseComponent:public Component
 {
     int _defense;
 public:
-    virtual eComponentId GetId()const{return  DEFENSE;}
-    virtual bool HandleEvent(Component* c)
-    {
-        return false;
-    }
-    DefenseComponent(int defense):_defense(defense){}
+  
+    DefenseComponent(int defense,eComponentId id=DEFENSE):_defense(defense),Component(id){}
     int GetDefense()const
     {
         return _defense;

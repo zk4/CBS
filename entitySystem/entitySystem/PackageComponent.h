@@ -16,7 +16,7 @@ class PackageComponent :public Component
     vector<Component*>  package;
     const int max_size;
 public:
-    PackageComponent(int size):max_size(size){};
+    PackageComponent(int size,eComponentId id=PACKAGE):max_size(size),Component(id){};
     bool ExistItem(Component* c)
     {
         auto a=find_if(package.begin(), package.end(), [&c](Component* cc){return c==cc;});
@@ -24,7 +24,7 @@ public:
     }
     bool AddItem(Component* c)
     {
-        if(c->GetId()==ITEM && !ExistItem(c) && package.size()<max_size)
+        if(  !ExistItem(c) && package.size()<max_size)
         {
             package.push_back(c);
             return true;
@@ -38,15 +38,15 @@ public:
         else
             return NULL;
     }
-    eComponentId GetId()const
-    {
-        return  PACKAGE;
-    }
-    bool HandleEvent(Component* c)
-    {
-        return false;
-    }
-    
+   Component* GetItem(eComponentId e)
+   {
+		   auto a=find_if(package.begin(), package.end(), [&e](Component* cc){return cc->GetId()== e;});
+		   if(a!=package.end())return *a;
+		   else return NULL;
+	   
+	    
+   }
+ 
 };
 
 #endif /* defined(__entitySystem__PackageComponent__) */

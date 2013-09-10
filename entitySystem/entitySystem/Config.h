@@ -17,11 +17,21 @@ enum eComponentId
   DEFENSE,
     
   PACKAGE,
+  SKILLPACKAGE,
+  WEAPONPACKAGE,
+  SKILLSLOT,
+  WEAPONSLOT,
   HAND,
   ITEM,
 
+//SKILL
+  RELIVE,
 //ENTITY
   FIGHTER,
+  SWORD,
+  SHIELD,
+  SKILL,
+  
     
     
 };

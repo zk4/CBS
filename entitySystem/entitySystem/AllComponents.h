@@ -1,14 +1,10 @@
-//
-//  DefenseComponent.h
-//  entitySystem
-//
-//  Created by ZK on 13-9-10.
-//  Copyright (c) 2013年 user. All rights reserved.
-//
-
-#ifndef __entitySystem__DefenseComponent__
-#define __entitySystem__DefenseComponent__
+#pragma  once 
 
 #include "Component.h"
+class ReliveComponent:public Component
+{
+public:
+	ReliveComponent(eComponentId id=RELIVE):Component(id){}
+};
+
  
-#endif /* defined(__entitySystem__DefenseComponent__) */

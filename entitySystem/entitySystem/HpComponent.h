@@ -17,16 +17,11 @@ class HpComponent:public Component
     int _maxhp;
 public:
     virtual ~HpComponent(){}
-    HpComponent(int hp,int maxhp):_hp(hp),_maxhp(maxhp){};
-    
-   eComponentId GetId()const
-    {
-        return HP;
-    }
-
-    bool DropHp(int p){
+    HpComponent(int hp,int maxhp,eComponentId id=HP):_hp(hp),_maxhp(maxhp),Component(id){};
+ 
+    int DropHp(int p){
         _hp-=p;
-        return _hp>0;
+        return _hp ;
     }
     int GetHp()const
     {
@@ -37,11 +32,6 @@ public:
         _hp=(_hp>_maxhp)?_maxhp:_hp;
     }
     
-    bool HandleEvent(Component* c) 
-    {
   
-        return false;
-    }
-    
 };
 #endif /* defined(__entitySystem__HpComponent__) */

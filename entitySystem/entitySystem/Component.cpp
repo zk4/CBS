@@ -59,7 +59,7 @@ void Component::DeleteAllComponents()
 {
 	for(auto a: components)
 	{
-		if(a->components.size()>0)
+		if(IfHasChild())
 			{
 				a->DeleteAllComponents();	
 			}

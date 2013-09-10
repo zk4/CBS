@@ -15,8 +15,8 @@ class HandComponent :public Component
      
     Component* _holding_item;
 public:
-	HandComponent():_holding_item(0){}
-    eComponentId GetId()const override {return HAND;}
+	HandComponent(eComponentId id=HAND):_holding_item(0),Component(id){}
+    
     Component* Hold(Component* i)
     {
        
@@ -30,9 +30,6 @@ public:
     {
         return _holding_item;
     }
-    bool HandleEvent(Component* c)
-    {
-        return false;
-    }
+ 
 };
 #endif /* defined(__entitySystem__HandComponent__) */
