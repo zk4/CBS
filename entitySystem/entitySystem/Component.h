@@ -13,26 +13,27 @@
 #include "Config.h"
 #include <vector>
 #include "assert.h"
+#include <string>
 using namespace std;
 class Component
 {
 
 protected:
 	Component*  _parent;
-	eComponentId _id;
+	string _id;
 public:
-	virtual eComponentId GetId()const{return _id;};
+	virtual string GetId()const{return _id;};
 	 
 	virtual ~Component();
-	Component(eComponentId id):_parent(NULL),_id(id){}
+	Component(string id):_parent(NULL),_id(id){}
 	void    SetParent(Component* c)  //for listening
 	{
 		_parent=c;
 	}
 	virtual void			AddComponent(Component* c);
-	virtual void			GetComponents(eComponentId id,vector<Component*>& comps/*out*/);
-	virtual void			GetComponent(eComponentId id,Component** cmp);
-	virtual Component*		GetComponent(eComponentId id);
+	virtual void			GetComponents(string id,vector<Component*>& comps/*out*/);
+	virtual void			GetComponent(string id,Component** cmp);
+	virtual Component*		GetComponent(string id);
 	virtual bool			IfHasChild()const;
 	virtual void			DeleteAllComponents();
 	vector<Component*>   components;

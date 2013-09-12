@@ -4,7 +4,7 @@
 class ReliveComponent:public Component
 {
 public:
-	ReliveComponent(eComponentId id=RELIVE):Component(id){}
+	ReliveComponent(string id="RELIVE"):Component(id){}
 };
 
  

@@ -8,32 +8,7 @@
 
 #ifndef entitySystem_Config_h
 #define entitySystem_Config_h
-
-enum eComponentId
-{
-  ERROR,
-  HP,
-  ATTACK,
-  DEFENSE,
-    
-  PACKAGE,
-  SKILLPACKAGE,
-  WEAPONPACKAGE,
-  SKILLSLOT,
-  WEAPONSLOT,
-  HAND,
-  ITEM,
-
-//SKILL
-  RELIVE,
-//ENTITY
-  FIGHTER,
-  SWORD,
-  SHIELD,
-  SKILL,
-  
-    
-    
-};
+#define  MAKE_ENUM(x) 
+ 
 
 #endif

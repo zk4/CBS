@@ -22,7 +22,7 @@ bool Component::IfHasChild()const
     return components.size()>0;
 }
 //if direct child donesn`t has specfied id,then igorne recursive .
-void Component::GetComponents(eComponentId id,vector<Component*>& cmps)
+void Component::GetComponents(string id,vector<Component*>& cmps)
 {
     for (auto a : components) {
         if(a->GetId() ==id)
@@ -30,13 +30,13 @@ void Component::GetComponents(eComponentId id,vector<Component*>& cmps)
     }
 }
 
-Component*   Component::GetComponent(eComponentId id)
+Component*   Component::GetComponent(string id)
 {
     Component* i;
     GetComponent(id, &i);
     return i;
 }
-void  Component::GetComponent(eComponentId id,Component** cmp)
+void  Component::GetComponent(string id,Component** cmp)
 {
     vector<Component*>  cmps;
     for (auto a : components) {

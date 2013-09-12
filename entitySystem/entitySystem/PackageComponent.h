@@ -16,7 +16,7 @@ class PackageComponent :public Component
     vector<Component*>  package;
     const int max_size;
 public:
-    PackageComponent(int size,eComponentId id=PACKAGE):max_size(size),Component(id){};
+    PackageComponent(int size,string id="PACKAGE"):max_size(size),Component(id){};
     bool ExistItem(Component* c)
     {
         auto a=find_if(package.begin(), package.end(), [&c](Component* cc){return c==cc;});
@@ -38,7 +38,7 @@ public:
         else
             return NULL;
     }
-   Component* GetItem(eComponentId e)
+   Component* GetItem(string e)
    {
 		   auto a=find_if(package.begin(), package.end(), [&e](Component* cc){return cc->GetId()== e;});
 		   if(a!=package.end())return *a;

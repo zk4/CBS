@@ -15,7 +15,7 @@ class HandComponent :public Component
      
     Component* _holding_item;
 public:
-	HandComponent(eComponentId id=HAND):_holding_item(0),Component(id){}
+	HandComponent(string id="HAND"):_holding_item(0),Component(id){}
     
     Component* Hold(Component* i)
     {

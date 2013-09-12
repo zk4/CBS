@@ -14,7 +14,7 @@ class AttackComponent:public Component
 {
     int _atk;
     public :
-    AttackComponent(int atk,eComponentId id=ATTACK):_atk(atk),Component(id)
+    AttackComponent(int atk,string id="ATTACK"):_atk(atk),Component(id)
 	{}
  
     int GetAttack()const {return _atk;}

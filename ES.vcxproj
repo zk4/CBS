@@ -48,6 +48,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)\entitySystem\entitySystem\cJSON\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -72,6 +73,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="entitysystem\entitysystem\AttackComponent.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\cJSON\cJSON.c" />
+    <ClCompile Include="entitySystem\entitySystem\Factory.cpp" />
     <ClCompile Include="entitySystem\entitySystem\Logic.cpp" />
     <ClCompile Include="entitysystem\entitysystem\DefenseComponent.cpp" />
     <ClCompile Include="entitysystem\entitysystem\HandComponent.cpp" />
@@ -83,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="entitySystem\entitySystem\AllComponents.h" />
     <ClInclude Include="entitysystem\entitysystem\AttackComponent.h" />
+    <ClInclude Include="entitySystem\entitySystem\cJSON\cJSON.h" />
     <ClInclude Include="entitySystem\entitySystem\Logic.h" />
     <ClInclude Include="entitysystem\entitysystem\Config.h" />
     <ClInclude Include="entitysystem\entitysystem\DefenseComponent.h" />

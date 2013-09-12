@@ -15,39 +15,72 @@
 #include "DefenseComponent.h"
 #include "AllComponents.h"
 #include "Logic.h"
+#include "cJSON.h"
+#include <fstream>
+#include "Factory.h"
+using namespace std;
 int main(int argc, const char * argv[])
 {
-	Component* fighter=new Component(FIGHTER);
-
-	fighter->AddComponent(new HpComponent(40,40));
-	fighter->AddComponent(new PackageComponent(3));
-	fighter->AddComponent(new DefenseComponent(3));
-	fighter->AddComponent(new HandComponent);
-	fighter->AddComponent(new HandComponent);
-	fighter->AddComponent(new AttackComponent(1220));
 
 
-	ReliveComponent* relive=new ReliveComponent();
+	ifstream is("component.json",  std::ios::binary  );
+	if(is)
+	{
 
-	Component* defender=new Component(FIGHTER);
-	defender->AddComponent(new HpComponent(40,40));
-	defender->AddComponent(new PackageComponent(3,SKILLPACKAGE));
-	Logic::EquipSKill(*defender,*relive);
+		if (is) {
+			// get length of file:
+			is.seekg (0, is.end);
+			int length = is.tellg();
+			is.seekg (0, is.beg);
+
+			char * buffer = new char [length];
+
+			std::cout << "Reading " << length << " characters... ";
+			// read data as a block:
+			is.read (buffer,length);
+
+			if (is)
+			{
+
+				Component* entity=NULL;
+				cJSON* root = cJSON_Parse (buffer);
+				int size = cJSON_GetArraySize ( root );
+
+				cJSON* j_entity = cJSON_GetArrayItem ( root, 0 );
+				Component* fighter=Factory::CreateComponent(j_entity);
+
+
+				ReliveComponent* relive=new ReliveComponent();
+
+				 j_entity = cJSON_GetArrayItem ( root, 1 );
+				Component* defender=Factory::CreateComponent(j_entity);
+				Logic::EquipSKill(*defender,*relive);
 
 
 
-	Component* weapon=new Component(SWORD);
-	weapon->AddComponent(new AttackComponent(4));
 
-	Component* defense=new Component(SHIELD);
-	defense->AddComponent(new DefenseComponent(5));
+				//Logic::Equip(*fighter,*weapon,0);
+				//Logic::Equip(*fighter,*defense,1);
+				Logic::Attack(*fighter,*defender);
+				cout<<Logic::GetHp(*defender)<<"\n";
 
-	 
+				std::cout << "all characters read successfully.";}
+			else
+				std::cout << "error: only " << is.gcount() << " could be read";
+			is.close();
 
-	Logic::Equip(*fighter,*weapon,0);
-	Logic::Equip(*fighter,*defense,1);
-	Logic::Attack(*fighter,*defender);
-	cout<<Logic::GetHp(*defender)<<"\n";
+			// ...buffer contains the entire file...
+
+			delete[] buffer;
+		}
+
+
+	}
+  
+	//Component* defense=new Component("SHIELD");
+ 
+
+
 
 
 	getchar();

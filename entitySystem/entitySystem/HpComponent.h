@@ -17,7 +17,7 @@ class HpComponent:public Component
     int _maxhp;
 public:
     virtual ~HpComponent(){}
-    HpComponent(int hp,int maxhp,eComponentId id=HP):_hp(hp),_maxhp(maxhp),Component(id){};
+    HpComponent(int hp,int maxhp,string id="HP"):_hp(hp),_maxhp(maxhp),Component(id){};
  
     int DropHp(int p){
         _hp-=p;

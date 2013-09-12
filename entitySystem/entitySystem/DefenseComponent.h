@@ -15,7 +15,7 @@ class DefenseComponent:public Component
     int _defense;
 public:
   
-    DefenseComponent(int defense,eComponentId id=DEFENSE):_defense(defense),Component(id){}
+    DefenseComponent(int defense,string id="DEFENSE"):_defense(defense),Component(id){}
     int GetDefense()const
     {
         return _defense;
