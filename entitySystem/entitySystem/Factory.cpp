@@ -21,43 +21,46 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     Component* entity=NULL;
     string type = cJSON_GetObjectItem ( j_entity, "type" )->valuestring;
     cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "args" );
-    if("FIGHTER"==type || "SWORD"==type || "SHIELD" == type)
+    if(type == "FIGHTER" || type== "SWORD" ||  type == "SHIELD"  )
     {
         entity=new Component(type);
     }
-    else if("HP"== type )
+    else if(type  == "HP" )
     {
         int hp=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         int maxhp=cJSON_GetArrayItem ( arg_array, 1 )->valueint;
         entity=new HpComponent(hp,maxhp);
     }
-    else if("PACKAGE"== type )
+    else if(type  == "PACKAGE" )
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(max_size);
     }
-    else if("DEFENSE"== type )
+    else if(type  == "DEFENSE")
     {
         int defense=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new DefenseComponent(defense);
     }
-    else if("HAND"== type )
+    else if(type  == "HAND" )
     {
         entity=new HandComponent();
     }
-    else if("ATTACK"== type )
+    else if(type  == "ATTACK" )
     {
         int attack=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new AttackComponent(attack);
     }
-    else if("RELIVE"== type )
+    else if(type  == "RELIVE" )
     {
         entity=new ReliveComponent();
     }
-    else if("SKILLPACKAGE"== type )
+    else if(type  == "SKILLPACKAGE" )
     {
         int size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(size,type);
+    }else
+    {
+        assert(0 && "type not find ");
     }
     
     

@@ -21,11 +21,23 @@
 	}
  ,
  {
- "type":"WEAPON", "args":[],
+ "type":"SWORD", "args":[],
  "components": [
-                { "type":"HP", "args":[40,40], "components": [] },
-                { "type":"SKILLPACKAGE", "args":[3], "components": [] },
+                { "type":"ATTACK", "args":[40], "components": [] }
+                
+                ]
+ }
+ ,
+ {
+ "type":"SHIELD", "args":[],
+ "components": [
+       
                 { "type":"DEFENSE", "args":[5], "components": [] }
                 ]
+ }
+ ,
+ {
+ "type":"RELIVE", "args":[],
+ "components": []
  }
 ]
