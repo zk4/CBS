@@ -1,73 +1,31 @@
 [
 	 
 	{
-		"type":"FIGHTER",
-		"args":[], 
-		"components":
-		 [
-		 	{
-				"type":"HP",
-				"args":[40,40], 
-				"components":
-				 []
-			},
-			{
-				"type":"PACKAGE",
-				"args":[3], 
-				"components":
-				 []
-			},
-			{
-				"type":"DEFENSE",
-				"args":[3], 
-				"components":
-				 []
-			},
-			{
-				"type":"HAND",
-				"args":[], 
-				"components":
-				 []
-			},
-			{
-				"type":"HAND",
-				"args":[], 
-				"components":
-				 []
-			},
-			{
-				"type":"ATTACK",
-				"args":[140], 
-				"components":
-				 []
-			}
-		 ]
+		"type":"FIGHTER","args":[],
+        "components": [
+                        { "type":"HP", "args":[40,40], "components": [] },
+                        { "type":"PACKAGE", "args":[3],"components": [] },
+                        { "type":"DEFENSE", "args":[3], "components":[] },
+                        { "type":"HAND", "args":[], "components": [] },
+                        { "type":"HAND", "args":[], "components": [] },
+                        { "type":"ATTACK", "args":[140], "components": [] }
+                      ]
 	},
-
 	{
-		"type":"FIGHTER",
-		"args":[], 
-		"components":
-		 [
-		 	{
-				"type":"HP",
-				"args":[40,40], 
-				"components":
-				 []
-			},
-			{
-				"type":"SKILLPACKAGE",
-				"args":[3], 
-				"components":
-				 []
-			},
-			{
-				"type":"DEFENSE",
-				"args":[5], 
-				"components":
-				 []
-			}
-
-		 ]
+		"type":"FIGHTER", "args":[], 
+		"components": [
+                        { "type":"HP", "args":[40,40], "components": [] },
+                        { "type":"SKILLPACKAGE", "args":[3], "components": [] },
+                        { "type":"DEFENSE", "args":[5], "components": [] }
+                      ]
 	}
+ ,
+ {
+ "type":"WEAPON", "args":[],
+ "components": [
+                { "type":"HP", "args":[40,40], "components": [] },
+                { "type":"SKILLPACKAGE", "args":[3], "components": [] },
+                { "type":"DEFENSE", "args":[5], "components": [] }
+                ]
+ }
 ]

@@ -1,7 +1,6 @@
 #include "Logic.h"
 #include "Component.h"
 #include <algorithm>
-
 #include "HandComponent.h"
 #include "AttackComponent.h"
 #include "DefenseComponent.h"
@@ -58,6 +57,7 @@ int Logic::GetAttack( Component& e )
 		AttackComponent* r=(AttackComponent*)e.GetComponent("ATTACK");
 		if(r)
 			atk+=r->GetAttack();
+
 		return atk;
 	 
 }
@@ -128,4 +128,11 @@ void Logic::EquipSKill( Component& holder,Component& skill )
 		p->AddItem(&skill);
 	}
 	
+}
+
+
+bool Logic::TeamAdd(Component& team,Component& item)
+{
+    PackageComponent* p=(PackageComponent*)(team.GetComponent("SKILLPACKAGE"));
+    return p->AddItem(&item);
 }

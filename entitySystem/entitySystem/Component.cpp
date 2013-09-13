@@ -9,6 +9,11 @@
 #include "Component.h"
 #include <algorithm>
 #include "assert.h"
+Component*   Component::GetParent() const
+{
+    return _parent;
+}
+
 void Component::AddComponent(Component* c)
 {
     auto a= find_if(components.begin(), components.end(), [&c](Component* cc){return cc==c;});

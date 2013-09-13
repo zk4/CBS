@@ -34,17 +34,14 @@ int main(int argc, const char * argv[])
 			is.seekg (0, is.beg);
 
 			char * buffer = new char [length];
-
-			std::cout << "Reading " << length << " characters... ";
 			// read data as a block:
 			is.read (buffer,length);
 
 			if (is)
 			{
 
-				Component* entity=NULL;
+
 				cJSON* root = cJSON_Parse (buffer);
-				int size = cJSON_GetArraySize ( root );
 
 				cJSON* j_entity = cJSON_GetArrayItem ( root, 0 );
 				Component* fighter=Factory::CreateComponent(j_entity);
@@ -64,7 +61,8 @@ int main(int argc, const char * argv[])
 				Logic::Attack(*fighter,*defender);
 				cout<<Logic::GetHp(*defender)<<"\n";
 
-				std::cout << "all characters read successfully.";}
+				std::cout << "all characters read successfully.";
+            }
 			else
 				std::cout << "error: only " << is.gcount() << " could be read";
 			is.close();

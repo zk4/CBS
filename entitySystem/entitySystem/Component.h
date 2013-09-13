@@ -23,7 +23,7 @@ protected:
 	string _id;
 public:
 	virtual string GetId()const{return _id;};
-	 
+    Component*              GetParent() const ;
 	virtual ~Component();
 	Component(string id):_parent(NULL),_id(id){}
 	void    SetParent(Component* c)  //for listening
