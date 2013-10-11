@@ -6,8 +6,8 @@
                         { "type":"HP", "args":[40,40], "components": [] },
                         { "type":"PACKAGE", "args":[3],"components": [] },
                         { "type":"DEFENSE", "args":[3], "components":[] },
-                        { "type":"HAND", "args":[], "components": [] },
-                        { "type":"HAND", "args":[], "components": [] },
+                        { "type":"HANDS", "args":[2], "components": [] },
+                        
                         { "type":"ATTACK", "args":[140], "components": [] }
                       ]
 	},
@@ -19,25 +19,23 @@
                         { "type":"DEFENSE", "args":[5], "components": [] }
                       ]
 	}
- ,
- {
- "type":"SWORD", "args":[],
- "components": [
-                { "type":"ATTACK", "args":[40], "components": [] }
-                
-                ]
- }
- ,
- {
- "type":"SHIELD", "args":[],
- "components": [
-       
-                { "type":"DEFENSE", "args":[5], "components": [] }
-                ]
- }
- ,
- {
- "type":"RELIVE", "args":[],
- "components": []
- }
+     ,
+     {
+        "type":"SWORD", "args":[],
+        "components": [
+                       { "type":"ATTACK", "args":[40], "components": [] }
+                      ]
+     }
+     ,
+     {
+        "type":"SHIELD", "args":[],
+        "components": [
+                       { "type":"DEFENSE", "args":[5], "components": [] }
+                      ]
+     }
+     ,
+     {
+        "type":"RELIVE", "args":[],
+        "components": []
+     }
 ]

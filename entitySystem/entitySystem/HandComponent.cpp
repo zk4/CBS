@@ -6,4 +6,4 @@
 //  Copyright (c) 2013年 user. All rights reserved.
 //
 
-#include "HandComponent.h"
+//#include "HandComponent.h"

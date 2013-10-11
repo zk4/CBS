@@ -43,20 +43,13 @@ int main(int argc, const char * argv[])
 
 				cJSON* root = cJSON_Parse (buffer);
 
-				 
-				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem ( root, 0 ));
+				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 0 ));
                 Component* defender=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
-                Component* weapon=Factory::CreateComponent(cJSON_GetArrayItem ( root, 2 ));
-                 Component* defense=Factory::CreateComponent(cJSON_GetArrayItem ( root, 3 ));
-				Component* relive=Factory::CreateComponent(cJSON_GetArrayItem ( root, 4 ));
+                Component* weapon=Factory::CreateComponent(cJSON_GetArrayItem   ( root, 2 ));
+                Component* defense=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 3 ));
+				Component* relive=Factory::CreateComponent(cJSON_GetArrayItem   ( root, 4 ));
 
-		 
-				
 				Logic::EquipSKill(*defender,*relive);
-
-
-
-
 				Logic::Equip(*fighter,*weapon,0);
 				Logic::Equip(*fighter,*defense,1);
 				Logic::Attack(*fighter,*defender);
@@ -67,20 +60,11 @@ int main(int argc, const char * argv[])
 			else
 				std::cout << "error: only " << is.gcount() << " could be read";
 			is.close();
-
-			// ...buffer contains the entire file...
-
 			delete[] buffer;
 		}
 
 
 	}
-  
-	//Component* defense=new Component("SHIELD");
- 
-
-
-
 
 	getchar();
 	return 0;

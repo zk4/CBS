@@ -41,10 +41,7 @@ Component* Factory::CreateComponent(cJSON* j_entity)
         int defense=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new DefenseComponent(defense);
     }
-    else if(type  == "HAND" )
-    {
-        entity=new HandComponent();
-    }
+ 
     else if(type  == "ATTACK" )
     {
         int attack=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
@@ -54,7 +51,7 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     {
         entity=new ReliveComponent();
     }
-    else if(type  == "SKILLPACKAGE" )
+    else if(type  == "SKILLPACKAGE" || type  == "HANDS"  )
     {
         int size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(size,type);

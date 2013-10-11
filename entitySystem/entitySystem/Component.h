@@ -31,7 +31,7 @@ public:
 		_parent=c;
 	}
 	virtual void			AddComponent(Component* c);
-	virtual void			GetComponents(string id,vector<Component*>& comps/*out*/);
+	virtual void			GetComponents(string id,vector<Component*>& comps/*out*/,bool recursive=false);
 	virtual void			GetComponent(string id,Component** cmp);
 	virtual Component*		GetComponent(string id);
 	virtual bool			IfHasChild()const;

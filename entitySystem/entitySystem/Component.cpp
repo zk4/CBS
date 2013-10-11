@@ -16,7 +16,7 @@ Component*   Component::GetParent() const
 
 void Component::AddComponent(Component* c)
 {
-    auto a= find_if(components.begin(), components.end(), [&c](Component* cc){return cc==c;});
+    auto a= find_if(components.begin(), components.end(), [&c](Component* cc){return cc && cc==c;});
     if(a !=components.end())return;   //find same componet pointer
     
     c->SetParent(this);
@@ -27,11 +27,14 @@ bool Component::IfHasChild()const
     return components.size()>0;
 }
 //if direct child donesn`t has specfied id,then igorne recursive .
-void Component::GetComponents(string id,vector<Component*>& cmps)
+void Component::GetComponents(string id,vector<Component*>& cmps,bool recursive)
 {
     for (auto a : components) {
         if(a->GetId() ==id)
             cmps.push_back(a);
+        if(recursive)
+            a->GetComponents(id, cmps,recursive);
+        
     }
 }
 

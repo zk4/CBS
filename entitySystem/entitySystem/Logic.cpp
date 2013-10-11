@@ -41,19 +41,25 @@ void Logic::Attack( Component& attack, Component& defender )
 int Logic::GetAttack( Component& e )
 {
 	 
-		vector<Component*> hands;
-		e.GetComponents("HAND",hands);
-		int atk=0;        
-		for_each(hands.begin(), hands.end(), [&atk](Component* c){
-			Component* a=((HandComponent*)(c))->GetHolder();
-			if(a) 
+	 
+	PackageComponent* hands=(PackageComponent*)e.GetComponent("HANDS");
+		int atk=0;
+    if(hands)
+	{
+		for_each(hands->GetBeginIte(), hands->GetEndIte(), [&atk](Component* c){
+			 
+			if(c)
 			{
-				Component* p_atk=a->GetComponent("ATTACK");
-				if(p_atk)
-					atk+=((AttackComponent*)p_atk)->GetAttack();
+                vector<Component*> atks;
+				c->GetComponents("ATTACK",atks,true);
+				for (auto a2: atks) {
+                    atk+=((AttackComponent*)a2)->GetAttack();
+                }
+					
 			}
 		}
 		);
+    }
 		AttackComponent* r=(AttackComponent*)e.GetComponent("ATTACK");
 		if(r)
 			atk+=r->GetAttack();
@@ -64,19 +70,27 @@ int Logic::GetAttack( Component& e )
 
 int  Logic::GetDefense(Component& e )
 {
-	vector<Component*> hands;
-	e.GetComponents("HAND",hands);
+ 
+PackageComponent* hands=(PackageComponent*)e.GetComponent("HANDS");
+
 	int defense=0;
-	for_each(hands.begin(), hands.end(), [&defense](Component* c){
-		Component* a=((HandComponent*)(c))->GetHolder();
-		if(a) 
-		{
-		Component* p_defense=a->GetComponent("DEFENSE");
-		if(p_defense)
-			defense+=((DefenseComponent*)p_defense)->GetDefense();
-		}
-	}
-	);
+    if(hands)
+	{
+        
+        for_each(hands->GetBeginIte(), hands->GetEndIte(), [&defense](Component* c){
+           
+            if(c)
+            {
+                vector<Component*> defenses;
+                 c->GetComponents("DEFENSE",defenses,true);
+                for (auto a2: defenses) {
+                    defense+=((DefenseComponent*)a2)->GetDefense();
+                }
+                
+            }
+        }
+        );
+     }
 	return defense;
 }
 
@@ -87,9 +101,8 @@ int Logic::DropHp( Component& e,int hp )
 
 void Logic::Equip( Component& holder,Component& equip,int which_hand )
 {
-	vector<Component* > ics;
-	holder.GetComponents("HAND",ics);
-	((HandComponent*)ics[which_hand])->Hold(&equip);
+	PackageComponent*  ics=(PackageComponent*)holder.GetComponent("HANDS");
+	ics->SetItem(&equip,which_hand);
 }
 
 int Logic::GetHp( Component& e )
