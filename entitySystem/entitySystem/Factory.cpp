@@ -37,17 +37,24 @@ Component* Factory::CreateComponent(cJSON* j_entity)
         
         entity=new ValueComponent(v,m,no_max,type);
     }
-    else if(type  == PACKAGE )
+    else if(type  == PACKAGE ||  type  == SKILLPACKAGE || type  == HANDS)
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(max_size,type);
+        
+        // init pacakge
+        cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "packages" );
+        if(arg_array)
+        {
+        int size=cJSON_GetArraySize(arg_array);
+            for ( int i = 0 ; i < size ; ++i ) {
+                cJSON* component = cJSON_GetArrayItem ( arg_array, i );
+                ((PackageComponent*)entity)->AddItem(CreateComponent(component));
+               
+            }
+        }
     }
-   
-    else if(type  == SKILLPACKAGE || type  == HANDS  )
-    {
-        int size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
-        entity=new PackageComponent(size,type);
-    }else
+    else
     {
         assert(0 && "type not find ");
     }

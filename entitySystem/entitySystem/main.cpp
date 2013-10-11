@@ -43,13 +43,13 @@ int main(int argc, const char * argv[])
 
 				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 0 ));
                 Component* defender=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
-                Component* weapon=Factory::CreateComponent(cJSON_GetArrayItem   ( root, 2 ));
-                Component* defense=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 3 ));
-				Component* relive=Factory::CreateComponent(cJSON_GetArrayItem   ( root, 4 ));
+                //Component* weapon=Factory::CreateComponent(cJSON_GetArrayItem   ( root, 2 ));
+                //Component* defense=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 3 ));
+				//Component* relive=Factory::CreateComponent(cJSON_GetArrayItem   ( root, 4 ));
 
-				Logic::EquipSKill(*defender,*relive);
-				Logic::Equip(*fighter,*weapon,0);
-				Logic::Equip(*fighter,*defense,1);
+				//Logic::EquipSKill(*defender,*relive);
+				//Logic::Equip(*fighter,*weapon,0);
+				//Logic::Equip(*fighter,*defense,1);
 				Logic::Attack(*fighter,*defender);
 				cout<<Logic::GetHp(*defender)<<"\n";
 

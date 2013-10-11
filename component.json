@@ -6,36 +6,37 @@
                         { "type":"HP", "args":[40,40], "components": [] },
                         { "type":"PACKAGE", "args":[3],"components": [] },
                         { "type":"DEFENSE", "args":[3], "components":[] },
-                        { "type":"HANDS", "args":[2], "components": [] },
-                        
-                        { "type":"ATTACK", "args":[120], "components": [] }
+                       { "type":"HANDS", "args":[2], "components": [], "packages" : [
+                                                                                     {
+                                                                                     "type":"SWORD", "args":[],
+                                                                                     "components": [
+                                                                                                    { "type":"ATTACK", "args":[450], "components": [] }
+                                                                                                   ]
+                                                                                     },
+                                                                                     {
+                                                                                     "type":"SHIELD", "args":[],
+                                                                                     "components": [
+                                                                                                    { "type":"DEFENSE", "args":[5], "components": [] }
+                                                                                                   ]
+                                                                                     }
+                                                                                    ]
+                       },
+                       
+                        { "type":"ATTACK", "args":[1120], "components": [] }
                       ]
 	},
 	{
 		"type":"DEFENDER", "args":[], 
 		"components": [
                         { "type":"HP", "args":[40,40], "components": [] },
-                        { "type":"SKILLPACKAGE", "args":[3], "components": [] },
+                       { "type":"SKILLPACKAGE", "args":[3], "components": [], "packages" : [ {
+                                                                                            "type":"RELIVE", "args":[],
+                                                                                            "components": []
+                                                                                            }]
+                       },
                         { "type":"DEFENSE", "args":[5], "components": [] }
                       ]
 	}
-     ,
-     {
-        "type":"SWORD", "args":[],
-        "components": [
-                       { "type":"ATTACK", "args":[40], "components": [] }
-                      ]
-     }
-     ,
-     {
-        "type":"SHIELD", "args":[],
-        "components": [
-                       { "type":"DEFENSE", "args":[5], "components": [] }
-                      ]
-     }
-     ,
-     {
-        "type":"RELIVE", "args":[],
-        "components": []
-     }
+ 
+ 
 ]

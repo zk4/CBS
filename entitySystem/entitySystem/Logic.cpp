@@ -18,7 +18,8 @@ void Logic::Attack( Component& attack, Component& defender )
 	int atk=GetAttack(attack);
 	int def=GetDefense(defender);
 	int hp_diff=atk-def;
-	int ret=DropHp(defender,hp_diff);
+    printf("drop hp:%d\n",hp_diff);
+    DropHp(defender,hp_diff);
 	if(IsDead(defender))
 	{ 
 		PackageComponent*  p=(PackageComponent*)defender.GetComponent(SKILLPACKAGE);
