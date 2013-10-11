@@ -29,7 +29,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CE3CC6EA17E2DAF200E4E22C /* component.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = component.json; path = ../../component.json; sourceTree = "<group>"; };
 		CE695CFA17E2BEC5009E9118 /* Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Factory.cpp; sourceTree = "<group>"; };
 		CE695CFC17E2BF03009E9118 /* cJSON.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cJSON.c; path = cJSON/cJSON.c; sourceTree = "<group>"; };
 		CE695CFD17E2BF03009E9118 /* cJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cJSON.h; path = cJSON/cJSON.h; sourceTree = "<group>"; };
@@ -46,7 +45,6 @@
 		CEED3C4017E007160003ABC0 /* Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Factory.h; sourceTree = "<group>"; };
 		CEED3C4117E007160003ABC0 /* Logic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logic.cpp; sourceTree = "<group>"; };
 		CEED3C4217E007160003ABC0 /* Logic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logic.h; sourceTree = "<group>"; };
-		CEED3C4317E007160003ABC0 /* SpriteComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteComponent.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +86,6 @@
 		CEED3C1417DEFDDC0003ABC0 /* entitySystem */ = {
 			isa = PBXGroup;
 			children = (
-				CE3CC6EA17E2DAF200E4E22C /* component.json */,
 				CE695CFF17E2BF0D009E9118 /* json */,
 				CE695CFA17E2BEC5009E9118 /* Factory.cpp */,
 				CEED3C3D17E007160003ABC0 /* AllComponents.h */,
@@ -97,7 +94,6 @@
 				CEED3C4017E007160003ABC0 /* Factory.h */,
 				CEED3C4117E007160003ABC0 /* Logic.cpp */,
 				CEED3C4217E007160003ABC0 /* Logic.h */,
-				CEED3C4317E007160003ABC0 /* SpriteComponent.h */,
 				CEED3C1517DEFDDC0003ABC0 /* main.cpp */,
 				CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */,
 				CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */,

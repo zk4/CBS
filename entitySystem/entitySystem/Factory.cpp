@@ -12,18 +12,18 @@
 #include "Component.h"
 #include "ValueComponent.h"
 #include "PackageComponent.h"
- 
+
 #include "AllComponents.h"
 Component* Factory::CreateComponent(cJSON* j_entity)
 {
     Component* entity=NULL;
     string type = cJSON_GetObjectItem ( j_entity, "type" )->valuestring;
     cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "args" );
-    if(type == "FIGHTER" || type== "SWORD" ||  type == "SHIELD"  )
+    if(type == FIGHTER || type== SWORD ||  type == SHIELD || type  == RELIVE  )
     {
         entity=new Component(type);
     }
-    else if(type  == "HP"  || type  == "DEFENSE" || type  == "ATTACK" )
+    else if(type  == HP  || type  == DEFENSE || type  == ATTACK )
     {
         int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         
@@ -33,16 +33,13 @@ Component* Factory::CreateComponent(cJSON* j_entity)
         
         entity=new ValueComponent(v,m,type);
     }
-    else if(type  == "PACKAGE" )
+    else if(type  == PACKAGE )
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(max_size,type);
     }
-    else if(type  == "RELIVE" )
-    {
-        entity=new IndicatorComponent(type);
-    }
-    else if(type  == "SKILLPACKAGE" || type  == "HANDS"  )
+   
+    else if(type  == SKILLPACKAGE || type  == HANDS  )
     {
         int size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(size,type);

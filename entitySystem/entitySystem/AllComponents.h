@@ -8,10 +8,5 @@
 #pragma  once
 
 #include "Component.h"
-class IndicatorComponent:public Component
-{
-public:
-	IndicatorComponent(string id):Component(id){}
-};
-
+ 
  
