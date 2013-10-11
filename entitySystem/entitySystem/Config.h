@@ -12,6 +12,7 @@
 
 #define  PACKAGE        "PACKAGE"
 #define  FIGHTER        "FIGHTER"
+#define DEFENDER        "DEFENDER"
 #define  SWORD          "SWORD"
 #define  SHIELD         "SHIELD"
 #define  RELIVE         "RELIVE"

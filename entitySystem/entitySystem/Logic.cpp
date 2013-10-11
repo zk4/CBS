@@ -19,7 +19,7 @@ void Logic::Attack( Component& attack, Component& defender )
 	int def=GetDefense(defender);
 	int hp_diff=atk-def;
 	int ret=DropHp(defender,hp_diff);
-	if(ret<0)
+	if(IsDead(defender))
 	{ 
 		PackageComponent*  p=(PackageComponent*)defender.GetComponent(SKILLPACKAGE);
 		if(p)
@@ -91,7 +91,10 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
      }
 	return defense;
 }
-
+bool  Logic::IsDead(Component& c)
+{
+    return ((ValueComponent*)c.GetComponent(HP))->GetValue()==0;
+}
 int Logic::DropHp( Component& e,int hp )
 {
 	return ((ValueComponent*)e.GetComponent(HP))->Minus(hp);

@@ -13,13 +13,13 @@
 #include "ValueComponent.h"
 #include "PackageComponent.h"
 
-#include "AllComponents.h"
+ 
 Component* Factory::CreateComponent(cJSON* j_entity)
 {
     Component* entity=NULL;
     string type = cJSON_GetObjectItem ( j_entity, "type" )->valuestring;
     cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "args" );
-    if(type == FIGHTER || type== SWORD ||  type == SHIELD || type  == RELIVE  )
+    if(type == DEFENDER || type == FIGHTER || type== SWORD ||  type == SHIELD || type  == RELIVE  )
     {
         entity=new Component(type);
     }
@@ -28,10 +28,14 @@ Component* Factory::CreateComponent(cJSON* j_entity)
         int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         
         int m=INT_MAX;
+        bool no_max=true;
         if(cJSON_GetArraySize(arg_array)>1)
+        {
             m=cJSON_GetArrayItem ( arg_array, 1 )->valueint;
+            no_max=false;
+        }
         
-        entity=new ValueComponent(v,m,type);
+        entity=new ValueComponent(v,m,no_max,type);
     }
     else if(type  == PACKAGE )
     {

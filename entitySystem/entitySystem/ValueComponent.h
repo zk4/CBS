@@ -11,13 +11,15 @@
 
 #include "Component.h"//
 
+
 class ValueComponent:public Component
 {
     int _value;
     int _max;
+    bool _no_max;
 public:
     virtual ~ValueComponent(){}
-    ValueComponent(int v,int max,string id):_value(v),_max(max),Component(id){};
+    ValueComponent(int v,int max,bool no_max,string id):_value(v),_max(max),_no_max(no_max),Component(id){};
  
     int Minus(int p){
 
@@ -27,26 +29,33 @@ public:
     {
         return _value;
     }
-    int GetMax()const
+    bool GetMax(int& max)const
     {
-        return  _max;
+        if(_no_max)return  false;
+        max=_max;
+        return  true;
     }
     int Add(int p){
         _value+=p;
+        if(!_no_max)
         _value=(_value>_max)?_max:_value;
+        
+        if(_value<0)_value=0;
+        
         return _value;
     }
-    int AddMax(int p)
+    bool AddMax(int p)
     {
-        if(INT_MAX == _max)return _max;
-        
+        if(_no_max)return false;
         _max+=p;
-        return  _max;
+        return  true;
     }
     
-	void Reset()
+	bool Reset()
 	{
+        if(_no_max)return  false;
 		_value=_max;
+        return true;
 	}
 
     

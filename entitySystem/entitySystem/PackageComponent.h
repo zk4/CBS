@@ -29,11 +29,19 @@ public:
         package[i]=c;
         return old;
     }
+    int FindNULL()
+    {
+        for (int i=0; i<max_size; ++i) {
+            if(package[i]==NULL)return i;
+        }
+        return -1;
+    }
     bool AddItem(Component* c)
     {
-        if(  !ExistItem(c) && package.size()<max_size)
+        int pos=FindNULL();
+        if(  !ExistItem(c) && pos != -1 )
         {
-            package.push_back(c);
+            SetItem(c,pos);
             return true;
         }
         return false;

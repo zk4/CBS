@@ -15,5 +15,6 @@ public:
 	static void CastSkill(Component& caster,Component& skill, Component& suffer);
 	static void EquipSKill(Component& holder,Component& skill);
     static bool TeamAdd(Component& team,Component& item);
+    static bool  IsDead(Component& c);
 };
 
