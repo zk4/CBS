@@ -25,7 +25,7 @@
 #define  SKILLPACKAGE   "SKILLPACKAGE"
 #define  HANDS          "HANDS"
 
-
+#define TEAM            "TEAM"
 #define TARGET          "TARGET"
 
 

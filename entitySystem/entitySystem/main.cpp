@@ -43,6 +43,7 @@ int main(int argc, const char * argv[])
 
 				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 0 ));
                 Component* defender=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
+                Component* team=Factory::CreateComponent(cJSON_GetArrayItem ( root, 2 ));
                 //Component* weapon=Factory::CreateComponent(cJSON_GetArrayItem   ( root, 2 ));
                 //Component* defense=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 3 ));
 				//Component* relive=Factory::CreateComponent(cJSON_GetArrayItem   ( root, 4 ));
@@ -51,7 +52,7 @@ int main(int argc, const char * argv[])
 				//Logic::Equip(*fighter,*weapon,0);
 				//Logic::Equip(*fighter,*defense,1);
 				Logic::Attack(*fighter,*defender);
-                Logic::CastSkill(*fighter,*defender,FIREBALL);
+                Logic::CastSkills(*fighter,*team,FIREBALL);
 				cout<<Logic::GetHp(*defender)<<"\n";
 
 				std::cout << "all characters read successfully.";

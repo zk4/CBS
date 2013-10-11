@@ -25,7 +25,7 @@
                        { "type":"SKILLPACKAGE", "args":[3], "components": [], "items" : [ {
                                                                                          "type":"FIREBALL", "args":[],
                                                                                          "components": [
-                                                                                             { "type":"TARGET", "args":[1], "components": [] },
+                                                                                             { "type":"TARGET", "args":[2], "components": [] },
                                                                                              { "type":"ATTACK", "args":[6], "components": [] }
                                                                                          ]
                                                                                          }]
@@ -45,6 +45,31 @@
                         { "type":"DEFENSE", "args":[5], "components": [] }
                       ]
 	}
- 
+ ,{ "type":"TEAM", "args":[3], "components": [], "items" : [{
+                                                            "type":"DEFENDER", "args":[],
+                                                            "components": [
+                                                                           { "type":"HP", "args":[40,40], "components": [] },
+                                                                           { "type":"SKILLPACKAGE", "args":[3], "components": [], "items" : [ {
+                                                                                                                                             "type":"RELIVE", "args":[],
+                                                                                                                                             "components": []
+                                                                                                                                             }]
+                                                                           },
+                                                                           { "type":"DEFENSE", "args":[5], "components": [] }
+                                                                           ]
+                                                            },
+                                                            {
+                                                            "type":"DEFENDER2", "args":[],
+                                                            "components": [
+                                                                           { "type":"HP", "args":[40,40], "components": [] },
+                                                                           { "type":"SKILLPACKAGE", "args":[3], "components": [], "items" : [ {
+                                                                                                                                             "type":"RELIVE", "args":[],
+                                                                                                                                             "components": []
+                                                                                                                                             }]
+                                                                           },
+                                                                           { "type":"DEFENSE", "args":[2], "components": [] }
+                                                                           ]
+                                                            }
+                                                            ]
+ }
  
 ]

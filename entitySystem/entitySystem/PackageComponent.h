@@ -29,6 +29,9 @@ public:
         package[i]=c;
         return old;
     }
+    int GetMaxSize() const {
+        return  max_size;
+    }
     int FindNULL()
     {
         for (int i=0; i<max_size; ++i) {

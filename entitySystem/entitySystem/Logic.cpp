@@ -25,18 +25,19 @@ void Logic::CastSkill(Component& attack, Component& defender,string id )
         }
     }
 }
-//void Logic::CastSkill(Component& attack, Component& defender,Component& skill )
-//{
-//    int atk=0,target=0;
-//    ValueComponent* vc=NULL;
-//    vc=(ValueComponent*)skill.GetComponent(ATTACK);
-//    if(vc)
-//        atk+=vc->GetValue();
-//    
-//    vc=(ValueComponent*)skill.GetComponent(TARGET);
-//    if(vc)
-//        target=vc->GetValue();
-//}
+void Logic::CastSkills(Component& caster,Component& suffers,string id )
+{
+    PackageComponent*  p=(PackageComponent*)caster.GetComponent(SKILLPACKAGE);
+    if(p)
+    {
+        Component* c =p->GetItem(id);
+        if(c)
+        {
+            
+            CastSkills(caster,suffers,*c);
+        }
+    }
+}
 void Logic::Attack( Component& attack, Component& defender )
 {
 	int atk=GetAttack(attack);
@@ -75,7 +76,11 @@ int Logic::GetAttack( Component& e )
 		return atk;
 	 
 }
-
+int  Logic::GetTgargetCount(Component& c)
+{
+    ValueComponent* r=(ValueComponent*)c.GetComponent(TARGET);
+    return  r->GetValue();
+}
 int  Logic::GetDefense(Component& e )
 {
  
@@ -113,7 +118,7 @@ bool  Logic::IsDead(Component& c)
 int Logic::DropHp( Component& e,int hp )
 {
     assert(hp>=0);
-    printf("drop blood %d \n",hp);
+    printf("%d drop blood %d \n",&e,hp);
 	return ((ValueComponent*)e.GetComponent(HP))->Minus(hp);
 }
 
@@ -128,6 +133,21 @@ int Logic::GetHp( Component& e )
 	return ((ValueComponent*)e.GetComponent(HP))->GetValue();
 }
 
+void Logic::CastSkills(Component& caster,Component& suffers,Component& skill )
+{
+    PackageComponent * pc =(PackageComponent*)&suffers;
+    
+        int target=GetTgargetCount(skill);
+    for (int i=0; i<pc->GetMaxSize() && target>0; ++i, --target) {
+
+            Component* c=pc->GetItem(i);
+        
+            if(c)
+            Attack(skill, *c);
+    }
+}
+
+//only handle one suffer
 void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
 {
 	
@@ -153,8 +173,10 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
         
         int ats=GetAttack(skill);
         int def=GetDefense(suffer);
+
         int hp_diff=ats-def;
         hp_diff=hp_diff<0?0:hp_diff;
+
         DropHp(suffer,hp_diff);
     }
 }

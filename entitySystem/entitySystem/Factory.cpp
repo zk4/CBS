@@ -19,11 +19,11 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     Component* entity=NULL;
     string type = cJSON_GetObjectItem ( j_entity, "type" )->valuestring;
     cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "args" );
-    if(type == DEFENDER || type == FIGHTER || type== SWORD ||  type == SHIELD || type  == RELIVE || type == FIREBALL )
-    {
-        entity=new Component(type);
-    }
-    else if(type  == HP  || type  == DEFENSE || type  == ATTACK || type == TARGET)
+//    if(type == DEFENDER || type == FIGHTER || type== SWORD ||  type == SHIELD || type  == RELIVE || type == FIREBALL )
+//    {
+//        entity=new Component(type);
+//    }
+     if(type  == HP  || type  == DEFENSE || type  == ATTACK || type == TARGET)
     {
         int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         
@@ -37,7 +37,7 @@ Component* Factory::CreateComponent(cJSON* j_entity)
         
         entity=new ValueComponent(v,m,no_max,type);
     }
-    else if(type  == PACKAGE ||  type  == SKILLPACKAGE || type  == HANDS)
+    else if(type  == PACKAGE ||  type  == SKILLPACKAGE || type  == HANDS || type == TEAM)
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(max_size,type);
@@ -56,7 +56,8 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     }
     else
     {
-        assert(0 && "type not find ");
+          entity=new Component(type);
+//        assert(0 && "type not find ");
     }
     
     
