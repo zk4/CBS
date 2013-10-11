@@ -51,6 +51,7 @@ int main(int argc, const char * argv[])
 				//Logic::Equip(*fighter,*weapon,0);
 				//Logic::Equip(*fighter,*defense,1);
 				Logic::Attack(*fighter,*defender);
+                Logic::CastSkill(*fighter,*defender,FIREBALL);
 				cout<<Logic::GetHp(*defender)<<"\n";
 
 				std::cout << "all characters read successfully.";

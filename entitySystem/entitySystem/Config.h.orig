@@ -1,0 +1,47 @@
+//
+//  Config.h
+//  entitySystem
+//
+//  Created by ZK on 13-9-10.
+//  Copyright (c) 2013年 user. All rights reserved.
+//
+
+#ifndef entitySystem_Config_h
+#define entitySystem_Config_h
+<<<<<<< Updated upstream
+#define  MAKE_ENUM(x) 
+ 
+=======
+
+enum eComponentId
+{
+  ERROR,
+  HP,
+  ATTACK,
+  DEFENSE,
+    
+  PACKAGE,
+  SKILLPACKAGE,
+  WEAPONPACKAGE,
+  TEAMPACKAGE,
+  SKILLSLOT,
+  WEAPONSLOT,
+  HAND,
+  ITEM,
+
+//SKILL
+  RELIVE,
+//ENTITY
+    ARRAY,
+  FIGHTER,
+  TEAM,
+  SWORD,
+  SHIELD,
+  SKILL,
+  
+    
+    
+};
+>>>>>>> Stashed changes
+
+#endif

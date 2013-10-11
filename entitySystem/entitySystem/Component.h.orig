@@ -22,8 +22,13 @@ protected:
 	Component*  _parent;
 	string _id;
 public:
-	virtual string& GetId() {return _id;};
+<<<<<<< Updated upstream
+	virtual string GetId()const{return _id;};
+	 
+=======
+	virtual eComponentId GetId()const{return _id;};
     Component*              GetParent() const ;
+>>>>>>> Stashed changes
 	virtual ~Component();
 	Component(string id):_parent(NULL),_id(id){}
 	void    SetParent(Component* c)  //for listening
@@ -31,7 +36,7 @@ public:
 		_parent=c;
 	}
 	virtual void			AddComponent(Component* c);
-	virtual void			GetComponents(string id,vector<Component*>& comps/*out*/,bool recursive=false);
+	virtual void			GetComponents(string id,vector<Component*>& comps/*out*/);
 	virtual void			GetComponent(string id,Component** cmp);
 	virtual Component*		GetComponent(string id);
 	virtual bool			IfHasChild()const;

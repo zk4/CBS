@@ -19,11 +19,11 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     Component* entity=NULL;
     string type = cJSON_GetObjectItem ( j_entity, "type" )->valuestring;
     cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "args" );
-    if(type == DEFENDER || type == FIGHTER || type== SWORD ||  type == SHIELD || type  == RELIVE  )
+    if(type == DEFENDER || type == FIGHTER || type== SWORD ||  type == SHIELD || type  == RELIVE || type == FIREBALL )
     {
         entity=new Component(type);
     }
-    else if(type  == HP  || type  == DEFENSE || type  == ATTACK )
+    else if(type  == HP  || type  == DEFENSE || type  == ATTACK || type == TARGET)
     {
         int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         

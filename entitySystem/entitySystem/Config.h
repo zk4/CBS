@@ -8,7 +8,8 @@
 
 #ifndef entitySystem_Config_h
 #define entitySystem_Config_h
-#define  MAKE_ENUM(x) 
+
+//need a tool to automatically pull type from component.json
 
 #define  PACKAGE        "PACKAGE"
 #define  FIGHTER        "FIGHTER"
@@ -16,12 +17,16 @@
 #define  SWORD          "SWORD"
 #define  SHIELD         "SHIELD"
 #define  RELIVE         "RELIVE"
+#define  FIREBALL       "FIREBALL"
+
 #define  HP             "HP"
 #define  DEFENSE        "DEFENSE"
 #define  ATTACK         "ATTACK"
 #define  SKILLPACKAGE   "SKILLPACKAGE"
 #define  HANDS          "HANDS"
 
+
+#define TARGET          "TARGET"
 
 
 #endif

@@ -11,6 +11,7 @@
                                                                                      "type":"SWORD", "args":[],
                                                                                      "components": [
                                                                                                     { "type":"ATTACK", "args":[450], "components": [] }
+                                                                                                  
                                                                                                    ]
                                                                                      },
                                                                                      {
@@ -21,7 +22,14 @@
                                                                                      }
                                                                                     ]
                        },
-                       
+                       { "type":"SKILLPACKAGE", "args":[3], "components": [], "items" : [ {
+                                                                                         "type":"FIREBALL", "args":[],
+                                                                                         "components": [
+                                                                                             { "type":"TARGET", "args":[1], "components": [] },
+                                                                                             { "type":"ATTACK", "args":[6], "components": [] }
+                                                                                         ]
+                                                                                         }]
+                       },
                         { "type":"ATTACK", "args":[1120], "components": [] }
                       ]
 	},
