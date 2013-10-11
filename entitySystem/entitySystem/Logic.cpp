@@ -1,10 +1,8 @@
 #include "Logic.h"
 #include "Component.h"
 #include <algorithm>
-#include "HandComponent.h"
-#include "AttackComponent.h"
-#include "DefenseComponent.h"
-#include "HpComponent.h"
+
+#include "ValueComponent.h"
 #include "PackageComponent.h"
 Logic::Logic(void)
 {
@@ -17,9 +15,9 @@ Logic::~Logic(void)
 
 void Logic::Attack( Component& attack, Component& defender )
 {
-	int ats=GetAttack(attack);
+	int atk=GetAttack(attack);
 	int def=GetDefense(defender);
-	int hp_diff=ats-def;
+	int hp_diff=atk-def;
 	int ret=DropHp(defender,hp_diff);
 	if(ret<0)
 	{ 
@@ -30,7 +28,7 @@ void Logic::Attack( Component& attack, Component& defender )
 			if(c)
 			{
 				printf("relive\n");
-				((HpComponent*)defender.GetComponent("HP"))->Reset();
+				((ValueComponent*)defender.GetComponent("HP"))->Reset();
 			}
 		}
 
@@ -53,16 +51,16 @@ int Logic::GetAttack( Component& e )
                 vector<Component*> atks;
 				c->GetComponents("ATTACK",atks,true);
 				for (auto a2: atks) {
-                    atk+=((AttackComponent*)a2)->GetAttack();
+                    atk+=((ValueComponent*)a2)->GetValue();
                 }
 					
 			}
 		}
 		);
     }
-		AttackComponent* r=(AttackComponent*)e.GetComponent("ATTACK");
+		ValueComponent* r=(ValueComponent*)e.GetComponent("ATTACK");
 		if(r)
-			atk+=r->GetAttack();
+			atk+=r->GetValue();
 
 		return atk;
 	 
@@ -84,7 +82,7 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent("HANDS");
                 vector<Component*> defenses;
                  c->GetComponents("DEFENSE",defenses,true);
                 for (auto a2: defenses) {
-                    defense+=((DefenseComponent*)a2)->GetDefense();
+                    defense+=((ValueComponent*)a2)->GetValue();
                 }
                 
             }
@@ -96,18 +94,18 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent("HANDS");
 
 int Logic::DropHp( Component& e,int hp )
 {
-	return ((HpComponent*)e.GetComponent("HP"))->DropHp(hp);
+	return ((ValueComponent*)e.GetComponent("HP"))->Minus(hp);
 }
 
-void Logic::Equip( Component& holder,Component& equip,int which_hand )
+Component* Logic::Equip( Component& holder,Component& equip,int which_hand )
 {
 	PackageComponent*  ics=(PackageComponent*)holder.GetComponent("HANDS");
-	ics->SetItem(&equip,which_hand);
+    return 	ics->SetItem(&equip,which_hand);
 }
 
 int Logic::GetHp( Component& e )
 {
-	return ((HpComponent*)e.GetComponent("HP"))->GetHp();
+	return ((ValueComponent*)e.GetComponent("HP"))->GetValue();
 }
 
 void Logic::CastSkill( Component& caster,Component& skill, Component& suffer )
@@ -125,7 +123,7 @@ void Logic::CastSkill( Component& caster,Component& skill, Component& suffer )
 					if(c)
 						{
 							printf("relive\n");
-							((HpComponent*)suffer.GetComponent("HP"))->Reset();
+							((ValueComponent*)suffer.GetComponent("HP"))->Reset();
 					}
 			}
 	

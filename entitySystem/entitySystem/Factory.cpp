@@ -10,11 +10,9 @@
 #include "Component.h"
 #include "Config.h"
 #include "Component.h"
-#include "HpComponent.h"
+#include "ValueComponent.h"
 #include "PackageComponent.h"
-#include "HandComponent.h"
-#include "AttackComponent.h"
-#include "DefenseComponent.h"
+ 
 #include "AllComponents.h"
 Component* Factory::CreateComponent(cJSON* j_entity)
 {
@@ -25,31 +23,24 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     {
         entity=new Component(type);
     }
-    else if(type  == "HP" )
+    else if(type  == "HP"  || type  == "DEFENSE" || type  == "ATTACK" )
     {
-        int hp=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
-        int maxhp=cJSON_GetArrayItem ( arg_array, 1 )->valueint;
-        entity=new HpComponent(hp,maxhp);
+        int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
+        
+        int m=INT_MAX;
+        if(cJSON_GetArraySize(arg_array)>1)
+            m=cJSON_GetArrayItem ( arg_array, 1 )->valueint;
+        
+        entity=new ValueComponent(v,m,type);
     }
     else if(type  == "PACKAGE" )
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
-        entity=new PackageComponent(max_size);
-    }
-    else if(type  == "DEFENSE")
-    {
-        int defense=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
-        entity=new DefenseComponent(defense);
-    }
- 
-    else if(type  == "ATTACK" )
-    {
-        int attack=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
-        entity=new AttackComponent(attack);
+        entity=new PackageComponent(max_size,type);
     }
     else if(type  == "RELIVE" )
     {
-        entity=new ReliveComponent();
+        entity=new IndicatorComponent(type);
     }
     else if(type  == "SKILLPACKAGE" || type  == "HANDS"  )
     {

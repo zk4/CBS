@@ -16,7 +16,7 @@ class PackageComponent :public Component
     vector<Component*>  package;
     const int max_size;
 public:
-    PackageComponent(int size,string id="PACKAGE"):max_size(size),Component(id){package.resize(size);};
+    PackageComponent(int size,string id ):max_size(size),Component(id){package.resize(size);};
     bool ExistItem(Component* c)
     {
         auto a=find_if(package.begin(), package.end(), [&c](Component* cc){return cc && c==cc;});

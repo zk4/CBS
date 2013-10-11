@@ -10,11 +10,8 @@
 		CE695CFB17E2BEC5009E9118 /* Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE695CFA17E2BEC5009E9118 /* Factory.cpp */; };
 		CE695CFE17E2BF03009E9118 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = CE695CFC17E2BF03009E9118 /* cJSON.c */; };
 		CEED3C1617DEFDDC0003ABC0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C1517DEFDDC0003ABC0 /* main.cpp */; };
-		CEED3C2A17DF06260003ABC0 /* HpComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2817DF06260003ABC0 /* HpComponent.cpp */; };
+		CEED3C2A17DF06260003ABC0 /* ValueComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */; };
 		CEED3C3017DF11B00003ABC0 /* PackageComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */; };
-		CEED3C3617DF14450003ABC0 /* HandComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3417DF14450003ABC0 /* HandComponent.cpp */; };
-		CEED3C3917DF15D90003ABC0 /* AttackComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3717DF15D90003ABC0 /* AttackComponent.cpp */; };
-		CEED3C3C17DF277E0003ABC0 /* DefenseComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3A17DF277E0003ABC0 /* DefenseComponent.cpp */; };
 		CEED3C4417E007160003ABC0 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3E17E007160003ABC0 /* Component.cpp */; };
 		CEED3C4517E007160003ABC0 /* Logic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C4117E007160003ABC0 /* Logic.cpp */; };
 /* End PBXBuildFile section */
@@ -39,16 +36,10 @@
 		CEED3C1217DEFDDC0003ABC0 /* entitySystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = entitySystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEED3C1517DEFDDC0003ABC0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		CEED3C2717DF03B30003ABC0 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
-		CEED3C2817DF06260003ABC0 /* HpComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HpComponent.cpp; sourceTree = "<group>"; };
-		CEED3C2917DF06260003ABC0 /* HpComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HpComponent.h; sourceTree = "<group>"; };
+		CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValueComponent.cpp; sourceTree = "<group>"; };
+		CEED3C2917DF06260003ABC0 /* ValueComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValueComponent.h; sourceTree = "<group>"; };
 		CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageComponent.cpp; sourceTree = "<group>"; };
 		CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageComponent.h; sourceTree = "<group>"; };
-		CEED3C3417DF14450003ABC0 /* HandComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HandComponent.cpp; sourceTree = "<group>"; };
-		CEED3C3517DF14450003ABC0 /* HandComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandComponent.h; sourceTree = "<group>"; };
-		CEED3C3717DF15D90003ABC0 /* AttackComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AttackComponent.cpp; sourceTree = "<group>"; };
-		CEED3C3817DF15D90003ABC0 /* AttackComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttackComponent.h; sourceTree = "<group>"; };
-		CEED3C3A17DF277E0003ABC0 /* DefenseComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefenseComponent.cpp; sourceTree = "<group>"; };
-		CEED3C3B17DF277E0003ABC0 /* DefenseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefenseComponent.h; sourceTree = "<group>"; };
 		CEED3C3D17E007160003ABC0 /* AllComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllComponents.h; sourceTree = "<group>"; };
 		CEED3C3E17E007160003ABC0 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
 		CEED3C3F17E007160003ABC0 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
@@ -111,14 +102,8 @@
 				CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */,
 				CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */,
 				CEED3C2717DF03B30003ABC0 /* Config.h */,
-				CEED3C2817DF06260003ABC0 /* HpComponent.cpp */,
-				CEED3C2917DF06260003ABC0 /* HpComponent.h */,
-				CEED3C3417DF14450003ABC0 /* HandComponent.cpp */,
-				CEED3C3517DF14450003ABC0 /* HandComponent.h */,
-				CEED3C3717DF15D90003ABC0 /* AttackComponent.cpp */,
-				CEED3C3817DF15D90003ABC0 /* AttackComponent.h */,
-				CEED3C3A17DF277E0003ABC0 /* DefenseComponent.cpp */,
-				CEED3C3B17DF277E0003ABC0 /* DefenseComponent.h */,
+				CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */,
+				CEED3C2917DF06260003ABC0 /* ValueComponent.h */,
 			);
 			path = entitySystem;
 			sourceTree = "<group>";
@@ -175,11 +160,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEED3C1617DEFDDC0003ABC0 /* main.cpp in Sources */,
-				CEED3C2A17DF06260003ABC0 /* HpComponent.cpp in Sources */,
+				CEED3C2A17DF06260003ABC0 /* ValueComponent.cpp in Sources */,
 				CEED3C3017DF11B00003ABC0 /* PackageComponent.cpp in Sources */,
-				CEED3C3617DF14450003ABC0 /* HandComponent.cpp in Sources */,
-				CEED3C3917DF15D90003ABC0 /* AttackComponent.cpp in Sources */,
-				CEED3C3C17DF277E0003ABC0 /* DefenseComponent.cpp in Sources */,
 				CEED3C4417E007160003ABC0 /* Component.cpp in Sources */,
 				CEED3C4517E007160003ABC0 /* Logic.cpp in Sources */,
 				CE695CFB17E2BEC5009E9118 /* Factory.cpp in Sources */,

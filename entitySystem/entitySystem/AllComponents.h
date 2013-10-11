@@ -1,5 +1,5 @@
 //
-//  ReliveComponent.h
+
 //  entitySystem
 //
 //  Created by ZK on 13-9-10.
@@ -8,10 +8,10 @@
 #pragma  once
 
 #include "Component.h"
-class ReliveComponent:public Component
+class IndicatorComponent:public Component
 {
 public:
-	ReliveComponent(string id="RELIVE"):Component(id){}
+	IndicatorComponent(string id):Component(id){}
 };
 
  

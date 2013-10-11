@@ -8,7 +8,7 @@
                         { "type":"DEFENSE", "args":[3], "components":[] },
                         { "type":"HANDS", "args":[2], "components": [] },
                         
-                        { "type":"ATTACK", "args":[140], "components": [] }
+                        { "type":"ATTACK", "args":[20], "components": [] }
                       ]
 	},
 	{

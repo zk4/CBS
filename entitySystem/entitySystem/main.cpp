@@ -8,11 +8,9 @@
 
 #include <iostream>
 #include "Component.h"
-#include "HpComponent.h"
+ 
 #include "PackageComponent.h"
-#include "HandComponent.h"
-#include "AttackComponent.h"
-#include "DefenseComponent.h"
+ 
 #include "AllComponents.h"
 #include "Logic.h"
 #include "cJSON.h"
