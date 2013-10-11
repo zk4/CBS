@@ -62,11 +62,13 @@ public:
 		   if(a!=package.end())return *a;
 		   else return NULL;
    }
-    decltype(package.begin()) GetBeginIte() 
+    std::vector<Component*>::iterator
+		GetBeginIte() 
     {
         return package.begin();
     }
-    decltype(package.end()) GetEndIte()
+    std::vector<Component*>::iterator
+		GetEndIte()
     {
         return package.end();
     }
