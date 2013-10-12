@@ -42,7 +42,8 @@ int main(int argc, const char * argv[])
 				cJSON* root = cJSON_Parse (buffer);
 
 				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 0 ));
-               // Component* defender=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
+           
+             
                 Component* team=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
                 Logic::AddHp(*fighter, 100);
 				//Logic::Attack(*fighter,*defender);
