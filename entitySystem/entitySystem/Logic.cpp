@@ -4,6 +4,9 @@
 
 #include "ValueComponent.h"
 #include "PackageComponent.h"
+
+typedef ValueComponent<int> cint;
+typedef ValueComponent<float> cfloat;
 Logic::Logic(void)
 {
 }
@@ -14,7 +17,7 @@ Logic::~Logic(void)
 }
 void Logic::CastSkill(Component& attack, Component& defender,string id )
 {
-  	PackageComponent*  p=(PackageComponent*)attack.GetComponent(SKILLPACKAGE);
+  	PackageComponent*  p=(PackageComponent*)attack.GetC(SKILLPACKAGE);
     if(p)
     {
         Component* c =p->GetItem(id);
@@ -27,7 +30,7 @@ void Logic::CastSkill(Component& attack, Component& defender,string id )
 }
 void Logic::CastSkills(Component& caster,Component& suffers,string id )
 {
-    PackageComponent*  p=(PackageComponent*)caster.GetComponent(SKILLPACKAGE);
+    PackageComponent*  p=(PackageComponent*)caster.GetC(SKILLPACKAGE);
     if(p)
     {
         Component* c =p->GetItem(id);
@@ -52,7 +55,7 @@ int Logic::GetAttack( Component& e )
 {
 	 
 	 
-	PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
+	PackageComponent* hands=(PackageComponent*)e.GetC(HANDS);
 		int atk=0;
     if(hands)
 	{
@@ -61,16 +64,16 @@ int Logic::GetAttack( Component& e )
 			if(c)
 			{
                 vector<Component*> atks;
-				c->GetComponents(ATTACK,atks,true);
+				c->GetCs(ATTACK,atks,true);
 				for (auto a2: atks) {
-                    atk+=((ValueComponent<int>*)a2)->Get();
+                    atk+=((cint*)a2)->Get();
                 }
 					
 			}
 		}
 		);
     }
-		ValueComponent<int>* r=(ValueComponent<int>*)e.GetComponent(ATTACK);
+		cint* r=(cint*)e.GetC(ATTACK);
 		if(r)
 			atk+=r->Get();
 
@@ -79,13 +82,13 @@ int Logic::GetAttack( Component& e )
 }
 int  Logic::GetTgargetCount(Component& c)
 {
-    ValueComponent<int>* r=(ValueComponent<int>*)c.GetComponent(TARGET);
+    cint* r=(cint*)c.GetC(TARGET);
     return  r->Get();
 }
 int  Logic::GetDefense(Component& e )
 {
  
-PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
+PackageComponent* hands=(PackageComponent*)e.GetC(HANDS);
 
 	int defense=0;
     if(hands)
@@ -96,9 +99,9 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
             if(c)
             {
                 vector<Component*> defenses;
-                 c->GetComponents(DEFENSE,defenses,true);
+                 c->GetCs(DEFENSE,defenses,true);
                 for (auto a2: defenses) {
-                    defense+=((ValueComponent<int>*)a2)->Get();
+                    defense+=((cint*)a2)->Get();
                 }
                 
             }
@@ -106,7 +109,7 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
         );
      }
     
-	ValueComponent<int>* r=(ValueComponent<int>*)e.GetComponent(DEFENSE);
+	cint* r=(cint*)e.GetC(DEFENSE);
     if(r)
         defense+=r->Get();
     
@@ -114,14 +117,14 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
 }
 bool  Logic::IsDead(Component& c)
 {
-    return ((ValueComponent<int>*)c.GetComponent(HP)->GetComponent(NOWINT))->Get()==0;
+    return ((cint*)c.GetC(HP)->GetC(NOWINT))->Get()==0;
 }
 int  Logic::AddHp(Component& e,int hp)
 {
-    ValueComponent<int>* nowint=(ValueComponent<int>*)(e.GetComponent(HP)->GetComponent(NOWINT));
+    cint* nowint=(cint*)(e.GetC(HP)->GetC(NOWINT));
     if(nowint)
     nowint->Add(hp);
-    ValueComponent<int>* maxint=(ValueComponent<int>*)(e.GetComponent(HP)->GetComponent(MAXINT));
+    cint* maxint=(cint*)(e.GetC(HP)->GetC(MAXINT));
     if(maxint)
     {
         int maxv=maxint->Get();
@@ -134,18 +137,18 @@ int Logic::DropHp( Component& e,int hp )
 {
     assert(hp>=0);
     printf("%d drop blood %d \n",&e,hp);
-	return ((ValueComponent<int>*)(e.GetComponent(HP)->GetComponent(NOWINT)))->Minus(hp);
+	return ((cint*)(e.GetC(HP)->GetC(NOWINT)))->Minus(hp);
 }
 
 Component* Logic::Equip( Component& holder,Component& equip,int which_hand )
 {
-	PackageComponent*  ics=(PackageComponent*)holder.GetComponent(HANDS);
+	PackageComponent*  ics=(PackageComponent*)holder.GetC(HANDS);
     return 	ics->SetItem(&equip,which_hand);
 }
 
 int Logic::GetHp( Component& e )
 {
-	return ((ValueComponent<int>*)e.GetComponent(HP)->GetComponent(NOWINT))->Get();
+	return ((cint*)e.GetC(HP)->GetC(NOWINT))->Get();
 }
 
 void Logic::CastSkills(Component& caster,Component& suffers,Component& skill )
@@ -170,14 +173,14 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
 	{
         if(IsDead(suffer))
             {
-                    PackageComponent*  p=(PackageComponent*)suffer.GetComponent(SKILLPACKAGE);
+                    PackageComponent*  p=(PackageComponent*)suffer.GetC(SKILLPACKAGE);
                     if(p)
                     {
                         Component* c =p->GetItem(RELIVE);
                             if(c)
                             {
                                     printf("relive\n");
-                                  int MAX=  ((ValueComponent<int>*)suffer.GetComponent(HP)->GetComponent(MAXINT))->Get();
+                                  int MAX=  ((cint*)suffer.GetC(HP)->GetC(MAXINT))->Get();
                                 
                             }
                     }
@@ -199,7 +202,7 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
 
 void Logic::EquipSKill( Component& holder,Component& skill )
 {
-	PackageComponent* p=(PackageComponent*)holder.GetComponent(SKILLPACKAGE);
+	PackageComponent* p=(PackageComponent*)holder.GetC(SKILLPACKAGE);
 	if(p)
 	{
 		p->AddItem(&skill);
@@ -210,6 +213,6 @@ void Logic::EquipSKill( Component& holder,Component& skill )
 
 bool Logic::TeamAdd(Component& team,Component& item)
 {
-    PackageComponent* p=(PackageComponent*)(team.GetComponent(SKILLPACKAGE));
+    PackageComponent* p=(PackageComponent*)(team.GetC(SKILLPACKAGE));
     return p->AddItem(&item);
 }

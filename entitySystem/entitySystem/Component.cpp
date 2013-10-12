@@ -11,7 +11,7 @@ Component*   Component::GetParent() const
     return _parent;
 }
 
-void Component::AddComponent(Component* c)
+void Component::AddC(Component* c)
 {
     auto a= find_if(components.begin(), components.end(), [&c](Component* cc){return cc && cc==c;});
     if(a !=components.end())return;   //find same componet pointer
@@ -24,31 +24,31 @@ bool Component::IfHasChild()const
     return components.size()>0;
 }
 //if direct child donesn`t has specfied id,then igorne recursive .
-void Component::GetComponents(string id,vector<Component*>& cmps,bool recursive)
+void Component::GetCs(string id,vector<Component*>& cmps,bool recursive)
 {
     for (auto a : components) {
         if(a->GetId() ==id)
             cmps.push_back(a);
         if(recursive)
-            a->GetComponents(id, cmps,recursive);
+            a->GetCs(id, cmps,recursive);
         
     }
 }
 
-Component*   Component::GetComponent(string id)
+Component*   Component::GetC(string id)
 {
     Component* i;
-    GetComponent(id, &i);
+    GetC(id, &i);
     return i;
 }
-void  Component::GetComponent(string id,Component** cmp)
+void  Component::GetC(string id,Component** cmp)
 {
     vector<Component*>  cmps;
     for (auto a : components) {
         if(a->GetId() ==id)
             cmps.push_back(a);
     }
-    assert(cmps.size()<=1);  //you should call  GetComponents(eComponentId id,vector<Component*>& cmps) instead
+    assert(cmps.size()<=1);  //you should call  GetCs(eComponentId id,vector<Component*>& cmps) instead
     
     if(cmps.size()==1)*cmp=cmps[0];
     else  *cmp=NULL;

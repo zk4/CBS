@@ -30,12 +30,14 @@ public:
 	{
 		_parent=c;
 	}
-	virtual void			AddComponent(Component* c);
-	virtual void			GetComponents(string id,vector<Component*>& comps/*out*/,bool recursive=false);
-	virtual void			GetComponent(string id,Component** cmp);
-	virtual Component*		GetComponent(string id);
+	virtual void			AddC(Component* c);
+	virtual void			GetCs(string id,vector<Component*>& comps/*out*/,bool recursive=false);
+	virtual void			GetC(string id,Component** cmp);
+	virtual Component*		GetC(string id);
+    
 	virtual bool			IfHasChild()const;
 	virtual void			DeleteAllComponents();
+   
 	vector<Component*>   components;
 
 };

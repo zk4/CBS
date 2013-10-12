@@ -55,7 +55,7 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     int size = cJSON_GetArraySize ( components );
     for ( int i = 0 ; i < size ; ++i ) {
         cJSON* component = cJSON_GetArrayItem ( components, i );
-        entity->AddComponent(CreateComponent(component));
+        entity->AddC(CreateComponent(component));
     }
     return entity;
     
