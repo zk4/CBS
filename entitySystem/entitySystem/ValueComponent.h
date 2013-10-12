@@ -34,6 +34,15 @@ class ValueComponent :public Component
         _value=p;
 
     }
-    
+    virtual Component*      Copy(Component* c)
+    {
+        Component::Copy(c);
+        
+        ValueComponent* vc=(ValueComponent*)c;
+        vc->_value=_value;
+
+        return  vc;
+    }
+
 };
  #endif /* defined(__entitySystem__HpComponent__) */

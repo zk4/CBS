@@ -38,17 +38,14 @@ Component* Factory::CreateComponent(cJSON* j_entity)
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(max_size,type);
         
-        // init pacakge
-       // cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "items" );
-       // if(arg_array)
-      //  {
+ 
         int size=cJSON_GetArraySize(arg_array);
             for ( int i = 1 ; i < size ; ++i ) {
                 cJSON* component = cJSON_GetArrayItem ( arg_array, i );
                 ((PackageComponent*)entity)->AddItem(CreateComponent(component));
                
             }
-     //   }
+    
     }
     else if(meta == COMPONENT)
     {

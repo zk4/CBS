@@ -25,6 +25,7 @@ public:
 	virtual string& GetId() {return _id;};
     Component*              GetParent() const ;
 	virtual ~Component();
+   
 	Component(string id):_parent(NULL),_id(id){}
 	void    SetParent(Component* c)  //for listening
 	{
@@ -37,7 +38,15 @@ public:
     
 	virtual bool			IfHasChild()const;
 	virtual void			DeleteAllComponents();
-   
+    virtual Component*      Copy(Component* c)
+    {
+        
+        c->_id=_id;
+        for (Component* cc : components) {
+            c->AddC(cc);
+        }
+        return  c;
+    }
 	vector<Component*>   components;
 
 };

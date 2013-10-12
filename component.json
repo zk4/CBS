@@ -18,6 +18,7 @@
                                                                                     {"meta":"FLOAT","id":"FIRE_BOOST", "args":[0.2], "components": [] }
                                                                                     ]
                         },
+                       
                        {"meta":"ARRAY",
                         "id":"HANDS", "args":[2,
                                                                      {"meta":"COMPONENT",
@@ -36,7 +37,11 @@
                                                                        "id":"FIREBALL", "args":[],
                                                                        "components": [
                                                                                       { "meta":"INT", "id":"TARGET", "args":[2], "components": [] },
-                                                                                      { "meta":"INT", "id":"ATTACK", "args":[6], "components": [] }
+                                                                                      { "meta":"INT", "id":"ATTACK", "args":[6], "components": [] },
+                                                                                      { "meta":"COMPONENT", "id":"SKILLSTATUS", "args":[], "components": [
+                                                                                        { "meta":"INT", "id":"EXPIRED", "args":[2], "components": [] },
+                                                                                        { "meta":"INT", "id":"ATTACK", "args":[12], "components": [] }
+                                                                                      ]}
                                                                                       ]
                                                                        }
                                                                        ], "components": []
@@ -52,6 +57,13 @@
                                                                                                                    {"meta":"INT","id":"NOWINT", "args":[40], "components": [] },
                                                                                                                    {"meta":"INT","id":"MAXINT", "args":[40], "components": [] }
                                                                                                                    ] },
+                                                          {"meta":"ARRAY",  "id":"SKILLSTATUS_ADDED", "args":[3],"components": []},
+                                                          {"meta":"ARRAY",  "id":"RESISTANCE", "args":[3],"components": [
+                                                                                                                    {"meta":"FLOAT","id":"ATTACK_RESISTANCE", "args":[0.2], "components": [] },
+                                                                                                                    {"meta":"FLOAT","id":"DEFENSE_RESISTANCE", "args":[0.2], "components": [] },
+                                                                                                                    {"meta":"FLOAT","id":"FIRE_RESISTANCE", "args":[0.15], "components": [] }
+                                                                                                                    ]
+                                                          },
                                                           { "meta":"ARRAY","id":"SKILLARRAY", "args":[3,{"meta":"COMPONENT",
                                                                                                           "id":"RELIVE", "args":[],
                                                                                                           "components": []

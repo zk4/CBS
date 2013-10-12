@@ -41,15 +41,15 @@ void Logic::CastSkills(Component& caster,Component& suffers,string id )
         }
     }
 }
-void Logic::Attack( Component& attack, Component& defender )
-{
-	int atk=GetAttack(attack);
-	int def=GetDefense(defender);
-	int hp_diff=atk-def;
-    if(hp_diff<0)hp_diff=0;
-    printf("drop hp:%d\n",hp_diff);
-    DropHp(defender,hp_diff);
-}
+//void Logic::Attack( Component& attack, Component& defender )
+//{
+//	int atk=GetAttack(attack);
+//	int def=GetDefense(defender);
+//	int hp_diff=atk-def;
+//    if(hp_diff<0)hp_diff=0;
+//    printf("drop hp:%d\n",hp_diff);
+//    DropHp(defender,hp_diff);
+//}
 
 int Logic::GetAttack( Component& e )
 {
@@ -165,6 +165,15 @@ void Logic::CastSkills(Component& caster,Component& suffers,Component& skill )
     }
 }
 
+void Logic::AddSkillStatus(Component& suffer,Component& skillstatus)
+{
+    PackageComponent* skillstatus_added=dynamic_cast<PackageComponent*>(suffer.GetC(SKILLSTATUS_ADDED)) ;
+    if(skillstatus_added)
+    {
+        skillstatus_added->AddItem(&skillstatus);
+    }
+}
+
 //only handle one suffer
 void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
 {
@@ -200,14 +209,40 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
             
             break;
         }
-    
+        for(Component* c= suffer.GetC(RESISTANCE);c!=NULL;)
+        {
+            for (cfloat* fireboost=(cfloat*)c->GetC(FIRE_RESISTANCE); fireboost!=NULL; ) {
+                ats*=(1-fireboost->Get());
+                break;
+            }
+            
+            break;
+        }
+        
+        //attack
         int def=GetDefense(suffer);
-
-        int hp_diff=ats-def;
+        int hp_diff=ats*((float)ats/(ats+def));
         hp_diff=hp_diff<0?0:hp_diff;
-
         DropHp(suffer,hp_diff);
+        
+        //skillstatus
+        for(Component* skillstatus= skill.GetC(SKILLSTATUS);skillstatus!=NULL;)
+        {
+            if(skillstatus)
+            {
+                Component* c=new Component(SKILLSTATUS);
+              Component* ss=skillstatus->Copy(c);
+            AddSkillStatus(suffer, *ss);
+            }
+            
+            break;
+        }
+        
+        
     }
+    
+    
+    
 }
 
 void Logic::EquipSKill( Component& holder,Component& skill )
