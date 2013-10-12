@@ -18,8 +18,10 @@
 #define  SHIELD         "SHIELD"
 #define  RELIVE         "RELIVE"
 #define  FIREBALL       "FIREBALL"
-
+#define  MAXINT       "MAXINT"
+#define  NOWINT       "NOWINT"
 #define  HP             "HP"
+#define  HPBOOST        "HPBOOST"
 #define  DEFENSE        "DEFENSE"
 #define  ATTACK         "ATTACK"
 #define  SKILLPACKAGE   "SKILLPACKAGE"
@@ -27,6 +29,12 @@
 
 #define TEAM            "TEAM"
 #define TARGET          "TARGET"
+
+
+/////////////////////////
+#define COMPONENT "COMPONENT"
+#define INT       "INT"
+#define PACKAGE   "PACKAGE"
 
 
 #endif

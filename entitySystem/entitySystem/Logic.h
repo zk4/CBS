@@ -15,6 +15,8 @@ public:
     static void CastSkill(Component& caster,Component& suffer,Component& skill );
     static void CastSkills(Component& caster,Component& suffers,string id );
     static void CastSkills(Component& caster,Component& suffers,Component& skill );
+    
+  	static int  AddHp(Component& e,int hp);
 	static int  DropHp(Component& e,int hp);
 	static Component* Equip(Component& holder,Component& equip,int which_hand);
 	static int  GetHp(Component& e);

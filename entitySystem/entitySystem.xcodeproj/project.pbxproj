@@ -10,7 +10,7 @@
 		CE695CFB17E2BEC5009E9118 /* Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE695CFA17E2BEC5009E9118 /* Factory.cpp */; };
 		CE695CFE17E2BF03009E9118 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = CE695CFC17E2BF03009E9118 /* cJSON.c */; };
 		CEED3C1617DEFDDC0003ABC0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C1517DEFDDC0003ABC0 /* main.cpp */; };
-		CEED3C2A17DF06260003ABC0 /* ValueComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */; };
+		CEED3C2A17DF06260003ABC0 /* IntComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2817DF06260003ABC0 /* IntComponent.cpp */; };
 		CEED3C3017DF11B00003ABC0 /* PackageComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */; };
 		CEED3C4417E007160003ABC0 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3E17E007160003ABC0 /* Component.cpp */; };
 		CEED3C4517E007160003ABC0 /* Logic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C4117E007160003ABC0 /* Logic.cpp */; };
@@ -36,8 +36,8 @@
 		CEED3C1217DEFDDC0003ABC0 /* entitySystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = entitySystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEED3C1517DEFDDC0003ABC0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		CEED3C2717DF03B30003ABC0 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
-		CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValueComponent.cpp; sourceTree = "<group>"; };
-		CEED3C2917DF06260003ABC0 /* ValueComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValueComponent.h; sourceTree = "<group>"; };
+		CEED3C2817DF06260003ABC0 /* IntComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntComponent.cpp; sourceTree = "<group>"; };
+		CEED3C2917DF06260003ABC0 /* IntComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntComponent.h; sourceTree = "<group>"; };
 		CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageComponent.cpp; sourceTree = "<group>"; };
 		CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageComponent.h; sourceTree = "<group>"; };
 		CEED3C3E17E007160003ABC0 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
@@ -98,8 +98,8 @@
 				CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */,
 				CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */,
 				CEED3C2717DF03B30003ABC0 /* Config.h */,
-				CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */,
-				CEED3C2917DF06260003ABC0 /* ValueComponent.h */,
+				CEED3C2817DF06260003ABC0 /* IntComponent.cpp */,
+				CEED3C2917DF06260003ABC0 /* IntComponent.h */,
 			);
 			path = entitySystem;
 			sourceTree = "<group>";
@@ -156,7 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEED3C1617DEFDDC0003ABC0 /* main.cpp in Sources */,
-				CEED3C2A17DF06260003ABC0 /* ValueComponent.cpp in Sources */,
+				CEED3C2A17DF06260003ABC0 /* IntComponent.cpp in Sources */,
 				CEED3C3017DF11B00003ABC0 /* PackageComponent.cpp in Sources */,
 				CEED3C4417E007160003ABC0 /* Component.cpp in Sources */,
 				CEED3C4517E007160003ABC0 /* Logic.cpp in Sources */,

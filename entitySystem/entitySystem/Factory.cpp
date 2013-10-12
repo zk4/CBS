@@ -10,34 +10,24 @@
 #include "Component.h"
 #include "Config.h"
 #include "Component.h"
-#include "ValueComponent.h"
+#include "IntComponent.h"
 #include "PackageComponent.h"
 
  
 Component* Factory::CreateComponent(cJSON* j_entity)
 {
     Component* entity=NULL;
-    string type = cJSON_GetObjectItem ( j_entity, "type" )->valuestring;
+    string meta= cJSON_GetObjectItem ( j_entity, "meta" )->valuestring;
+    string type = cJSON_GetObjectItem ( j_entity, "id" )->valuestring;
     cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "args" );
-//    if(type == DEFENDER || type == FIGHTER || type== SWORD ||  type == SHIELD || type  == RELIVE || type == FIREBALL )
-//    {
-//        entity=new Component(type);
-//    }
-     if(type  == HP  || type  == DEFENSE || type  == ATTACK || type == TARGET)
+ 
+     if(meta == INT)
     {
         int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
-        
-        int m=INT_MAX;
-        bool no_max=true;
-        if(cJSON_GetArraySize(arg_array)>1)
-        {
-            m=cJSON_GetArrayItem ( arg_array, 1 )->valueint;
-            no_max=false;
-        }
-        
-        entity=new ValueComponent(v,m,no_max,type);
+ 
+        entity=new IntComponent(v,type);
     }
-    else if(type  == PACKAGE ||  type  == SKILLPACKAGE || type  == HANDS || type == TEAM)
+    else if(meta == PACKAGE)
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(max_size,type);
@@ -54,7 +44,7 @@ Component* Factory::CreateComponent(cJSON* j_entity)
             }
         }
     }
-    else
+    else if(meta == COMPONENT)
     {
           entity=new Component(type);
 //        assert(0 && "type not find ");
