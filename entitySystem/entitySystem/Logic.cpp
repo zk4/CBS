@@ -2,7 +2,7 @@
 #include "Component.h"
 #include <algorithm>
 
-#include "IntComponent.h"
+#include "ValueComponent.h"
 #include "PackageComponent.h"
 Logic::Logic(void)
 {
@@ -63,14 +63,14 @@ int Logic::GetAttack( Component& e )
                 vector<Component*> atks;
 				c->GetComponents(ATTACK,atks,true);
 				for (auto a2: atks) {
-                    atk+=((IntComponent*)a2)->Get();
+                    atk+=((ValueComponent<int>*)a2)->Get();
                 }
 					
 			}
 		}
 		);
     }
-		IntComponent* r=(IntComponent*)e.GetComponent(ATTACK);
+		ValueComponent<int>* r=(ValueComponent<int>*)e.GetComponent(ATTACK);
 		if(r)
 			atk+=r->Get();
 
@@ -79,7 +79,7 @@ int Logic::GetAttack( Component& e )
 }
 int  Logic::GetTgargetCount(Component& c)
 {
-    IntComponent* r=(IntComponent*)c.GetComponent(TARGET);
+    ValueComponent<int>* r=(ValueComponent<int>*)c.GetComponent(TARGET);
     return  r->Get();
 }
 int  Logic::GetDefense(Component& e )
@@ -98,7 +98,7 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
                 vector<Component*> defenses;
                  c->GetComponents(DEFENSE,defenses,true);
                 for (auto a2: defenses) {
-                    defense+=((IntComponent*)a2)->Get();
+                    defense+=((ValueComponent<int>*)a2)->Get();
                 }
                 
             }
@@ -106,7 +106,7 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
         );
      }
     
-	IntComponent* r=(IntComponent*)e.GetComponent(DEFENSE);
+	ValueComponent<int>* r=(ValueComponent<int>*)e.GetComponent(DEFENSE);
     if(r)
         defense+=r->Get();
     
@@ -114,14 +114,14 @@ PackageComponent* hands=(PackageComponent*)e.GetComponent(HANDS);
 }
 bool  Logic::IsDead(Component& c)
 {
-    return ((IntComponent*)c.GetComponent(HP)->GetComponent(NOWINT))->Get()==0;
+    return ((ValueComponent<int>*)c.GetComponent(HP)->GetComponent(NOWINT))->Get()==0;
 }
 int  Logic::AddHp(Component& e,int hp)
 {
-    IntComponent* nowint=(IntComponent*)(e.GetComponent(HP)->GetComponent(NOWINT));
+    ValueComponent<int>* nowint=(ValueComponent<int>*)(e.GetComponent(HP)->GetComponent(NOWINT));
     if(nowint)
     nowint->Add(hp);
-    IntComponent* maxint=(IntComponent*)(e.GetComponent(HP)->GetComponent(MAXINT));
+    ValueComponent<int>* maxint=(ValueComponent<int>*)(e.GetComponent(HP)->GetComponent(MAXINT));
     if(maxint)
     {
         int maxv=maxint->Get();
@@ -134,7 +134,7 @@ int Logic::DropHp( Component& e,int hp )
 {
     assert(hp>=0);
     printf("%d drop blood %d \n",&e,hp);
-	return ((IntComponent*)(e.GetComponent(HP)->GetComponent(NOWINT)))->Minus(hp);
+	return ((ValueComponent<int>*)(e.GetComponent(HP)->GetComponent(NOWINT)))->Minus(hp);
 }
 
 Component* Logic::Equip( Component& holder,Component& equip,int which_hand )
@@ -145,7 +145,7 @@ Component* Logic::Equip( Component& holder,Component& equip,int which_hand )
 
 int Logic::GetHp( Component& e )
 {
-	return ((IntComponent*)e.GetComponent(HP)->GetComponent(NOWINT))->Get();
+	return ((ValueComponent<int>*)e.GetComponent(HP)->GetComponent(NOWINT))->Get();
 }
 
 void Logic::CastSkills(Component& caster,Component& suffers,Component& skill )
@@ -177,7 +177,7 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
                             if(c)
                             {
                                     printf("relive\n");
-                                  int MAX=  ((IntComponent*)suffer.GetComponent(HP)->GetComponent(MAXINT))->Get();
+                                  int MAX=  ((ValueComponent<int>*)suffer.GetComponent(HP)->GetComponent(MAXINT))->Get();
                                 
                             }
                     }

@@ -10,7 +10,7 @@
 #include "Component.h"
 #include "Config.h"
 #include "Component.h"
-#include "IntComponent.h"
+#include "ValueComponent.h"
 #include "PackageComponent.h"
 
  
@@ -25,7 +25,7 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     {
         int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
  
-        entity=new IntComponent(v,type);
+        entity=new ValueComponent<int>(v,type);
     }
     else if(meta == PACKAGE)
     {

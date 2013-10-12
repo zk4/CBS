@@ -11,25 +11,26 @@
 
 #include "Component.h"//
 
-class IntComponent :public Component
+template<typename T>
+class ValueComponent :public Component
 {
     int _value;
     public:
-    virtual ~IntComponent(){}
-    IntComponent(int v,string id):_value(v),Component(id){};
-    int Minus(int p){
+    virtual ~ValueComponent(){}
+    ValueComponent(T v,string id):_value(v),Component(id){};
+    T Minus(T p){
         
         return Add(-p) ;
     }
-    int Get()const
+    T Get()const
     {
         return _value;
     }
-    int Add(int p){
+    T Add(T p){
         _value+=p;
         return _value;
     }
-    void Set(int p){
+    void Set(T p){
         _value=p;
 
     }

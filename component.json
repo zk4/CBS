@@ -11,6 +11,7 @@
                         {"meta":"PACKAGE",  "id":"PACKAGE", "args":[3],"components": [] },
                         {"meta":"INT",      "id":"DEFENSE", "args":[3], "components":[] },
                         {"meta":"INT",      "id":"ATTACK", "args":[20], "components": []},
+                       
                         {"meta":"PACKAGE",      "id":"HANDS", "args":[2], "components": [], "items" : [
                                                                                      {"meta":"COMPONENT",
                                                                                      "id":"SWORD", "args":[],
