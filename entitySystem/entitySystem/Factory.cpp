@@ -27,22 +27,28 @@ Component* Factory::CreateComponent(cJSON* j_entity)
  
         entity=new ValueComponent<int>(v,type);
     }
-    else if(meta == PACKAGE)
+     else if(meta == FLOAT)
+    {
+        float v=cJSON_GetArrayItem ( arg_array, 0 )->valuedouble;
+        
+        entity=new ValueComponent<float>(v,type);
+    }
+    else if(meta == ARRAY)
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
         entity=new PackageComponent(max_size,type);
         
         // init pacakge
-        cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "items" );
-        if(arg_array)
-        {
+       // cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "items" );
+       // if(arg_array)
+      //  {
         int size=cJSON_GetArraySize(arg_array);
-            for ( int i = 0 ; i < size ; ++i ) {
+            for ( int i = 1 ; i < size ; ++i ) {
                 cJSON* component = cJSON_GetArrayItem ( arg_array, i );
                 ((PackageComponent*)entity)->AddItem(CreateComponent(component));
                
             }
-        }
+     //   }
     }
     else if(meta == COMPONENT)
     {

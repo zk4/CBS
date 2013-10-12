@@ -14,7 +14,7 @@
 template<typename T>
 class ValueComponent :public Component
 {
-    int _value;
+    T _value;
     public:
     virtual ~ValueComponent(){}
     ValueComponent(T v,string id):_value(v),Component(id){};

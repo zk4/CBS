@@ -17,7 +17,7 @@ Logic::~Logic(void)
 }
 void Logic::CastSkill(Component& attack, Component& defender,string id )
 {
-  	PackageComponent*  p=(PackageComponent*)attack.GetC(SKILLPACKAGE);
+  	PackageComponent*  p=(PackageComponent*)attack.GetC(SKILLARRAY);
     if(p)
     {
         Component* c =p->GetItem(id);
@@ -30,7 +30,7 @@ void Logic::CastSkill(Component& attack, Component& defender,string id )
 }
 void Logic::CastSkills(Component& caster,Component& suffers,string id )
 {
-    PackageComponent*  p=(PackageComponent*)caster.GetC(SKILLPACKAGE);
+    PackageComponent*  p=(PackageComponent*)caster.GetC(SKILLARRAY);
     if(p)
     {
         Component* c =p->GetItem(id);
@@ -161,7 +161,7 @@ void Logic::CastSkills(Component& caster,Component& suffers,Component& skill )
             Component* c=pc->GetItem(i);
         
             if(c)
-            Attack(skill, *c);
+        CastSkill(caster,*c,skill);
     }
 }
 
@@ -173,7 +173,7 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
 	{
         if(IsDead(suffer))
             {
-                    PackageComponent*  p=(PackageComponent*)suffer.GetC(SKILLPACKAGE);
+                    PackageComponent*  p=(PackageComponent*)suffer.GetC(SKILLARRAY);
                     if(p)
                     {
                         Component* c =p->GetItem(RELIVE);
@@ -191,6 +191,16 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
         
         
         int ats=GetAttack(skill);
+        for(Component* boost= caster.GetC(BOOST);boost!=NULL;)
+        {
+            for (cfloat* fireboost=(cfloat*)boost->GetC(FIRE_BOOST); fireboost!=NULL; ) {
+                ats*=(1+fireboost->Get());
+                break;
+            }
+            
+            break;
+        }
+    
         int def=GetDefense(suffer);
 
         int hp_diff=ats-def;
@@ -202,7 +212,7 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
 
 void Logic::EquipSKill( Component& holder,Component& skill )
 {
-	PackageComponent* p=(PackageComponent*)holder.GetC(SKILLPACKAGE);
+	PackageComponent* p=(PackageComponent*)holder.GetC(SKILLARRAY);
 	if(p)
 	{
 		p->AddItem(&skill);
@@ -213,6 +223,6 @@ void Logic::EquipSKill( Component& holder,Component& skill )
 
 bool Logic::TeamAdd(Component& team,Component& item)
 {
-    PackageComponent* p=(PackageComponent*)(team.GetC(SKILLPACKAGE));
+    PackageComponent* p=(PackageComponent*)(team.GetC(SKILLARRAY));
     return p->AddItem(&item);
 }
