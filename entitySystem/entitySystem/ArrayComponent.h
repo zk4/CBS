@@ -1,22 +1,22 @@
 //
-//  PackageComponent.h
+//  ArrayComponent.h
 //  entitySystem
 //
 //  Created by ZK on 13-9-10.
 //  Copyright (c) 2013年 user. All rights reserved.
 //
 
-#ifndef __entitySystem__PackageComponent__
-#define __entitySystem__PackageComponent__
+#ifndef __entitySystem__ArrayComponent__
+#define __entitySystem__ArrayComponent__
 
 #include "Component.h"
 #include <algorithm>
-class PackageComponent :public Component
+class ArrayComponent :public Component
 {
     vector<Component*>  package;
     const bool fixed_size;
 public:
-    PackageComponent(int size,string id ):fixed_size(size!= -1),Component(id){
+    ArrayComponent(int size,string id ):fixed_size(size!= -1),Component(id){
         if(size != -1)
         package.resize(size);
     };
@@ -61,10 +61,8 @@ public:
         }
         return false;
     }
-   Component* operator[](int i)
-    {
-        return GetItem(i);
-    }
+   
+
    Component* GetItem(int i)
     {
         if(package.size()>i)
@@ -90,4 +88,4 @@ public:
     }
 };
 
-#endif /* defined(__entitySystem__PackageComponent__) */
+#endif /* defined(__entitySystem__ArrayComponent__) */

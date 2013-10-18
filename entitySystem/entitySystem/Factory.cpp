@@ -11,7 +11,7 @@
 #include "Config.h"
 #include "Component.h"
 #include "ValueComponent.h"
-#include "PackageComponent.h"
+#include "ArrayComponent.h"
 
  
 Component* Factory::CreateComponent(cJSON* j_entity)
@@ -19,8 +19,11 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     Component* entity=NULL;
     string meta= cJSON_GetObjectItem ( j_entity, "meta" )->valuestring;
     string type = cJSON_GetObjectItem ( j_entity, "id" )->valuestring;
+    
+    
     cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "args" );
  
+    
      if(meta == INT)
     {
         int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
@@ -36,13 +39,13 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     else if(meta == ARRAY)
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
-        entity=new PackageComponent(max_size,type);
+        entity=new ArrayComponent(max_size,type);
         
  
         int size=cJSON_GetArraySize(arg_array);
             for ( int i = 1 ; i < size ; ++i ) {
                 cJSON* component = cJSON_GetArrayItem ( arg_array, i );
-                ((PackageComponent*)entity)->AddItem(CreateComponent(component));
+                ((ArrayComponent*)entity)->AddItem(CreateComponent(component));
                
             }
     
@@ -60,6 +63,17 @@ Component* Factory::CreateComponent(cJSON* j_entity)
         cJSON* component = cJSON_GetArrayItem ( components, i );
         entity->AddC(CreateComponent(component));
     }
+    cJSON* tag_array = cJSON_GetObjectItem ( j_entity, "tags" );
+    if(tag_array)
+    {
+        int size=cJSON_GetArraySize(tag_array);
+        for ( int i = 0 ; i < size ; ++i ) {
+         entity->AddTag(cJSON_GetArrayItem ( tag_array, i )->valuestring); 
+            
+        }
+    }
+
+    
     return entity;
     
 }

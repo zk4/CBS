@@ -14,6 +14,7 @@
 #include <vector>
 #include "assert.h"
 #include <string>
+#include <set>
 using namespace std;
 class Component
 {
@@ -31,6 +32,10 @@ public:
 	{
 		_parent=c;
 	}
+    Component* operator[](string id)
+    {
+        return  GetC(id);
+    }
 	virtual void			AddC(Component* c);
 	virtual void			GetCs(string id,vector<Component*>& comps/*out*/,bool recursive=false);
 	virtual void			GetC(string id,Component** cmp);
@@ -47,7 +52,28 @@ public:
         }
         return  c;
     }
+    bool                    HasTag(string& tag)
+    {
+       return  tags.find(tag)!=tags.end();
+    }
+    bool                    HasTags(set<string>& tags_)
+    {
+        for (auto a: tags_)
+        {
+           if(tags.find(a)==tags.end())
+               return false;
+        }
+        return true;
+    }
+
+    
+    void                    AddTag(const char* tag)
+    {
+        tags.insert(tag);
+    }
+
 	vector<Component*>   components;
+    set<string>          tags;
 
 };
 #endif /* defined(__entitySystem__Component__) */

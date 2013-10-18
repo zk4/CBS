@@ -11,7 +11,7 @@
 		CE695CFE17E2BF03009E9118 /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = CE695CFC17E2BF03009E9118 /* cJSON.c */; };
 		CEED3C1617DEFDDC0003ABC0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C1517DEFDDC0003ABC0 /* main.cpp */; };
 		CEED3C2A17DF06260003ABC0 /* ValueComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */; };
-		CEED3C3017DF11B00003ABC0 /* PackageComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */; };
+		CEED3C3017DF11B00003ABC0 /* ArrayComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C2E17DF11B00003ABC0 /* ArrayComponent.cpp */; };
 		CEED3C4417E007160003ABC0 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C3E17E007160003ABC0 /* Component.cpp */; };
 		CEED3C4517E007160003ABC0 /* Logic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEED3C4117E007160003ABC0 /* Logic.cpp */; };
 /* End PBXBuildFile section */
@@ -38,8 +38,8 @@
 		CEED3C2717DF03B30003ABC0 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValueComponent.cpp; sourceTree = "<group>"; };
 		CEED3C2917DF06260003ABC0 /* ValueComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValueComponent.h; sourceTree = "<group>"; };
-		CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PackageComponent.cpp; sourceTree = "<group>"; };
-		CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageComponent.h; sourceTree = "<group>"; };
+		CEED3C2E17DF11B00003ABC0 /* ArrayComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayComponent.cpp; sourceTree = "<group>"; };
+		CEED3C2F17DF11B00003ABC0 /* ArrayComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayComponent.h; sourceTree = "<group>"; };
 		CEED3C3E17E007160003ABC0 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
 		CEED3C3F17E007160003ABC0 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
 		CEED3C4017E007160003ABC0 /* Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Factory.h; sourceTree = "<group>"; };
@@ -95,8 +95,8 @@
 				CEED3C4117E007160003ABC0 /* Logic.cpp */,
 				CEED3C4217E007160003ABC0 /* Logic.h */,
 				CEED3C1517DEFDDC0003ABC0 /* main.cpp */,
-				CEED3C2E17DF11B00003ABC0 /* PackageComponent.cpp */,
-				CEED3C2F17DF11B00003ABC0 /* PackageComponent.h */,
+				CEED3C2E17DF11B00003ABC0 /* ArrayComponent.cpp */,
+				CEED3C2F17DF11B00003ABC0 /* ArrayComponent.h */,
 				CEED3C2717DF03B30003ABC0 /* Config.h */,
 				CEED3C2817DF06260003ABC0 /* ValueComponent.cpp */,
 				CEED3C2917DF06260003ABC0 /* ValueComponent.h */,
@@ -157,7 +157,7 @@
 			files = (
 				CEED3C1617DEFDDC0003ABC0 /* main.cpp in Sources */,
 				CEED3C2A17DF06260003ABC0 /* ValueComponent.cpp in Sources */,
-				CEED3C3017DF11B00003ABC0 /* PackageComponent.cpp in Sources */,
+				CEED3C3017DF11B00003ABC0 /* ArrayComponent.cpp in Sources */,
 				CEED3C4417E007160003ABC0 /* Component.cpp in Sources */,
 				CEED3C4517E007160003ABC0 /* Logic.cpp in Sources */,
 				CE695CFB17E2BEC5009E9118 /* Factory.cpp in Sources */,

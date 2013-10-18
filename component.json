@@ -9,7 +9,7 @@
                                                                                 {"meta":"INT","id":"MAXINT", "args":[40], "components": [] }]
                         },
                        
-                        {"meta":"ARRAY",  "id":"ARRAY", "args":[3],"components": [] },
+                       {"meta":"ARRAY", "tags":["WEAPON"], "id":"ARRAY", "args":[3],"components": [] },
                         {"meta":"INT",      "id":"DEFENSE", "args":[3], "components":[] },
                         {"meta":"INT",      "id":"ATTACK", "args":[20], "components": []},
                         {"meta":"ARRAY",  "id":"BOOST", "args":[3],"components": [
@@ -33,7 +33,7 @@
                                                                      }
                                                                      ], "components": []
                        },
-                       {"meta":"ARRAY", "id":"SKILLARRAY", "args":[3,{"meta":"COMPONENT",
+                       {"meta":"ARRAY", "tags":["SKILL"],"id":"SKILLARRAY", "args":[3,{"meta":"COMPONENT", "tags":["SKILL"],
                                                                        "id":"FIREBALL", "args":[],
                                                                        "components": [
                                                                                       { "meta":"INT", "id":"TARGET", "args":[2], "components": [] },
@@ -64,7 +64,7 @@
                                                                                                                     {"meta":"FLOAT","id":"FIRE_RESISTANCE", "args":[0.15], "components": [] }
                                                                                                                     ]
                                                           },
-                                                          { "meta":"ARRAY","id":"SKILLARRAY", "args":[3,{"meta":"COMPONENT",
+                                                          { "meta":"ARRAY","tags":["SKILL"],"id":"SKILLARRAY", "args":[3,{"meta":"COMPONENT","tags":["SKILL"],
                                                                                                           "id":"RELIVE", "args":[],
                                                                                                           "components": []
                                                                                                           }], "components": []
@@ -73,5 +73,9 @@
                                                           ]
                                            }], "components": []
  }
- 
+ ,
+ {"meta":"COMPONENT", "tags":["WEAPON"],
+ "id":"SWORD", "args":[],
+ "components": [{ "meta":"INT",   "id":"ATTACK", "args":[1], "components": [] }]
+ }
 ]

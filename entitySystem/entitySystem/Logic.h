@@ -26,6 +26,8 @@ public:
     static bool TeamAdd(Component& team,Component& item);
     static bool  IsDead(Component& c);
     
+    static bool AddPackage(Component* holder,Component* item);
+    
     
     
 };

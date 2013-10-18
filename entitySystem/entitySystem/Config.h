@@ -10,8 +10,10 @@
 #define entitySystem_Config_h
 
 //need a tool to automatically pull type from component.json
+//tag
+#define WEAPON          "WEAPON"
+#define SKILL           "SKILL"
 
-#define  ARRAY        "ARRAY"
 #define  FIGHTER        "FIGHTER"
 #define DEFENDER        "DEFENDER"
 #define  SWORD          "SWORD"
@@ -19,6 +21,7 @@
 #define  RELIVE         "RELIVE"
 #define  FIREBALL       "FIREBALL"
 
+//id
 #define  HP             "HP"
 #define  HPBOOST        "HPBOOST"
 #define  DEFENSE        "DEFENSE"
@@ -46,7 +49,7 @@
 #define COMPONENT       "COMPONENT"
 #define INT             "INT"
 #define FLOAT           "FLOAT"
-#define ARRAY         "ARRAY"
+#define ARRAY           "ARRAY"
 #define  MAXINT         "MAXINT"
 #define  NOWINT         "NOWINT"
 

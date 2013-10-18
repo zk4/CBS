@@ -3,59 +3,47 @@
 #include <algorithm>
 
 #include "ValueComponent.h"
-#include "PackageComponent.h"
+#include "ArrayComponent.h"
 
 typedef ValueComponent<int> cint;
 typedef ValueComponent<float> cfloat;
 Logic::Logic(void)
 {
 }
-
-
 Logic::~Logic(void)
 {
 }
 void Logic::CastSkill(Component& attack, Component& defender,string id )
 {
-  	PackageComponent*  p=(PackageComponent*)attack.GetC(SKILLARRAY);
-    if(p)
-    {
-        Component* c =p->GetItem(id);
-        if(c)
-        {
-            
-            CastSkill(attack,defender,*c);
-        }
-    }
-}
+    vector<Component*>    packages;
+ 	attack.GetCs(SKILLARRAY, packages);
+    for (auto p: packages) {
+            Component* c =((ArrayComponent*)p)->GetItem(id);
+            if(c && p->HasTags(c->tags)  )
+            {
+                CastSkill(attack,defender,*c);
+                break;
+            }
+     }
+   }
 void Logic::CastSkills(Component& caster,Component& suffers,string id )
 {
-    PackageComponent*  p=(PackageComponent*)caster.GetC(SKILLARRAY);
-    if(p)
-    {
-        Component* c =p->GetItem(id);
-        if(c)
+    vector<Component*>    packages;
+ 	caster.GetCs(SKILLARRAY, packages);
+    for (auto p: packages) {
+        Component* c =((ArrayComponent*)p)->GetItem(id);
+        if(c && p->HasTags(c->tags)  )
         {
-            
             CastSkills(caster,suffers,*c);
         }
     }
 }
-//void Logic::Attack( Component& attack, Component& defender )
-//{
-//	int atk=GetAttack(attack);
-//	int def=GetDefense(defender);
-//	int hp_diff=atk-def;
-//    if(hp_diff<0)hp_diff=0;
-//    printf("drop hp:%d\n",hp_diff);
-//    DropHp(defender,hp_diff);
-//}
 
 int Logic::GetAttack( Component& e )
 {
 	 
 	 
-	PackageComponent* hands=(PackageComponent*)e.GetC(HANDS);
+	ArrayComponent* hands=(ArrayComponent*)e[HANDS];
 		int atk=0;
     if(hands)
 	{
@@ -88,7 +76,7 @@ int  Logic::GetTgargetCount(Component& c)
 int  Logic::GetDefense(Component& e )
 {
  
-PackageComponent* hands=(PackageComponent*)e.GetC(HANDS);
+ArrayComponent* hands=(ArrayComponent*)e.GetC(HANDS);
 
 	int defense=0;
     if(hands)
@@ -142,7 +130,7 @@ int Logic::DropHp( Component& e,int hp )
 
 Component* Logic::Equip( Component& holder,Component& equip,int which_hand )
 {
-	PackageComponent*  ics=(PackageComponent*)holder.GetC(HANDS);
+	ArrayComponent*  ics=(ArrayComponent*)holder.GetC(HANDS);
     return 	ics->SetItem(&equip,which_hand);
 }
 
@@ -153,7 +141,7 @@ int Logic::GetHp( Component& e )
 
 void Logic::CastSkills(Component& caster,Component& suffers,Component& skill )
 {
-    PackageComponent * pc =(PackageComponent*)&suffers;
+    ArrayComponent * pc =(ArrayComponent*)&suffers;
     
         int target=GetTgargetCount(skill);
     for (int i=0; i<pc->GetSize() && target>0; ++i, --target) {
@@ -167,7 +155,7 @@ void Logic::CastSkills(Component& caster,Component& suffers,Component& skill )
 
 void Logic::AddSkillStatus(Component& suffer,Component& skillstatus)
 {
-    PackageComponent* skillstatus_added=dynamic_cast<PackageComponent*>(suffer.GetC(SKILLSTATUS_ADDED)) ;
+    ArrayComponent* skillstatus_added=dynamic_cast<ArrayComponent*>(suffer.GetC(SKILLSTATUS_ADDED)) ;
     if(skillstatus_added)
     {
         skillstatus_added->AddItem(&skillstatus);
@@ -182,7 +170,7 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
 	{
         if(IsDead(suffer))
             {
-                    PackageComponent*  p=(PackageComponent*)suffer.GetC(SKILLARRAY);
+                    ArrayComponent*  p=(ArrayComponent*)suffer.GetC(SKILLARRAY);
                     if(p)
                     {
                         Component* c =p->GetItem(RELIVE);
@@ -247,7 +235,7 @@ void Logic::CastSkill( Component& caster, Component& suffer,Component& skill )
 
 void Logic::EquipSKill( Component& holder,Component& skill )
 {
-	PackageComponent* p=(PackageComponent*)holder.GetC(SKILLARRAY);
+	ArrayComponent* p=(ArrayComponent*)holder.GetC(SKILLARRAY);
 	if(p)
 	{
 		p->AddItem(&skill);
@@ -258,6 +246,22 @@ void Logic::EquipSKill( Component& holder,Component& skill )
 
 bool Logic::TeamAdd(Component& team,Component& item)
 {
-    PackageComponent* p=(PackageComponent*)(team.GetC(SKILLARRAY));
+    ArrayComponent* p=(ArrayComponent*)(team.GetC(SKILLARRAY));
     return p->AddItem(&item);
+}
+
+bool Logic::AddPackage(Component* holder,Component* item)
+{
+    
+    vector<Component*>    packages;
+ 	holder->GetCs(ARRAY, packages);
+    for (auto a: packages) {
+        if(a->HasTags(item->tags))
+        {
+              return  ((ArrayComponent*)a)->AddItem(item);
+        }
+    }
+    return false;
+ 
+    
 }

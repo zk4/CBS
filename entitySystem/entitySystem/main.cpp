@@ -9,7 +9,7 @@
 #include <iostream>
 #include "Component.h"
  
-#include "PackageComponent.h"
+#include "ArrayComponent.h"
  
  
 #include "Logic.h"
@@ -40,11 +40,12 @@ int main(int argc, const char * argv[])
 				cJSON* root = cJSON_Parse (buffer);
 				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 0 ));
                 Component* team=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
-
+                Component* sword=Factory::CreateComponent(cJSON_GetArrayItem ( root, 2));
+                Logic::AddPackage(fighter, sword);
                 Logic::AddHp(*fighter, 100);
                 Logic::CastSkills(*fighter,*team,FIREBALL);
 			 
-
+                
 				std::cout << "all characters read successfully.";
             }
 			else
