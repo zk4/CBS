@@ -16,14 +16,14 @@
 #include "cJSON.h"
 #include <fstream>
 #include "Factory.h"
+
 using namespace std;
 int main(int argc, const char * argv[])
 {
+     
 
-
-	ifstream is("component.json",  std::ios::binary  );
-	if(is)
-	{
+	ifstream is("/Users/user/GitHub/entitySystem/component.json",  std::ios::binary  );
+ 
 
 		if (is) {
 			// get length of file:
@@ -37,18 +37,13 @@ int main(int argc, const char * argv[])
 
 			if (is)
 			{
-
-
 				cJSON* root = cJSON_Parse (buffer);
-
 				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 0 ));
-           
-             
                 Component* team=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
+
                 Logic::AddHp(*fighter, 100);
-				//Logic::Attack(*fighter,*defender);
                 Logic::CastSkills(*fighter,*team,FIREBALL);
-				//cout<<Logic::GetHp(*defender)<<"\n";
+			 
 
 				std::cout << "all characters read successfully.";
             }
@@ -58,9 +53,7 @@ int main(int argc, const char * argv[])
 			delete[] buffer;
 		}
 
-
-	}
-
+ 
 	getchar();
 	return 0;
 }

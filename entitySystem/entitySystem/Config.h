@@ -23,7 +23,7 @@
 #define  HPBOOST        "HPBOOST"
 #define  DEFENSE        "DEFENSE"
 #define  ATTACK         "ATTACK"
-#define  SKILLARRAY   "SKILLARRAY"
+#define  SKILLARRAY     "SKILLARRAY"
 #define  HANDS          "HANDS"
 
 #define TEAM            "TEAM"

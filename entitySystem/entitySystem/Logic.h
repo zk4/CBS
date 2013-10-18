@@ -15,6 +15,7 @@ public:
     static void CastSkill(Component& caster,Component& suffer,Component& skill );
     static void CastSkills(Component& caster,Component& suffers,string id );
     static void CastSkills(Component& caster,Component& suffers,Component& skill );
+    
      static void AddSkillStatus(Component& suffer,Component& skillstatus);
   	static int  AddHp(Component& e,int hp);
 	static int  DropHp(Component& e,int hp);
@@ -24,5 +25,8 @@ public:
 	static void EquipSKill(Component& holder,Component& skill);
     static bool TeamAdd(Component& team,Component& item);
     static bool  IsDead(Component& c);
+    
+    
+    
 };
 

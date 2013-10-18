@@ -14,27 +14,39 @@
 class PackageComponent :public Component
 {
     vector<Component*>  package;
-    const int max_size;
+    const bool fixed_size;
 public:
-    PackageComponent(int size,string id ):max_size(size),Component(id){package.resize(size);};
+    PackageComponent(int size,string id ):fixed_size(size!= -1),Component(id){
+        if(size != -1)
+        package.resize(size);
+    };
     bool ExistItem(Component* c)
     {
         auto a=find_if(package.begin(), package.end(), [&c](Component* cc){return cc && c==cc;});
         return a!=package.end();
     }
+    bool IsFixedSize()const
+    {
+        return  fixed_size;
+    }
     Component* SetItem(Component* c,int i)
     {
-        if(i>=max_size)return NULL;
+        if(!IsFixedSize() && package.size()<i)
+        {
+            package.resize(i);
+        }
+        
+        if(IsFixedSize() && i>=GetSize())return NULL;
         Component* old =GetItem(i);
         package[i]=c;
         return old;
     }
-    int GetMaxSize() const {
-        return  max_size;
+    int GetSize() const {
+        return  package.size();
     }
     int FindNULL()
     {
-        for (int i=0; i<max_size; ++i) {
+        for (int i=0; i<GetSize(); ++i) {
             if(package[i]==NULL)return i;
         }
         return -1;
@@ -48,6 +60,10 @@ public:
             return true;
         }
         return false;
+    }
+   Component* operator[](int i)
+    {
+        return GetItem(i);
     }
    Component* GetItem(int i)
     {

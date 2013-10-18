@@ -156,7 +156,7 @@ void Logic::CastSkills(Component& caster,Component& suffers,Component& skill )
     PackageComponent * pc =(PackageComponent*)&suffers;
     
         int target=GetTgargetCount(skill);
-    for (int i=0; i<pc->GetMaxSize() && target>0; ++i, --target) {
+    for (int i=0; i<pc->GetSize() && target>0; ++i, --target) {
 
             Component* c=pc->GetItem(i);
         
