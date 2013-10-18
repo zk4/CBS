@@ -265,3 +265,25 @@ bool Logic::AddPackage(Component* holder,Component* item)
  
     
 }
+
+
+
+Component* Logic::SynthSkill(Component* skillscroll, ... )
+{
+    va_list  arguments;
+	va_start(arguments, skillscroll);
+	Component* arg = (Component*)skillscroll;
+	do
+	{
+        
+        
+        arg= va_arg(arguments, Component*);
+        if(arg)
+        {
+            
+        
+        }
+	}
+	while(arg != NULL);
+	va_end(arguments);
+}

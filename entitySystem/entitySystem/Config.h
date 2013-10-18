@@ -22,13 +22,15 @@
 #define  FIREBALL       "FIREBALL"
 
 //id
+#define SYNTH_SKILL     "SYNTH_SKILL"
 #define  HP             "HP"
 #define  HPBOOST        "HPBOOST"
 #define  DEFENSE        "DEFENSE"
 #define  ATTACK         "ATTACK"
 #define  SKILLARRAY     "SKILLARRAY"
 #define  HANDS          "HANDS"
-
+#define SKILLSCROLL1    "SKILLSCROLL1"
+#define SKILLSCROLL2    "SKILLSCROLL2"
 #define TEAM            "TEAM"
 #define TARGET          "TARGET"
 

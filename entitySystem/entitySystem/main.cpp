@@ -41,6 +41,11 @@ int main(int argc, const char * argv[])
 				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 0 ));
                 Component* team=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
                 Component* sword=Factory::CreateComponent(cJSON_GetArrayItem ( root, 2));
+                 Component* synth_skill=Factory::CreateComponent(cJSON_GetArrayItem ( root,3));
+                 Component* scroll1=Factory::CreateComponent(cJSON_GetArrayItem ( root, 4));
+                 Component* scroll2=Factory::CreateComponent(cJSON_GetArrayItem ( root, 5));
+                
+              Component* skill=  Logic::SynthSkill(scroll1,scroll2,NULL);
                 Logic::AddPackage(fighter, sword);
                 Logic::AddHp(*fighter, 100);
                 Logic::CastSkills(*fighter,*team,FIREBALL);

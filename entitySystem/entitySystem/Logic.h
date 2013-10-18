@@ -11,10 +11,12 @@ public:
 	static void Attack(Component& attack, Component& defender );
     static int  GetTgargetCount(Component& c);
     
+    //skill
     static void CastSkill(Component& attack, Component& defender,string id );
     static void CastSkill(Component& caster,Component& suffer,Component& skill );
     static void CastSkills(Component& caster,Component& suffers,string id );
     static void CastSkills(Component& caster,Component& suffers,Component& skill );
+    static Component* SynthSkill(Component* skillscroll, ... );
     
      static void AddSkillStatus(Component& suffer,Component& skillstatus);
   	static int  AddHp(Component& e,int hp);
@@ -27,6 +29,8 @@ public:
     static bool  IsDead(Component& c);
     
     static bool AddPackage(Component* holder,Component* item);
+   
+    
     
     
     
