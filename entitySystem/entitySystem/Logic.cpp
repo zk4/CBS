@@ -4,7 +4,7 @@
 
 #include "ValueComponent.h"
 #include "ArrayComponent.h"
-
+#include "SpriteComponent.h"
 typedef ValueComponent<int> cint;
 typedef ValueComponent<float> cfloat;
 Logic::Logic(void)
@@ -47,8 +47,7 @@ int Logic::GetAttack( Component& e )
 		int atk=0;
     if(hands)
 	{
-		for_each(hands->GetBeginIte(), hands->GetEndIte(), [&atk](Component* c){
-			 
+		for(auto c: hands->package){
 			if(c)
 			{
                 vector<Component*> atks;
@@ -59,7 +58,7 @@ int Logic::GetAttack( Component& e )
 					
 			}
 		}
-		);
+		
     }
 		cint* r=(cint*)e.GetC(ATTACK);
 		if(r)
@@ -82,7 +81,7 @@ ArrayComponent* hands=(ArrayComponent*)e.GetC(HANDS);
     if(hands)
 	{
         
-        for_each(hands->GetBeginIte(), hands->GetEndIte(), [&defense](Component* c){
+        for(auto c: hands->package){
            
             if(c)
             {
@@ -94,7 +93,7 @@ ArrayComponent* hands=(ArrayComponent*)e.GetC(HANDS);
                 
             }
         }
-        );
+     
      }
     
 	cint* r=(cint*)e.GetC(DEFENSE);
@@ -266,8 +265,6 @@ bool Logic::AddPackage(Component* holder,Component* item)
     
 }
 
-
-
 Component* Logic::SynthSkill(Component* skillscroll, ... )
 {
     va_list  arguments;
@@ -286,4 +283,30 @@ Component* Logic::SynthSkill(Component* skillscroll, ... )
 	}
 	while(arg != NULL);
 	va_end(arguments);
+    return NULL; //todo 
+}
+
+ void Logic::Update(float delta,Component* entity)
+{
+     Component*  c=entity->GetC(POS);
+    if(c){
+        (( cint* )c->GetC(X))->Set(((cint*)c->GetC(X))->Get()+1);
+        (( cint* )c->GetC(Y))->Set(((cint*)c->GetC(Y))->Get()+2);
+    }
+}
+
+void Logic::Visit(Component* entity)
+{
+    SpriteComponent* p=(SpriteComponent*)entity->GetC(IMG);
+    if(p)
+    {
+      CCSprite* sprite=p->sprite;
+      Component*  c=entity->GetC(POS);
+        if(c)
+        {
+            sprite->setPosition(ccp(((cint*)c->GetC(X))->Get(),((cint*)c->GetC(Y))->Get()));
+        }
+        sprite->visit();
+    }
+
 }

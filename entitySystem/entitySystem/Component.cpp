@@ -13,9 +13,12 @@ Component*   Component::GetParent() const
 
 void Component::AddC(Component* c)
 {
-    auto a= find_if(components.begin(), components.end(), [&c](Component* cc){return cc && cc==c;});
-    if(a !=components.end())return;   //find same componet pointer
     
+    for (auto cc : components) {
+        if(cc && cc==c) return;
+            
+    }
+ 
     c->SetParent(this);
     components.push_back(c);
 }

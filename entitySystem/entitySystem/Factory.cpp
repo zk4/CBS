@@ -12,13 +12,13 @@
 #include "Component.h"
 #include "ValueComponent.h"
 #include "ArrayComponent.h"
-
+#include "SpriteComponent.h"
  
 Component* Factory::CreateComponent(cJSON* j_entity)
 {
     Component* entity=NULL;
     string meta= cJSON_GetObjectItem ( j_entity, "meta" )->valuestring;
-    string type = cJSON_GetObjectItem ( j_entity, "id" )->valuestring;
+    string id = cJSON_GetObjectItem ( j_entity, "id" )->valuestring;
     
     
     cJSON* arg_array = cJSON_GetObjectItem ( j_entity, "args" );
@@ -28,18 +28,18 @@ Component* Factory::CreateComponent(cJSON* j_entity)
     {
         int v=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
  
-        entity=new ValueComponent<int>(v,type);
+        entity=new ValueComponent<int>(v,id);
     }
      else if(meta == FLOAT)
     {
         float v=cJSON_GetArrayItem ( arg_array, 0 )->valuedouble;
         
-        entity=new ValueComponent<float>(v,type);
+        entity=new ValueComponent<float>(v,id);
     }
     else if(meta == ARRAY)
     {
         int max_size=cJSON_GetArrayItem ( arg_array, 0 )->valueint;
-        entity=new ArrayComponent(max_size,type);
+        entity=new ArrayComponent(max_size,id);
         
  
         int size=cJSON_GetArraySize(arg_array);
@@ -49,11 +49,19 @@ Component* Factory::CreateComponent(cJSON* j_entity)
                
             }
     
+    }else if(meta == SPRITE)
+    {
+        const char* img=cJSON_GetArrayItem ( arg_array, 0 )->valuestring;
+        
+        SpriteComponent* sc=new SpriteComponent(img,id);
+        entity=sc;
+        sc->sprite->setPosition(ccp(cJSON_GetArrayItem ( arg_array, 1 )->valueint,cJSON_GetArrayItem ( arg_array, 2 )->valueint));
+
     }
     else if(meta == COMPONENT)
     {
-          entity=new Component(type);
-//        assert(0 && "type not find ");
+          entity=new Component(id);
+//        assert(0 && "id not find ");
     }
     
     

@@ -13,17 +13,21 @@
 #include <algorithm>
 class ArrayComponent :public Component
 {
-    vector<Component*>  package;
+    
     const bool fixed_size;
 public:
+    vector<Component*>  package;
     ArrayComponent(int size,string id ):fixed_size(size!= -1),Component(id){
         if(size != -1)
         package.resize(size);
     };
     bool ExistItem(Component* c)
     {
-        auto a=find_if(package.begin(), package.end(), [&c](Component* cc){return cc && c==cc;});
-        return a!=package.end();
+        for (auto cc : package) {
+            if(cc && cc==c) return true;
+            
+        }
+        return  false;
     }
     bool IsFixedSize()const
     {
@@ -72,9 +76,12 @@ public:
     }
    Component* GetItem(string e)
    {
-		   auto a=find_if(package.begin(), package.end(), [&e](Component* cc){return (cc && cc->GetId()== e);});
-		   if(a!=package.end())return *a;
-		   else return NULL;
+       for (auto cc : package) {
+           if(cc && cc->GetId()== e) return cc;
+           
+       }
+       return  NULL;
+
    }
     std::vector<Component*>::iterator
 		GetBeginIte() 

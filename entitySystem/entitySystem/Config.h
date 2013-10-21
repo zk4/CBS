@@ -52,8 +52,11 @@
 #define INT             "INT"
 #define FLOAT           "FLOAT"
 #define ARRAY           "ARRAY"
+#define SPRITE          "SPRITE"
 #define  MAXINT         "MAXINT"
 #define  NOWINT         "NOWINT"
-
-
+#define  IMG            "IMG"
+#define  POS            "POS"
+#define X               "X"
+#define Y               "Y"
 #endif

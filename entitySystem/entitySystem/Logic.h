@@ -31,7 +31,9 @@ public:
     static bool AddPackage(Component* holder,Component* item);
    
     
-    
+
+    static void Update(float delta,Component* entity);
+    static void Visit(Component* entity);
     
     
 };
