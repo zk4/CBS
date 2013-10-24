@@ -14,35 +14,40 @@
 template<typename T>
 class ValueComponent :public Component
 {
-    T _value;
+    
+    
     public:
+    T value;
     virtual ~ValueComponent(){}
-    ValueComponent(T v,string id):_value(v),Component(id){};
+    ValueComponent(T v,string id):value(v),Component(id){};
+    T operator()(){
+        return value;
+    }
     T Minus(T p){
         
         return Add(-p) ;
     }
     T Get()const
     {
-        return _value;
+        return value;
     }
     T Add(T p){
-        _value+=p;
-        return _value;
+        value+=p;
+        return value;
     }
     void Set(T p){
-        _value=p;
+        value=p;
 
     }
-    virtual Component*      Copy(Component* c)
-    {
-        Component::Copy(c);
-        
-        ValueComponent* vc=(ValueComponent*)c;
-        vc->_value=_value;
-
-        return  vc;
-    }
+//    virtual Component*      Copy(Component* c)
+//    {
+//        Component::Copy(c);
+//        
+//        ValueComponent* vc=(ValueComponent*)c;
+//        vc->value=value;
+//
+//        return  vc;
+//    }
 
 };
  #endif /* defined(__entitySystem__HpComponent__) */

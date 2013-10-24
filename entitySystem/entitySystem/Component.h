@@ -15,6 +15,7 @@
 #include "assert.h"
 #include <string>
 #include <set>
+#include <map>
 using namespace std;
 class Component
 {
@@ -32,27 +33,21 @@ public:
 	{
 		_parent=c;
 	}
-    Component* operator[](string id)
+    Component* operator[](const char* id)
     {
         return  GetC(id);
     }
-	virtual void			AddC(Component* c);
-	virtual void			GetCs(string id,vector<Component*>& comps/*out*/,bool recursive=false);
-	virtual void			GetC(string id,Component** cmp);
-	virtual Component*		GetC(string id);
-    
+    Component* operator()(const char* id)
+    {
+        return  GetC(id);
+    }
+	virtual void            AddC(Component* c);
+	set<Component*>*        GetCs(const char* id);
+    Component*              GetC(const char* id);
+    bool                    FindId(const char* id);
 	virtual bool			IfHasChild()const;
 	virtual void			DeleteAllComponents();
-    virtual Component*      Copy(Component* c)
-    {
-        
-        c->_id=_id;
-        for (Component* cc : components) {
-            c->AddC(cc);
-        }
-        return  c;
-    }
-    bool                    HasTag(string& tag)
+     bool                    HasTag(string& tag)
     {
        return  tags.find(tag)!=tags.end();
     }
@@ -66,13 +61,13 @@ public:
         return true;
     }
 
-    
+ 
     void                    AddTag(const char* tag)
     {
         tags.insert(tag);
     }
 
-	vector<Component*>   components;
+	map<string,set<Component*> >   components;
     set<string>          tags;
 
 };

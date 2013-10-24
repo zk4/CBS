@@ -16,6 +16,7 @@
  
 Component* Factory::CreateComponent(cJSON* j_entity)
 {
+
     Component* entity=NULL;
     string meta= cJSON_GetObjectItem ( j_entity, "meta" )->valuestring;
     string id = cJSON_GetObjectItem ( j_entity, "id" )->valuestring;
@@ -55,7 +56,7 @@ Component* Factory::CreateComponent(cJSON* j_entity)
         
         SpriteComponent* sc=new SpriteComponent(img,id);
         entity=sc;
-        sc->sprite->setPosition(ccp(cJSON_GetArrayItem ( arg_array, 1 )->valueint,cJSON_GetArrayItem ( arg_array, 2 )->valueint));
+      //  sc->sprite->setPosition(ccp(cJSON_GetArrayItem ( arg_array, 1 )->valueint,cJSON_GetArrayItem ( arg_array, 2 )->valueint));
 
     }
     else if(meta == COMPONENT)

@@ -13,49 +13,38 @@ Component*   Component::GetParent() const
 
 void Component::AddC(Component* c)
 {
-    
-    for (auto cc : components) {
-        if(cc && cc==c) return;
-            
-    }
  
     c->SetParent(this);
-    components.push_back(c);
+    components[c->GetId()].insert(c);
 }
 bool Component::IfHasChild()const
 {
     return components.size()>0;
 }
 //if direct child donesn`t has specfied id,then igorne recursive .
-void Component::GetCs(string id,vector<Component*>& cmps,bool recursive)
+set<Component*>* Component::GetCs(const char* id)
 {
-    for (auto a : components) {
-        if(a->GetId() ==id)
-            cmps.push_back(a);
-        if(recursive)
-            a->GetCs(id, cmps,recursive);
-        
-    }
+    if(FindId(id))
+    return &(components[id]);
+    else
+        return NULL;
 }
 
-Component*   Component::GetC(string id)
+bool                   Component::FindId(const char* id)
 {
-    Component* i;
-    GetC(id, &i);
-    return i;
+    return   components.find(id)!=components.end();
+    
 }
-void  Component::GetC(string id,Component** cmp)
+
+Component* Component::GetC(const char* id)
 {
-    vector<Component*>  cmps;
-    for (auto a : components) {
-        if(a->GetId() ==id)
-            cmps.push_back(a);
+    if(FindId(id))
+    {
+        assert(components[id].size()==1);
+        return *(components[id].begin());
     }
-    assert(cmps.size()<=1);  //you should call  GetCs(eComponentId id,vector<Component*>& cmps) instead
-    
-    if(cmps.size()==1)*cmp=cmps[0];
-    else  *cmp=NULL;
-    
+    else
+        return NULL;
 }
 
 Component::~Component()
@@ -67,11 +56,15 @@ void Component::DeleteAllComponents()
 {
 	for(auto a: components)
 	{
-		if(IfHasChild())
+		
+		for (auto d: a.second) {
+            if(IfHasChild())
 			{
-				a->DeleteAllComponents();	
+				d->DeleteAllComponents();
 			}
-		delete a;
-		a=NULL;
+            delete  d;
+            d=NULL;
+        }
+		
 	}
 }
