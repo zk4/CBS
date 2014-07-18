@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sim-project version="7.4" multi-file="no">
+  <meta>
+    <name>Project</name>
+    <authors> </authors>
+    <description />
+  </meta>
+  <counters models="1">
+    <entity-names>
+      <counter>
+        <item-type stereotype="" type="Process" />
+        <value>8</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="StartEndSymbol" />
+        <value>1</value>
+      </counter>
+    </entity-names>
+    <entity-ids>
+      <counter>
+        <item-type stereotype="" type="Process" />
+        <value>9</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="AbstractElementGroup" />
+        <value>102</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="Flow" />
+        <value>5</value>
+      </counter>
+      <counter>
+        <item-type stereotype="" type="StartEndSymbol" />
+        <value>2</value>
+      </counter>
+    </entity-ids>
+    <diagrams>
+      <counter>
+        <type>SoftwareIdeasModeler.Core.Diagrams.Other.FlowchartDiagram</type>
+        <value>1</value>
+      </counter>
+      <counter>
+        <type>SoftwareIdeasModeler.Core.Diagrams.UmlDiagrams.UmlClassDiagram</type>
+        <value>1</value>
+      </counter>
+    </diagrams>
+    <fields />
+  </counters>
+  <management>
+    <persons>
+      <person id="Pa3cfdb06ebcd4c77b59443a6681d289a">
+        <first-name />
+        <last-name />
+        <role />
+        <e-mail />
+        <phone-number />
+        <description />
+        <color>#00000000</color>
+      </person>
+    </persons>
+    <tasks />
+    <requirements />
+    <issues />
+    <to-dos />
+  </management>
+  <glossary />
+  <types>
+    <type-sets>
+      <type-set file="UmlTypes.xml" />
+    </type-sets>
+    <custom-types />
+  </types>
+  <style-set name="Simple">
+    <default-style>
+      <style-definition style-name="Default" shadow-type="smooth" shadow-offset="-5,-5" shadow-size="15,15" shadow-color="#50000000" shadow-radius="7" wrap-name-text="true" wrap-other-text="true" glow-color="#FF000000" name-color="#FF000000" name-font="Arial;10;" name-horizontal-alignment="center" name-vertical-alignment="center" part-header-color="#FF000000" part-header-font="Verdana;10;" part-header-horizontal-alignment="center" part-header-vertical-alignment="center" text-color="#FF000000" text-font="Arial;10;" text-horizontal-alignment="center" text-vertical-alignment="center" tagged-value-color="#FF000000" tagged-value-font="Verdana;10;" tagged-value-horizontal-alignment="center" tagged-value-vertical-alignment="center" stereotype-color="#FF1E1E1E" stereotype-font="Arial;10;" stereotype-horizontal-alignment="center" stereotype-vertical-alignment="center">
+        <background type="solid" color="#FFFFFFFF" color2="#FFFFFFFF" />
+        <border color="#FF000000" width="1" />
+      </style-definition>
+    </default-style>
+    <style class="">
+      <item-type stereotype="" type="UmlComment" />
+      <style-definition style-name="" shadow-type="smooth" shadow-offset="-5,-5" shadow-size="15,15" shadow-color="#50000000" shadow-radius="7" wrap-name-text="true" wrap-other-text="true" glow-color="#FF000000" name-color="#FF000000" name-font="Arial;10;" name-horizontal-alignment="center" name-vertical-alignment="center" part-header-color="#FF000000" part-header-font="Verdana;10;" part-header-horizontal-alignment="center" part-header-vertical-alignment="center" text-color="#FF000000" text-font="Arial;10;" text-horizontal-alignment="center" text-vertical-alignment="center" tagged-value-color="#FF000000" tagged-value-font="Verdana;10;" tagged-value-horizontal-alignment="center" tagged-value-vertical-alignment="center" stereotype-color="#FF1E1E1E" stereotype-font="Arial;10;" stereotype-horizontal-alignment="center" stereotype-vertical-alignment="center">
+        <background type="solid" color="#FFFFFF55" color2="#FFFFFFFF" />
+        <border color="#FF000000" width="1" />
+      </style-definition>
+    </style>
+  </style-set>
+  <filters />
+  <items />
+  <models>
+    <model id="p499559233563940149" name="Model 1" type="" namespace="" order-index="1">
+      <meta>
+        <authors>
+          <author> </author>
+        </authors>
+        <description />
+        <creation-date>07/18/2014 17:02:44</creation-date>
+        <change-date>01/01/0001 00:00:00</change-date>
+        <revision-count>0</revision-count>
+        <version />
+      </meta>
+      <abstract-items />
+      <sub-models />
+      <diagram type="flowchart" id="p968718871538943706" name="Design" order-index="1" show-id="false" show-name="true" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" show-template-parameters="true" show-fields="true" show-attributes="true" show-attribute-visibility="true" show-operations="true" show-operation-parameters="true" show-operation-visibility="true" show-nullability="true" show-sequence-number="false" show-extension-points="true" show-relationship-texts="true" auto-routed-paths="false">
+        <style>
+          <background-color index="1" color="#FFFFFFFF" />
+          <background-color index="2" color="#FFFFFFFF" />
+          <background-type type="solid" />
+        </style>
+        <meta>
+          <authors>
+            <author> </author>
+          </authors>
+          <description />
+          <creation-date>07/18/2014 17:02:44</creation-date>
+          <change-date>07/18/2014 17:09:48</change-date>
+          <revision-count>0</revision-count>
+          <version />
+        </meta>
+        <abstract-items>
+          <item id="di488698206309049228" cid="FCP008" type="flowchart-process" name="Package" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pa3cfdb06ebcd4c77b59443a6681d289a" creation-date="07/18/2014 17:09:45">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di975038817433731766" cid="FCP003" type="flowchart-process" name="Weapon" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pa3cfdb06ebcd4c77b59443a6681d289a" creation-date="07/18/2014 17:03:16">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di605432123791406362" cid="FCF001" type="flowchart-flow" name="" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pa3cfdb06ebcd4c77b59443a6681d289a" creation-date="07/18/2014 17:03:23">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di803761559479790945" cid="FCP005" type="flowchart-process" name="HP" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pa3cfdb06ebcd4c77b59443a6681d289a" creation-date="07/18/2014 17:04:19">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di513083059121883383" cid="FCF003" type="flowchart-flow" name="" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pa3cfdb06ebcd4c77b59443a6681d289a" creation-date="07/18/2014 17:04:20">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di458256045194626459" cid="ELEM001" type="flowchart-start-end" name="Entity" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pa3cfdb06ebcd4c77b59443a6681d289a" creation-date="07/18/2014 17:06:11">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+          <item id="di402960219796789445" cid="FCF004" type="flowchart-flow" name="" style-class="" is-abstract="false" is-root="false" is-leaf="false" is-active="false" creator="Pa3cfdb06ebcd4c77b59443a6681d289a" creation-date="07/18/2014 17:09:48">
+            <stereotypes />
+            <associated-diagrams />
+            <owned-items />
+            <style class="default" />
+          </item>
+        </abstract-items>
+        <layer name="Default" visible="true" enabled="true" locked="false">
+          <item id="di488698206309049228" iid="20fb5c71167d420384dfc07c070c0e61" creation-date="07/18/2014 17:09:45" order-index="6" type="entity">
+            <layout ax="136" ay="455" awidth="150" aheight="60" x="136" y="455" width="150" height="60" angle="0" />
+          </item>
+          <item id="di402960219796789445" iid="9349046b8c0f499a8a902cbe3950ed28" creation-date="07/18/2014 17:09:48" order-index="7" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="415" y1="358" x2="259" y2="455" start-border-pos="0.705254770914714" end-border-pos="0.205254770914714">
+              <points>
+                <point x="415" y="358" />
+                <point x="259" y="455" />
+              </points>
+            </layout>
+            <relation from="di458256045194626459" from-iid="79b1f63d19ac4ec7a0ff8aa26cf064f2" to="di488698206309049228" to-iid="20fb5c71167d420384dfc07c070c0e61" />
+          </item>
+          <item id="di975038817433731766" iid="42a81a9885ed4a69860cd65505f64985" creation-date="07/18/2014 17:03:16" order-index="1" type="entity">
+            <layout ax="378" ay="455" awidth="150" aheight="60" x="378" y="455" width="150" height="60" angle="0" />
+          </item>
+          <item id="di605432123791406362" iid="bb893da8cdb9485c8f396327a961db40" creation-date="07/18/2014 17:03:23" order-index="2" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="461" y1="358" x2="455" y2="455" start-border-pos="0.628184712727865" end-border-pos="0.128184712727865">
+              <points>
+                <point x="461" y="358" />
+                <point x="455" y="455" />
+              </points>
+            </layout>
+            <relation from="di458256045194626459" from-iid="79b1f63d19ac4ec7a0ff8aa26cf064f2" to="di975038817433731766" to-iid="42a81a9885ed4a69860cd65505f64985" />
+          </item>
+          <item id="di458256045194626459" iid="79b1f63d19ac4ec7a0ff8aa26cf064f2" creation-date="07/18/2014 17:06:11" order-index="5" type="entity">
+            <layout ax="388" ay="298" awidth="150" aheight="60" x="388" y="298" width="150" height="60" angle="0" />
+          </item>
+          <item id="di803761559479790945" iid="44e169ed2055498dbb16e1525689ca0e" creation-date="07/18/2014 17:04:19" order-index="3" type="entity">
+            <layout ax="600" ay="455" awidth="150" aheight="60" x="600" y="455" width="150" height="60" angle="0" />
+          </item>
+          <item id="di513083059121883383" iid="618ae7763115415d8dd0c3f3329625f6" creation-date="07/18/2014 17:04:20" order-index="4" type="relation">
+            <layout line-style="oblique" lock-start-point="false" lock-end-point="false" lock-to-fields="false" name-position="10,-10" auto-path="" x1="504" y1="358" x2="634" y2="455" start-border-pos="0.557484079996745" end-border-pos="0.0574840291341146">
+              <points>
+                <point x="504" y="358" />
+                <point x="634" y="455" />
+              </points>
+            </layout>
+            <relation from="di458256045194626459" from-iid="79b1f63d19ac4ec7a0ff8aa26cf064f2" to="di803761559479790945" to-iid="44e169ed2055498dbb16e1525689ca0e" />
+          </item>
+        </layer>
+      </diagram>
+      <diagram type="uml-class" id="p744819489370395230" name="ClassDiagram1" order-index="2" overview-order-index="0" show-id="false" show-name="true" show-parent-name="false" show-stereotypes="true" show-tagged-values="false" show-template-parameters="true" show-fields="true" show-attributes="true" show-attribute-visibility="true" show-operations="true" show-operation-parameters="true" show-operation-visibility="true" show-nullability="true" show-sequence-number="false" show-extension-points="true" show-relationship-texts="true" auto-routed-paths="false">
+        <style>
+          <background-color index="1" color="#FFFFFFFF" />
+          <background-color index="2" color="#FFFFFFFF" />
+          <background-type type="solid" />
+        </style>
+        <meta>
+          <authors>
+            <author> </author>
+          </authors>
+          <description />
+          <creation-date>07/18/2014 17:13:32</creation-date>
+          <change-date>07/18/2014 17:13:32</change-date>
+          <revision-count>0</revision-count>
+          <version />
+        </meta>
+        <abstract-items />
+        <layer name="Default" visible="true" enabled="true" locked="false" />
+      </diagram>
+    </model>
+  </models>
+  <documents />
+  <document-templates />
+</sim-project>

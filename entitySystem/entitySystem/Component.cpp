@@ -6,65 +6,55 @@
 #include "Component.h"
 #include <algorithm>
 #include "assert.h"
-Component*   Component::GetParent() const
+#include "ComponentMgr.h"
+shared_ptr<Component>   Component::GetParent() const
 {
-    return _parent;
+	return _parent;
 }
 
-void Component::AddC(Component* c)
+void Component::AddC(shared_ptr<Component> c)
 {
+	c->SetParent(shared_ptr<Component>(this));
+	components .push_back(c);
+}
  
-    c->SetParent(this);
-    components[c->GetId()].insert(c);
-}
-bool Component::IfHasChild()const
+  
+
+bool Component::HandleMessage(const Telegram& msg)
 {
-    return components.size()>0;
-}
-//if direct child donesn`t has specfied id,then igorne recursive .
-set<Component*>* Component::GetCs(const char* id)
-{
-    if(FindId(id))
-    return &(components[id]);
-    else
-        return NULL;
+
+	return false;
 }
 
-bool                   Component::FindId(const char* id)
+void Component::SetParent(shared_ptr<Component> c) //for listening
 {
-    return   components.find(id)!=components.end();
-    
+	_parent = c;
 }
-
-Component* Component::GetC(const char* id)
+int Component::GetID() const
 {
-    if(FindId(id))
-    {
-        assert(components[id].size()==1);
-        return *(components[id].begin());
-    }
-    else
-        return NULL;
+	return _ID;
+}
+void Component::AutoEntityID()
+{
+	while (true){
+		s_iNextValidID++;
+		if (!CompMgr->FindComponentFromID(s_iNextValidID))
+		{
+			_ID = s_iNextValidID;
+			break;
+		}
+	}
+	CompMgr->RegisterComponent(this);
 }
 
 Component::~Component()
 {
-	DeleteAllComponents();
+	CompMgr->RemoveComponent(  this);
 }
 
-void Component::DeleteAllComponents()
+Component::Component(string id) :_parent(shared_ptr<Component>(NULL)), _name(id)
 {
-	for(auto a: components)
-	{
-		
-		for (auto d: a.second) {
-            if(IfHasChild())
-			{
-				d->DeleteAllComponents();
-			}
-            delete  d;
-            d=NULL;
-        }
-		
-	}
+	AutoEntityID();
 }
+
+int Component::s_iNextValidID=0;

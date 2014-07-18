@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -18,12 +18,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -48,7 +48,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)\entitySystem\entitySystem\cJSON\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\entitySystem\entitySystem\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -73,20 +73,35 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="entitySystem\entitySystem\cJSON\cJSON.c" />
+    <ClCompile Include="entitySystem\entitySystem\Entity.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\ComponentMgr.cpp" />
     <ClCompile Include="entitySystem\entitySystem\Factory.cpp" />
-    <ClCompile Include="entitySystem\entitySystem\Logic.cpp" />
     <ClCompile Include="entitysystem\entitysystem\Component.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\HPComponent.cpp" />
     <ClCompile Include="entitysystem\entitysystem\main.cpp" />
-    <ClCompile Include="entitysystem\entitysystem\PackageComponent.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\messaging\MessageDispatcher.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\Singleton.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\Time\CrudeTimer.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\Time\PrecisionTimer.cpp" />
+    <ClCompile Include="entitySystem\entitySystem\WeaponComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entitySystem\entitySystem\AllComponents.h" />
+    <ClInclude Include="entitySystem\entitySystem\Configuration.h" />
+    <ClInclude Include="entitySystem\entitySystem\Entity.h" />
     <ClInclude Include="entitySystem\entitySystem\cJSON\cJSON.h" />
-    <ClInclude Include="entitySystem\entitySystem\Logic.h" />
     <ClInclude Include="entitysystem\entitysystem\Config.h" />
+    <ClInclude Include="entitySystem\entitySystem\ComponentMgr.h" />
     <ClInclude Include="entitySystem\entitySystem\Factory.h" />
     <ClInclude Include="entitysystem\entitysystem\Component.h" />
+    <ClInclude Include="entitySystem\entitySystem\HPComponent.h" />
+    <ClInclude Include="entitySystem\entitySystem\messaging\MessageDispatcher.h" />
+    <ClInclude Include="entitySystem\entitySystem\messaging\Telegram.h" />
     <ClInclude Include="entitysystem\entitysystem\PackageComponent.h" />
+    <ClInclude Include="entitySystem\entitySystem\Singleton.h" />
+    <ClInclude Include="entitySystem\entitySystem\Time\CrudeTimer.h" />
+    <ClInclude Include="entitySystem\entitySystem\Time\PrecisionTimer.h" />
+    <ClInclude Include="entitySystem\entitySystem\WeaponComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

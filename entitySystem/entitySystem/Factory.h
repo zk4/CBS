@@ -6,7 +6,8 @@
 //  Copyright (c) 2013年 user. All rights reserved.
 //
 #pragma  once
-#include "cJSON.h"
+#include "cJSON/cJSON.h"
+
 class Component;
 class Factory 
 { 

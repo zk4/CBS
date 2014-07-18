@@ -9,58 +9,25 @@
 #include <iostream>
 #include "Component.h"
  
-#include "ArrayComponent.h"
- 
- 
-#include "Logic.h"
-#include "cJSON.h"
 #include <fstream>
 #include "Factory.h"
+#include "Entity.h"
+#include "HPComponent.h"
+#include "WeaponComponent.h"
+#include <memory>
+#include "messaging/MessageDispatcher.h"
 
 using namespace std;
 int main(int argc, const char * argv[])
 {
-     
+    
+	auto system = Entity::Create("System");
+	auto soldier = Entity::Create("Me");
+	auto enemy = Entity::Create("Enemy");
 
-	ifstream is("/Users/user/GitHub/entitySystem/component.json",  std::ios::binary  );
- 
-
-		if (is) {
-			// get length of file:
-			is.seekg (0, is.end);
-			int length = is.tellg();
-			is.seekg (0, is.beg);
-
-			char * buffer = new char [length];
-			// read data as a block:
-			is.read (buffer,length);
-
-			if (is)
-			{
-				cJSON* root = cJSON_Parse (buffer);
-				Component* fighter=Factory::CreateComponent(cJSON_GetArrayItem  ( root, 0 ));
-                Component* team=Factory::CreateComponent(cJSON_GetArrayItem ( root, 1 ));
-                Component* sword=Factory::CreateComponent(cJSON_GetArrayItem ( root, 2));
-                 Component* synth_skill=Factory::CreateComponent(cJSON_GetArrayItem ( root,3));
-                 Component* scroll1=Factory::CreateComponent(cJSON_GetArrayItem ( root, 4));
-                 Component* scroll2=Factory::CreateComponent(cJSON_GetArrayItem ( root, 5));
-                
-              Component* skill=  Logic::SynthSkill(scroll1,scroll2,NULL);
-                Logic::AddPackage(fighter, sword);
-                Logic::AddHp(*fighter, 100);
-                Logic::CastSkills(*fighter,*team,FIREBALL);
-			 
-                
-				std::cout << "all characters read successfully.";
-            }
-			else
-				std::cout << "error: only " << is.gcount() << " could be read";
-			is.close();
-			delete[] buffer;
-		}
-
- 
-	getchar();
+	 
+	soldier->AddC(HPComponent::Create(20));
+	DD(0, system->GetID(), soldier->GetID(), HURT, { (void*)22 });
 	return 0;
 }
 
