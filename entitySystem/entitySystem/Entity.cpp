@@ -2,19 +2,20 @@
 
 
 
-shared_ptr<Entity > Entity::Create (string id )
+Entity* Entity::Create (eComponent id )
 {
-    return shared_ptr<Entity> (new Entity (id));
+    return  new Entity (id );
 }
 
 
-Entity::Entity (string id) :Component (id) {}
+Entity::Entity (eComponent s) :Component (s) {}
 
 bool Entity::HandleMessage (const Telegram& msg)
 {
     for (auto  a : components)
     {
-        a->HandleMessage (msg);
+        if (a)
+            a ->HandleMessage (msg);
 
     }
     return true;

@@ -1,28 +1,22 @@
-#pragma once 
-#include <map>
+#pragma once
+#include <vector>
 #include <cassert>
-#include <string>
-#include <memory>
+
 using namespace std;
 
 #include "Singleton.h"
 class  Component;
 
- 
+
 #define CompMgr ComponentMgr::GetSingleton()
- 
-class ComponentMgr : public Singleton<ComponentMgr> {
-private:
 
-	typedef std::map<int, Component*> ComponentMap;
+class ComponentMgr : public Singleton<ComponentMgr>
+{
 
-private:
-	ComponentMap _ComponentMap;
 public:
- 
-	void            RegisterComponent(Component* NewComponent);
-	Component*		GetComponentFromID(int id) const;
-	Component*			FindComponentFromID(int id);
-	void            RemoveComponent( Component* pComponent);
+    vector<  Component*>  _ComponentMap;
+    void            RegisterComponent (Component* NewComponent);
+    Component*		GetComponentFromID (int id) const;
+
+    void            RemoveComponent (int id);
 };
- 

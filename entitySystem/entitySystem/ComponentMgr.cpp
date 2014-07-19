@@ -4,38 +4,23 @@
 
 Component* ComponentMgr::GetComponentFromID (int id) const
 {
-
     //find the Component
-    ComponentMap::const_iterator ent = _ComponentMap.find ( id );
-    assert ( ( ent !=  _ComponentMap.end() ) && "<ComponentMgr::GetComponentFromID>: invalid ID" );
-    return ent->second;
+    if (_ComponentMap.size()>id)return _ComponentMap[id];
+    return NULL;
 }
 
 
-void ComponentMgr::RemoveComponent (Component* pComponent)
+void ComponentMgr::RemoveComponent (int id)
 {
-    auto find_ = _ComponentMap.find (pComponent->GetID());
-    if (find_!=_ComponentMap.end())
-        _ComponentMap.erase (find_);
+    if (_ComponentMap.size()>id)  _ComponentMap[id]=NULL;
 }
 
 void ComponentMgr::RegisterComponent (Component* NewComponent)
 {
-    _ComponentMap.insert (std::make_pair (NewComponent->GetID(), NewComponent));
+    if (_ComponentMap.size()<=NewComponent->GetID())
+        _ComponentMap.resize (NewComponent->GetID()+1);
+
+    _ComponentMap[NewComponent->GetID()] = NewComponent;
+
 }
 
-Component* ComponentMgr::FindComponentFromID (int id)
-{
-    //find the Component
-    ComponentMap::const_iterator ent = _ComponentMap.find ( id );
-
-    if ( ent == _ComponentMap.end() )
-    {
-        return NULL;
-    }
-
-    else
-    {
-        return ent->second;
-    }
-}

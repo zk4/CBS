@@ -7,16 +7,18 @@
 #include <algorithm>
 #include "assert.h"
 #include "ComponentMgr.h"
+#include "Configuration.h"
 Component*   Component::GetParent() const
 {
     return _parent;
 }
 
-Component* Component::AddC (shared_ptr<Component> c)
+Component* Component::AddC ( Component* c)
 {
     c->SetParent (  this );
-    components .push_back (c);
-    return c.get();
+    if (GetC (c->GetName() ))assert (0);
+    components[c->GetName()]=c;
+    return c ;
 }
 
 
@@ -40,7 +42,7 @@ void Component::AutoEntityID()
     while (true)
     {
         s_iNextValidID++;
-        if (!CompMgr->FindComponentFromID (s_iNextValidID))
+        if (!CompMgr->GetComponentFromID (s_iNextValidID))
         {
             _ID = s_iNextValidID;
             break;
@@ -51,12 +53,15 @@ void Component::AutoEntityID()
 
 Component::~Component()
 {
-    CompMgr->RemoveComponent (  this);
+    CompMgr->RemoveComponent (_ID);
 }
 
-Component::Component (string id) :_parent ( NULL ), _name (id)
+Component::Component (eComponent id) :_parent (NULL), _name (id)
 {
+    memset (components, 0, Component_COUNT*sizeof (Component*));
     AutoEntityID();
 }
+
+
 
 int Component::s_iNextValidID=0;

@@ -8,8 +8,8 @@ class Entity:public Component
 {
 
 public:
-    static  shared_ptr<Entity > Create (string id="");
-    Entity (string   id);
+    static   Entity* Create (eComponent);
+    Entity (eComponent);
     bool  HandleMessage (const Telegram& msg);
 
 };

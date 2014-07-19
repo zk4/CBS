@@ -4,41 +4,44 @@
 
 #include <vector>
 #include "assert.h"
-#include <string>
+
 #include <set>
 #include <map>
-#include <memory>
+#include "Configuration.h"
 #include "messaging/Telegram.h"
 
 using namespace std;
-#define  SC(x) shared_ptr<Component>(x)
+
 class Component
 {
 
 protected:
     Component*				_parent;
-    string					_name;
+    eComponent				 _name;
     int						_ID;
     static int				s_iNextValidID;
     void AutoEntityID();
 public:
-    virtual string&			 GetName()
+    eComponent			 GetName()
     {
         return _name;
     };
     Component*    GetParent() const;
     virtual ~Component();
 
-    Component (string id);
+    Component (eComponent id);
     void    SetParent ( Component* c);
 
 
-    Component* 	AddC (shared_ptr<Component> c);
-
+    Component* 	AddC ( Component* c);
+    inline  Component* Component::GetC (eComponent name)
+    {
+        return components[name];
+    }
     virtual bool HandleMessage (const Telegram& msg);
     int GetID() const;
 
-    vector<shared_ptr<Component>  >   components;
+    Component*   components[Component_COUNT];
 
 
 };
