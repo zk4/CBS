@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "Component.h"
- 
+
 #include <fstream>
 #include "Factory.h"
 #include "Entity.h"
@@ -18,16 +18,16 @@
 #include "messaging/MessageDispatcher.h"
 
 using namespace std;
-int main(int argc, const char * argv[])
+int main (int argc, const char * argv[])
 {
-    
-	auto system = Entity::Create("System");
-	auto soldier = Entity::Create("Me");
-	auto enemy = Entity::Create("Enemy");
 
-	 
-	soldier->AddC(HPComponent::Create(20));
-	DD(0, system->GetID(), soldier->GetID(), HURT, { (void*)22 });
-	return 0;
+    auto system = Entity::Create ("System");
+    auto soldier = Entity::Create ("Me");
+    auto enemy = Entity::Create ("Enemy");
+
+
+    soldier->AddC (HPComponent::Create (20));
+    DD (0, system->GetID(), soldier->GetID(), HURT, { 22 });
+    return 0;
 }
 

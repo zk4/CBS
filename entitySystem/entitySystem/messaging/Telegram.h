@@ -16,7 +16,7 @@ public:
     int          Receiver;
     int          Msg;
     double       DispatchTime;
-    std::vector<void*>   _args;
+    std::vector<double>   args;
 
 
     Telegram() : DispatchTime (-1),
@@ -31,18 +31,18 @@ public:
               int    sender,
               int    receiver,
               int    msg,
-			  std::initializer_list<void*>& args
+              std::initializer_list<double>& args_
              ) : DispatchTime (time),
         Sender (sender),
         Receiver (receiver),
         Msg (msg)
 
     {
-  
-		for (auto d : args)
+
+        for (auto d : args_)
         {
- 
-            _args.push_back (d);
+
+            args.push_back (d);
         }
     }
 

@@ -11,7 +11,7 @@ using std::cout;
 using std::set;
 
 
-void MessageDispatcher::_Discharge(Component* pReceiver,
+void MessageDispatcher::_Discharge (Component* pReceiver,
                                     const Telegram& telegram)
 {
     if (!pReceiver->HandleMessage (telegram))
@@ -26,18 +26,18 @@ void MessageDispatcher::DispatchMessageZZ (double  delay_micro_sec,
         int    sender,
         int    receiver,
         int    msg,
-		std::initializer_list<void*> args)
+        std::initializer_list<double > args)
 {
     auto pSender   = CompMgr->GetComponentFromID (sender);
-	auto pReceiver = CompMgr->GetComponentFromID(receiver);
+    auto pReceiver = CompMgr->GetComponentFromID (receiver);
     //make sure the receiver is valid
     if (pReceiver == NULL)
     {
         cout << "\nWarning! No Receiver with ID of " << receiver << " found"<<endl<<fflush;
         return;
     }
-    
-	Telegram telegram(0, sender, receiver, msg, args);
+
+    Telegram telegram (0, sender, receiver, msg, args);
     if (delay_micro_sec <= 0.0f)
     {
         //cout <<"sender:"<<sender<<" \nmsg "<<msg << "\nInstant telegram dispatched at time: " << Clock->GetCurrentTime()<<fflush;
@@ -51,8 +51,11 @@ void MessageDispatcher::DispatchMessageZZ (double  delay_micro_sec,
         _PriorityQ.insert (telegram);
     }
 }
- 
 
+void MessageDispatcher::DispatchMessageZZ (int receiver, int msg, std::initializer_list<double > list)
+{
+    DispatchMessageZZ (0, receiver, receiver,msg,list);
+}
 void MessageDispatcher::DispatchDelayedMessages()
 {
     long CurrentTime = Clock->GetCurrentTimes();
@@ -61,7 +64,7 @@ void MessageDispatcher::DispatchDelayedMessages()
             (_PriorityQ.begin()->DispatchTime > 0) )
     {
         const Telegram& telegram = *_PriorityQ.begin();
-		auto pReceiver = CompMgr->GetComponentFromID(telegram.Receiver);
+        auto pReceiver = CompMgr->GetComponentFromID (telegram.Receiver);
         _Discharge (pReceiver, telegram);
         _PriorityQ.erase (_PriorityQ.begin());
     }

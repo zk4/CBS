@@ -1,9 +1,11 @@
-#pragma  once 
+#pragma  once
 
 enum eTelegram
 {
-	NONE,
-	HURT,
-	DEAD,
-	ACTION_HURT,
+    NONE,
+    HURT,
+    DEAD,
+    ACTION_HURT,
+    SET_POS ,
+
 };

@@ -26,13 +26,14 @@ private:
 
     std::set<Telegram> _PriorityQ;
 
-	void _Discharge(Component* pReceiver, const Telegram& msg);
+    void _Discharge (Component* pReceiver, const Telegram& msg);
 
 
 
 public:
     static   MessageDispatcher* getMessageDispatcher();
     void DispatchDelayedMessages();
-	void DispatchMessageZZ(double delay_micro_sec, int sender, int receiver, int msg, std::initializer_list<void*> list);
-  
+    void DispatchMessageZZ (double delay_micro_sec, int sender, int receiver, int msg, std::initializer_list<double > list= {});
+    void DispatchMessageZZ ( int receiver, int msg, std::initializer_list<double > list = {});
+
 };
