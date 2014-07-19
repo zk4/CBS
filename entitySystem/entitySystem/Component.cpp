@@ -25,7 +25,6 @@ Component* Component::AddC ( Component* c)
 
 bool Component::HandleMessage (const Telegram& msg)
 {
-
     return false;
 }
 

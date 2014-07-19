@@ -47,6 +47,7 @@ public:
     CCPoint  _velocity;
     CCPoint  _acceleration;
     float    _maxVelocity;
+    float    _separate_threshhold;
     float    _maxAcceleration;
 
     static MoveComponent* C (
@@ -55,7 +56,8 @@ public:
         CCPoint  velocity,
         CCPoint  acceleration,
         float    maxVelocity,
-        float    maxAcceleration
+        float    maxAcceleration,
+        float     maxtolerateRnage
     )
     {
         return new MoveComponent (
@@ -64,7 +66,9 @@ public:
                    velocity,
                    acceleration,
                    maxVelocity,
-                   maxAcceleration
+                   maxAcceleration,
+                   maxtolerateRnage
+
                );
     }
     MoveComponent (
@@ -73,7 +77,9 @@ public:
         CCPoint  velocity,
         CCPoint  acceleration,
         float    maxVelocity,
-        float    maxAcceleration) :Component (Component_MOVE)
+        float    maxAcceleration,
+        float     separate_threshhold
+    ) :Component (Component_MOVE)
     {
 
         _moveTarget = moveTarget;
@@ -81,7 +87,7 @@ public:
         _acceleration = acceleration;
         _maxVelocity = maxVelocity;
         _maxAcceleration = maxAcceleration;
-
+        _separate_threshhold=separate_threshhold;
 
     }
 
@@ -128,18 +134,18 @@ public:
         for (int i = 0; i < ids_insight.size(); ++i)
         {
             auto c = CompMgr->GetComponentFromID (ids_insight[i]);
-            auto target = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
-            CCPoint direction = ccpSub (target->_pos, _pos);
+            auto moveC = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
+            CCPoint direction = ccpSub (moveC->_pos, _pos);
             float distance = ccpLength (direction);
-            static float SEPARATE_THRESHHOLD = 20;
 
-            if (distance < SEPARATE_THRESHHOLD)
+
+            if (distance < _separate_threshhold)
             {
                 direction = ccpNormalize (direction);
-                steering = ccpAdd (steering, ccpMult (direction, _maxAcceleration));
+                steering =   ccpAdd (steering, ccpMult (direction, _maxAcceleration));
             }
         }
-        return steering;
+        return -steering  ;
     }
 
     bool HandleMessage (const Telegram& msg)
@@ -151,6 +157,7 @@ public:
             //  DD (GetParent()->GetID(), SEARCH, {});
             auto pos = separate();
             DD (GetParent()->GetID(), Telegram_FOLLOW_POS, { pos.x, pos.y });
+            _pos  = _pos+ pos;
         }
         break;
         case Telegram_SET_POS:
@@ -202,6 +209,7 @@ public:
             {
                 auto c = CompMgr->_ComponentMap[i];
                 if (!c)continue;
+                if (c->GetParent() && c->GetID() == c->GetParent()->GetID())continue;
                 MoveComponent* target = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
                 if (!target)continue;
                 if (target->GetParent() != GetParent())
@@ -216,7 +224,15 @@ public:
             DD (GetParent()->GetID(), Telegram_SEARCH_RESULT, { (double) (size_t)&targets });
         }
         break;
+        case Telegram_DRAW:
+        {
+            MoveComponent* self = dynamic_cast<MoveComponent*> (GetParent()->GetC (Component_MOVE));
+            glLineWidth (3);
+            ccDrawColor4B (255, 0,  0, 255);
 
+            ccDrawCircle (self->_pos, _range, 0, 40, false);
+        }
+        break;
         default:
             break;
         }
@@ -335,6 +351,12 @@ public:
         {
 
             _node->setRotation (_node->getRotation() + msg.args[0]);
+        }
+        break;
+        case Telegram_DRAW:
+
+        {
+            _node->visit();
         }
         break;
         default:

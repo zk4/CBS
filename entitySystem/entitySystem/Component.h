@@ -17,12 +17,12 @@ class Component
 
 protected:
     Component*				_parent;
-    eComponent				 _name;
+    eComponent				_name;
     int						_ID;
     static int				s_iNextValidID;
     void AutoEntityID();
 public:
-    eComponent			 GetName()
+    eComponent				GetName()
     {
         return _name;
     };
@@ -30,18 +30,16 @@ public:
     virtual ~Component();
 
     Component (eComponent id);
-    void    SetParent ( Component* c);
+    void    SetParent (Component* c);
 
-
-    Component* 	AddC ( Component* c);
+    Component* 	AddC (Component* c);
     inline  Component* Component::GetC (eComponent name)
     {
         return components[name];
     }
+
     virtual bool HandleMessage (const Telegram& msg);
     int GetID() const;
-
     Component*   components[Component_COUNT];
-
 
 };
