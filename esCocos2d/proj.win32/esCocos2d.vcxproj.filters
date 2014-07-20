@@ -15,31 +15,31 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\entitySystem\entitySystem\cJSON\cJSON.c">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\entitySystem\entitySystem\Component.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\entitySystem\entitySystem\ComponentMgr.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\entitySystem\entitySystem\Factory.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\entitySystem\entitySystem\Singleton.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\entitySystem\entitySystem\messaging\MessageDispatcher.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\entitySystem\entitySystem\Time\CrudeTimer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\entitySystem\entitySystem\Time\PrecisionTimer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\cJSON\cJSON.c">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\messaging\MessageDispatcher.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Time\CrudeTimer.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Time\PrecisionTimer.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Factory.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Component.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\ComponentMgr.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Singleton.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,40 +50,40 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\cJSON\cJSON.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\Component.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\ComponentMgr.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\Components.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\Configuration.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\Factory.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\Singleton.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\messaging\MessageDispatcher.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\messaging\Telegram.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\Time\CrudeTimer.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\entitySystem\entitySystem\Time\PrecisionTimer.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\HelloWorldScene.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\cJSON\cJSON.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\messaging\MessageDispatcher.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\messaging\Telegram.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Time\CrudeTimer.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Time\PrecisionTimer.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Singleton.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Component.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\ComponentMgr.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Factory.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Configuration.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\es\entitySystem\entitySystem\entitySystem\Components.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
