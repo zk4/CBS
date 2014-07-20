@@ -17,7 +17,7 @@ using namespace std;
 
 const double SEND_MSG_IMMEDIATELY = 0.0;
 const int    NO_ADDITIONAL_INFO   = 0;
-const int    SENDER_ID_IRRELEVANT = -1;
+const int    RECEIVER_ALL = -1;
 
 
 class MessageDispatcher : public Singleton<MessageDispatcher>
@@ -35,5 +35,6 @@ public:
     void DispatchDelayedMessages();
     void DispatchMessageZZ (double delay_micro_sec, int sender, int receiver, int msg, std::initializer_list<double > list= {});
     void DispatchMessageZZ ( int receiver, int msg, std::initializer_list<double > list = {});
-
+    //dispatch to all component
+    void DispatchMessageZZ (int msg, std::initializer_list<double > list = {});
 };

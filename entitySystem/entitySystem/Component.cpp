@@ -8,10 +8,6 @@
 #include "assert.h"
 #include "ComponentMgr.h"
 #include "Configuration.h"
-Component*   Component::GetParent() const
-{
-    return _parent;
-}
 
 Component* Component::AddC ( Component* c)
 {
@@ -21,32 +17,21 @@ Component* Component::AddC ( Component* c)
     return c ;
 }
 
-
-
 bool Component::HandleMessage (const Telegram& msg)
 {
-    return false;
+    for (auto a : components)
+    {
+        if (a)
+            a->HandleMessage (msg);
+
+    }
+    return true;
 }
 
-void Component::SetParent ( Component * c) //for listening
-{
-    _parent = c;
-}
-int Component::GetID() const
-{
-    return _ID;
-}
 void Component::AutoEntityID()
 {
-    while (true)
-    {
-        s_iNextValidID++;
-        if (!CompMgr->GetComponentFromID (s_iNextValidID))
-        {
-            _ID = s_iNextValidID;
-            break;
-        }
-    }
+    _ID = s_iNextValidID++;
+    if (s_iNextValidID == INT_MAX)assert (0);
     CompMgr->RegisterComponent (this);
 }
 
@@ -60,7 +45,5 @@ Component::Component (eComponent id) :_parent (NULL), _name (id)
     memset (components, 0, Component_COUNT*sizeof (Component*));
     AutoEntityID();
 }
-
-
 
 int Component::s_iNextValidID=0;

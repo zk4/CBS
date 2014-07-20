@@ -56,6 +56,15 @@ void MessageDispatcher::DispatchMessageZZ (int receiver, int msg, std::initializ
 {
     DispatchMessageZZ (0, receiver, receiver,msg,list);
 }
+
+void  MessageDispatcher::DispatchMessageZZ (int msg, std::initializer_list<double > list)
+{
+    for (auto a : CompMgr->_ComponentMap)
+    {
+        DispatchMessageZZ (0, 0, a->GetID(), msg, list);
+    }
+}
+
 void MessageDispatcher::DispatchDelayedMessages()
 {
     long CurrentTime = Clock->GetCurrentTimes();

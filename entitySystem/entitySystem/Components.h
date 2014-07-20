@@ -10,7 +10,7 @@ static bool ifOutWindow (Component* c);
 class  AIComponent :public Component
 {
 public:
-    static  AIComponent*  C()
+    static  AIComponent*  Create()
     {
         return  new AIComponent();
     }
@@ -260,7 +260,7 @@ public:
     {
         return _node;
     };
-    static  CocosComponent* C (CCNode* node)
+    static  CocosComponent* Create (CCNode* node)
     {
         return  new CocosComponent (node);
     }
@@ -283,24 +283,8 @@ public:
             _node->setPosition (ccp (msg.args[0], msg.args[1]));
         }
         break;
-        case Telegram_MOVETO_POS:
-        {
-            _node->stopActionByTag (Telegram_MOVETO_POS);
-
-            auto act = CCMoveTo::create (msg.args[0], ccp (msg.args[1], msg.args[2]));
-            act->setTag (Telegram_MOVETO_POS);
-            _node->runAction (act);
-        }
-        break;
-        case Telegram_FOLLOW_POS:
-        {
-
-            auto touch = ccp (msg.args[0], msg.args[1]);
 
 
-            _node->setPosition (_node->getPosition() + touch);
-        }
-        break;
         case Telegram_ROTATE:
         {
 
@@ -348,9 +332,10 @@ public:
     double			_dWanderJitter;
     CCPoint			_vWanderTarget;
     double			_dWanderDistance;
-    double			_dFrictionForce;
+    double			_dFrictionMu;
     double			_dWanderRadius;
-    static MoveComponent* C (
+    double			 _dBoundingRadius;
+    static MoveComponent* Create (
 
 
         CCPoint			 vPos,
@@ -358,18 +343,17 @@ public:
         double			 dMass,
         double			 dMaxSpeed,
         double			 dMaxForce,
-        double			 dMaxTurnRate
+        double			 dMaxTurnRate,
+        double			 dFriction¦Ì
     )
     {
         return new MoveComponent (
-
-
                    vPos,
-
                    dMass,
                    dMaxSpeed,
                    dMaxForce,
-                   dMaxTurnRate
+                   dMaxTurnRate,
+                   dFriction¦Ì
                );
     }
     MoveComponent (
@@ -379,19 +363,16 @@ public:
         double			 dMass,
         double			 dMaxSpeed,
         double			 dMaxForce,
-        double			 dMaxTurnRate) :Component (Component_MOVE)
+        double			 dMaxTurnRate,
+        double			dFrictionMu) :Component (Component_MOVE)
     {
-
-
-
         _pos = vPos;
-
         _dMass = dMass;
         _dMaxSpeed = dMaxSpeed;
         _dMaxForce = dMaxForce;
         _dMaxTurnRate = dMaxTurnRate;
         _vHeading=_vVelocity = ccp (0,0);
-        _dFrictionForce=0.1;
+        _dFrictionMu = dFrictionMu;
     }
 
     void update (CCPoint  SteeringForce,float time_elapsed)
@@ -399,8 +380,13 @@ public:
 
 
         //Acceleration = Force/Mass
+        CCPoint friction = (ccpLength (_vVelocity)>0) ? -_vVelocity.normalize()*_dFrictionMu*_dMass: CCPointZero;
 
-        auto  acceleration = (SteeringForce )/ _dMass;
+
+        SteeringForce = friction + SteeringForce;
+
+        auto  acceleration =  SteeringForce   / _dMass;
+
 
         //update velocity
 
@@ -471,7 +457,7 @@ public:
 
             //scale the force inversely proportional to the agents distance
             //from its neighbor.
-            SteeringForce  = SteeringForce  +  ToAgent.normalize() / ccpLength (ToAgent);
+            SteeringForce = SteeringForce + ToAgent.normalize() *moveC->_dMaxForce;
 
         }
 
@@ -591,6 +577,91 @@ public:
         //and steer towards it
         //  return Target - _pos;
     }
+    CCPoint  Interpose (const MoveComponent* AgentA,
+                        const MoveComponent* AgentB)
+    {
+        //first we need to figure out where the two agents are going to be at
+        //time T in the future. This is approximated by determining the time
+        //taken to reach the mid way point at the current time at at max speed.
+        CCPoint MidPoint = (AgentA->_pos + AgentB->_pos) / 2.0;
+
+        double TimeToReachMidPoint = ccpDistance (_pos, MidPoint) /
+                                     _dMaxSpeed;
+
+        //now we have T, we assume that agent A and agent B will continue on a
+        //straight trajectory and extrapolate to get their future positions
+        CCPoint APos = AgentA->_pos + AgentA->_vVelocity * TimeToReachMidPoint;
+        CCPoint BPos = AgentB->_pos + AgentB->_vVelocity * TimeToReachMidPoint;
+
+        //calculate the mid point of these predicted positions
+        MidPoint = (APos + BPos) / 2.0;
+
+        //then steer to Arrive at it
+        return Arrive (MidPoint, fast);
+    }
+
+    //--------------------------- Hide ---------------------------------------
+    //
+    //------------------------------------------------------------------------
+    CCPoint  Hide (const MoveComponent*           hunter,
+                   const vector<MoveComponent*>&  obstacles)
+    {
+        double    DistToClosest = (std::numeric_limits<double>::max)();
+        CCPoint BestHidingSpot;
+
+        std::vector<MoveComponent*>::const_iterator curOb = obstacles.begin();
+        std::vector<MoveComponent*>::const_iterator closest;
+
+        while (curOb != obstacles.end())
+        {
+            //calculate the position of the hiding spot for this obstacle
+            CCPoint HidingSpot = GetHidingPosition ((*curOb)->_pos ,
+                                                    (*curOb)->_dBoundingRadius ,
+                                                    hunter->_pos);
+
+            //work in distance-squared space to find the closest hiding
+            //spot to the agent
+            double dist = ccpDistanceSQ (HidingSpot, _pos);
+
+            if (dist < DistToClosest)
+            {
+                DistToClosest = dist;
+
+                BestHidingSpot = HidingSpot;
+
+                closest = curOb;
+            }
+
+            ++curOb;
+
+        }//end while
+
+        //if no suitable obstacles found then Evade the hunter
+        if (DistToClosest == (std::numeric_limits<float>::max)())
+        {
+            return Evade (hunter);
+        }
+
+        //else use Arrive on the hiding spot
+        return Arrive (BestHidingSpot, fast);
+    }
+    CCPoint  GetHidingPosition (const CCPoint& posOb,
+                                const double     radiusOb,
+                                const CCPoint& posHunter)
+    {
+        //calculate how far away the agent is to be from the chosen obstacle's
+        //bounding radius
+        const double DistanceFromBoundary = 30.0;
+        double       DistAway = radiusOb + DistanceFromBoundary;
+
+        //calculate the heading toward the object from the hunter
+        CCPoint ToOb =   (posOb - posHunter).normalize();
+
+        //scale it to size and add to the obstacles position to get
+        //the hiding spot.
+        return (ToOb * DistAway) + posOb;
+    }
+
 
 
     bool HandleMessage (const Telegram& msg)
@@ -602,7 +673,7 @@ public:
             DD (GetParent()->GetID(), Telegram_SEARCH, {});
 
             update (Separation(), msg.args[0]);
-            DD (GetParent()->GetID(), Telegram_FOLLOW_POS, { _pos.x, _pos.y });
+            DD (GetParent()->GetID(), Telegram_SET_POS, { _pos.x, _pos.y });
 
         }
         break;
@@ -641,7 +712,7 @@ class  RadarComponent :public Component
 public:
     float _range;
 
-    static RadarComponent* C (float  range)
+    static RadarComponent* Create (float  range)
     {
         return  new RadarComponent (range);
     }

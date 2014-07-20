@@ -22,15 +22,29 @@ protected:
     static int				s_iNextValidID;
     void AutoEntityID();
 public:
-    eComponent				GetName()
+    static   Component* Create (eComponent e)
+    {
+        return  new Component ( e);
+    }
+    inline  int  GetID() const
+    {
+        return _ID;
+    }
+    inline eComponent				GetName()
     {
         return _name;
     };
-    Component*    GetParent() const;
+    inline Component*    GetParent() const
+    {
+        return _parent;
+    }
+    inline  void SetParent (Component * c)
+    {
+        _parent = c;
+    }
     virtual ~Component();
 
     Component (eComponent id);
-    void    SetParent (Component* c);
 
     Component* 	AddC (Component* c);
     inline  Component* Component::GetC (eComponent name)
@@ -39,7 +53,7 @@ public:
     }
 
     virtual bool HandleMessage (const Telegram& msg);
-    int GetID() const;
+
     Component*   components[Component_COUNT];
 
 };
