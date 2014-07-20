@@ -132,8 +132,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\cJSON\cJSON.c" />
     <ClCompile Include="..\Classes\cocos\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\cocos\HelloWorldScene.cpp" />
-    <ClCompile Include="..\Classes\component_core\Component.cpp" />
-    <ClCompile Include="..\Classes\component_core\ComponentMgr.cpp" />
+    <ClCompile Include="..\Classes\es\Component.cpp" />
+    <ClCompile Include="..\Classes\es\ComponentMgr.cpp" />
     <ClCompile Include="..\Classes\messaging\MessageDispatcher.cpp" />
     <ClCompile Include="..\Classes\Singleton.cpp" />
     <ClCompile Include="..\Classes\Time\CrudeTimer.cpp" />
@@ -145,9 +145,9 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\cocos\AppDelegate.h" />
     <ClInclude Include="..\Classes\cocos\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\Components.h" />
-    <ClInclude Include="..\Classes\component_core\Component.h" />
-    <ClInclude Include="..\Classes\component_core\ComponentMgr.h" />
     <ClInclude Include="..\Classes\Configuration.h" />
+    <ClInclude Include="..\Classes\es\Component.h" />
+    <ClInclude Include="..\Classes\es\ComponentMgr.h" />
     <ClInclude Include="..\Classes\messaging\MessageDispatcher.h" />
     <ClInclude Include="..\Classes\messaging\Telegram.h" />
     <ClInclude Include="..\Classes\Singleton.h" />

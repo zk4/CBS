@@ -24,12 +24,6 @@
     <ClCompile Include="..\Classes\messaging\MessageDispatcher.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\component_core\Component.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\component_core\ComponentMgr.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\cocos\AppDelegate.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -37,6 +31,12 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\cJSON\cJSON.c">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\es\Component.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\es\ComponentMgr.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,12 +65,6 @@
     <ClInclude Include="..\Classes\messaging\Telegram.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\component_core\Component.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\component_core\ComponentMgr.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\cocos\AppDelegate.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -78,6 +72,12 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\cJSON\cJSON.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\es\Component.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\es\ComponentMgr.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
