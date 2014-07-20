@@ -1,10 +1,10 @@
 #pragma  once
 
-#include "Component.h"
+#include "es/Component.h"
 #include "Configuration.h"
 #include "messaging/MessageDispatcher.h"
 #include "cocos2d.h"
-#include "ComponentMgr.h"
+#include "es/ComponentMgr.h"
 using namespace cocos2d;
 static bool ifOutWindow (Component* c);
 class  AIComponent :public Component
