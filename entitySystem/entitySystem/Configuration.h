@@ -21,8 +21,8 @@ enum eTelegram
     Telegram_DEAD,
     Telegram_ACTION_HURT,
     Telegram_SET_POS,
-
-
+    Telegram_ARRIVE,
+    Telegram_UPDATE,
     Telegram_AI,
     Telegram_DRAW,
     Telegram_ROTATE,

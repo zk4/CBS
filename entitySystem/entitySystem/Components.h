@@ -198,60 +198,6 @@ public:
 
 
 
-
-class WeaponComponent : public Component
-{
-
-public:
-    WeaponComponent() :Component (Component_WEAPON)
-    {
-    }
-    static  WeaponComponent* Create()
-    {
-        return new WeaponComponent();
-    }
-
-    bool HandleMessage (const Telegram& msg)
-    {
-        return false;
-    }
-    void Attack (int id, double hp)
-    {
-        Dispatcher->DispatchMessageZZ (0, GetID(), id, Telegram_HURT, { hp });
-    }
-};
-
-
-
-
-class HPComponent : public Component
-{
-    int HP;
-
-public:
-    HPComponent (int hp) :Component (Component_HP), HP (hp)
-    {
-    }
-    static  HPComponent* Create (int hp)
-    {
-        return  new HPComponent (hp);
-    }
-    bool  HandleMessage (const Telegram& msg)
-    {
-        if (msg.Msg == Telegram_HURT)
-        {
-            HP -= (int)msg.args[0];
-            if (HP < 0)
-            {
-                DD (0, GetID(), GetParent()->GetID(), Telegram_DEAD, { 0 });
-            }
-        }
-
-        return false;
-    }
-
-};
-
 class  CocosComponent :public Component
 {
 public:
@@ -335,6 +281,7 @@ public:
     double			_dFrictionMu;
     double			_dWanderRadius;
     double			 _dBoundingRadius;
+    CCPoint		_vSteeringForce;
     static MoveComponent* Create (
 
 
@@ -356,24 +303,7 @@ public:
                    dFriction¦Ì
                );
     }
-    MoveComponent (
 
-        CCPoint			 vPos,
-
-        double			 dMass,
-        double			 dMaxSpeed,
-        double			 dMaxForce,
-        double			 dMaxTurnRate,
-        double			dFrictionMu) :Component (Component_MOVE)
-    {
-        _pos = vPos;
-        _dMass = dMass;
-        _dMaxSpeed = dMaxSpeed;
-        _dMaxForce = dMaxForce;
-        _dMaxTurnRate = dMaxTurnRate;
-        _vHeading=_vVelocity = ccp (0,0);
-        _dFrictionMu = dFrictionMu;
-    }
 
     void update (CCPoint  SteeringForce,float time_elapsed)
     {
@@ -401,10 +331,19 @@ public:
         //update the position
         _pos = _pos+ _vVelocity * time_elapsed;
 
+        CCSize size = CCDirector::sharedDirector()->getWinSize();
+        if (_pos.x<0 || _pos.x>size.width)
+            _vVelocity.x = -_vVelocity.x;
+
+        if (_pos.y<0 || _pos.y>size.height)
+            _vVelocity.y = -_vVelocity.y;
+
+
+
         //update the heading if the vehicle has a non zero velocity
         if (ccpLength (_vVelocity) > 0.00000001)
         {
-            _vHeading =   _vVelocity.normalize() ;
+            //  _vHeading =   _vVelocity.normalize() ;
 
             _vSide = ccpPerp (_vHeading);
 
@@ -439,6 +378,45 @@ public:
         return (DesiredVelocity - _vVelocity);
     }
 
+    //-------------------------------- Cohesion ------------------------------
+    //
+    //  returns a steering force that attempts to move the agent towards the
+    //  center of mass of the agents in its immediate area
+    //------------------------------------------------------------------------
+    CCPoint Cohesion (const vector<MoveComponent*> &neighbors)
+    {
+        //first find the center of mass of all the agents
+        CCPoint CenterOfMass, SteeringForce;
+
+        int NeighborCount = 0;
+
+        //iterate through the neighbors and sum up all the position vectors
+        for (unsigned int a = 0; a < neighbors.size(); ++a)
+        {
+            //make sure *this* agent isn't included in the calculations and that
+            //the agent being examined is close enough ***also make sure it doesn't
+            //include the evade target ***
+
+
+            CenterOfMass  = CenterOfMass+ neighbors[a]->_pos;
+
+            ++NeighborCount;
+
+        }
+
+        if (NeighborCount > 0)
+        {
+            //the center of mass is the average of the sum of positions
+            CenterOfMass  = CenterOfMass/ (double)NeighborCount;
+
+            //now seek towards that position
+            SteeringForce = Seek (CenterOfMass);
+        }
+
+        //the magnitude of cohesion is usually much larger than separation or
+        //allignment so it usually helps to normalize it.
+        return    SteeringForce.normalize() ;
+    }
     CCPoint  Separation ( )
     {
         CCPoint SteeringForce;
@@ -663,17 +641,120 @@ public:
     }
 
 
+    //---------------------------- Alignment ---------------------------------
+    //
+    //  returns a force that attempts to align this agents heading with that
+    //  of its neighbors
+    //------------------------------------------------------------------------
+    CCPoint Alignment (const vector<MoveComponent*>& neighbors)
+    {
+        //used to record the average heading of the neighbors
+        CCPoint AverageHeading;
 
+        //used to count the number of vehicles in the neighborhood
+        int    NeighborCount = 0;
+
+        //iterate through all the tagged vehicles and sum their heading vectors
+        for (unsigned int a = 0; a < neighbors.size(); ++a)
+        {
+            //make sure *this* agent isn't included in the calculations and that
+            //the agent being examined  is close enough ***also make sure it doesn't
+            //include any evade target ***
+
+            {
+                AverageHeading  = AverageHeading + neighbors[a]->_vHeading;
+
+                ++NeighborCount;
+            }
+        }
+
+        //if the neighborhood contained one or more vehicles, average their
+        //heading vectors.
+        if (NeighborCount > 0)
+        {
+            AverageHeading = AverageHeading/ (double)NeighborCount;
+
+            AverageHeading = AverageHeading- _vHeading;
+        }
+
+        return AverageHeading;
+    }
+
+    MoveComponent (
+
+        CCPoint			 vPos,
+
+        double			 dMass,
+        double			 dMaxSpeed,
+        double			 dMaxForce,
+        double			 dMaxTurnRate,
+        double			dFrictionMu) :Component (Component_MOVE)
+    {
+        _pos = vPos;
+        _dMass = dMass;
+        _dMaxSpeed = dMaxSpeed;
+        _dMaxForce = dMaxForce;
+        _dMaxTurnRate = dMaxTurnRate;
+        _vHeading = _vVelocity = ccp (0, 0);
+        _dFrictionMu = dFrictionMu;
+
+        ttf_velocity = CCLabelTTF::create();
+        ttf_velocity->setFontSize (32);
+        ttf_velocity->setString ("V");
+        ttf_velocity->retain();
+
+        ttf_head = CCLabelTTF::create();
+        ttf_head->setFontSize (32);
+        ttf_head->setString ("H");
+        ttf_head->retain();
+        ttf_head->setColor (ccc3 (255, 0, 255 ));
+
+    }
+    CCLabelTTF* ttf_velocity;
+    CCLabelTTF* ttf_head;
     bool HandleMessage (const Telegram& msg)
     {
         switch (msg.Msg)
         {
+        case Telegram_DRAW:
+        {
+            if (ccpLength (_vVelocity)>0.5)
+            {
+                ccDrawColor4B (255, 255, 255, 255);
+                ccDrawLine (_pos, _pos + _vVelocity);
+                ttf_velocity->setPosition (_pos + _vVelocity / 2);
+                ttf_velocity->visit();
+
+                ccDrawColor4B (255, 0, 255, 255);
+                ccDrawLine (_pos, _pos + _vHeading.normalize() * 50);
+                ttf_head->setPosition (_pos + _vHeading.normalize() * 50 / 2);
+                ttf_head->visit();
+            }
+
+        }
+        break;
+        case Telegram_UPDATE:
+        {
+            update (_vSteeringForce, msg.args[0]);
+            DD (GetParent()->GetID(), Telegram_SET_POS, { _pos.x, _pos.y });
+        }
+        break;
+        case Telegram_ARRIVE:
+        {
+            DD (GetParent()->GetID(), Telegram_SEARCH, {});
+            _vSteeringForce =  Arrive (ccp (msg.args[0], msg.args[1]), fast);
+            _vHeading = ccp (msg.args[0], msg.args[1])-_pos;
+            update (_vSteeringForce,  0.1);
+
+
+        }
+        break;
         case Telegram_AI:
         {
             DD (GetParent()->GetID(), Telegram_SEARCH, {});
+            _vSteeringForce =  Separation();
 
-            update (Separation(), msg.args[0]);
-            DD (GetParent()->GetID(), Telegram_SET_POS, { _pos.x, _pos.y });
+
 
         }
         break;
@@ -782,10 +863,148 @@ public:
 };
 
 
+class HPComponent : public Component
+{
+
+
+public:
+    int HP;
+    HPComponent (int hp) :Component (Component_HP), HP (hp)
+    {
+    }
+    static  HPComponent* Create (int hp)
+    {
+        return  new HPComponent (hp);
+    }
+    bool  HandleMessage (const Telegram& msg)
+    {
+
+        switch (msg.Msg)
+        {
+        case Telegram_HURT:
+        {
+            HP -= (int)msg.args[0];
+            if (HP < 0)
+            {
+                HP=0;
+                DD (  Telegram_DEAD, { (double) GetParent()->GetID() });
+            }
+        }
+        break;
+        case Telegram_DRAW:
+        {
+            auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
+            ccDrawSolidRect (moveC->_pos+ ccp (-HP/2,40), moveC->_pos + ccp (HP/2, 45),  {255,0,0,122});
+        }
+        break;
+
+        default:
+            break;
+        }
+
+
+        return false;
+    }
+
+};
+
+
+
+class WeaponComponent : public Component
+{
+    vector< int >  ids_insight;
+    CCPoint  _ccpTarget;
+public:
+    WeaponComponent() :Component (Component_WEAPON)
+    {
+    }
+    static  WeaponComponent* Create()
+    {
+        return new WeaponComponent();
+    }
+
+    bool HandleMessage (const Telegram& msg)
+    {
+        switch (msg.Msg)
+        {
+        case Telegram_AI:
+        {
+            static int  checkcount=0;
+            //   if (checkcount>10)
+            {
+                if (ids_insight.size() > 0)
+                {
+                    Component* a=NULL;
+                    for (auto c : ids_insight)
+                    {
+
+                        auto hpC = (HPComponent*)CompMgr->GetComponentFromID (c)->GetC (Component_HP);
+                        if (hpC && hpC->HP>0)
+                        {
+                            a = CompMgr->GetComponentFromID (c);
+                            break;
+                        }
+                    }
+                    if (!a)return false;
+
+                    auto moveC = (MoveComponent*)a->GetC (Component_MOVE);
+                    if (moveC)
+                    {
+                        _ccpTarget = moveC->_pos;
+                        DD (a->GetID(), Telegram_ARRIVE, { moveC->_pos.x, moveC->_pos.y });
+                        DD (a->GetID(), Telegram_HURT, { 1 });
+                    }
+                }
+                checkcount=0;
+
+
+            }
+            checkcount++;
+        }
+        break;
+        case     Telegram_DRAW  :
+        {
+            auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
+
+            if (moveC)
+            {
+                ccDrawColor4B (122, 122, 255, 255);
+                ccDrawLine (moveC->_pos, _ccpTarget);
+            }
+        }
+        break;
+        case  Telegram_SEARCH_RESULT:
+        {
+            if ( ids_insight.empty())
+            {
+                vector<int>* lists = (vector<int>*) (size_t) (msg.args[0]);
+                for (int i = 0; i < lists->size(); ++i)
+                {
+                    ids_insight.push_back ((*lists)[i]);
+                }
+            }
+
+        }
+        break;
+
+        default:
+            break;
+        }
+        return false;
+
+    }
+    void Attack (int id, double hp)
+    {
+        Dispatcher->DispatchMessageZZ (0, GetID(), id, Telegram_HURT, { hp });
+    }
+};
+
+
+
 
 bool ifOutWindow (Component* c)
 {
-
+    return false;
     MoveComponent* m = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
     //MoveComponent* m2 = dynamic_cast<MoveComponent*> (c->GetC(Component_MOVE));
     auto  _winsize = CCDirector::sharedDirector()->getWinSize();
