@@ -23,6 +23,7 @@ enum eTelegram
     Telegram_SET_POS,
     Telegram_MOVETO_POS,
     Telegram_FOLLOW_POS,
+
     Telegram_AI,
     Telegram_DRAW,
     Telegram_ROTATE,
