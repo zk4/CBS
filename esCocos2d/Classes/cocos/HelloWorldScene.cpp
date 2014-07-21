@@ -54,15 +54,25 @@ bool HelloWorld::init()
      double			 dMaxTurnRate
     */
     srand (time (NULL));
-
-    for (int i=0; i<20; ++i)
+	//ball = Component::Create(Entity_);
+	//ball->AddC(Box2DComponent::Create());
+    for (int i=0; i<10; ++i)
     {
-
+		
         auto   bad = Component::Create (Entity_);
+		auto sprite = CCSprite::createWithSpriteFrameName("munch1.png");
+		CCMenuItemImage* cc = CCMenuItemImage::create("CloseNormal.png", "CloseSelected.png", "CloseSelected.png", this, menu_selector(HelloWorld::menuCloseCallback));
+		CCMenu* c = CCMenu::create(cc,NULL);
+		CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(c, 0,false);
+		sprite->addChild(c);
+		sprite->setPosition(CCPointZero);
+		cc->setPosition(CCPointZero);
+		c->setPosition(CCPointZero);
 
         bad->AddC (RadarComponent::Create (50));
         bad->AddC (MoveComponent::Create (   { 100, 100 }, 1,100, 1000, 100,10));
-        bad->AddC (CocosComponent::Create (CCSprite::createWithSpriteFrameName ("munch1.png")));
+		bad->AddC(CocosComponent::Create(sprite));
+		 
         bad->AddC (HPComponent::Create (100));
         bad->AddC (WeaponComponent::Create());
         bads.push_back (bad);
@@ -107,7 +117,7 @@ bool HelloWorld::ccTouchBegan (CCTouch *pTouch, CCEvent *pEvent)
     // DD (a->GetID(), Telegram_ARRIVE, { target.x, target.y});
 
 
-    return true;
+    return false;
 }
 
 void HelloWorld::ccTouchMoved (CCTouch *pTouch, CCEvent *pEvent)
@@ -136,11 +146,11 @@ void HelloWorld::update (float delta)
 
     for (int i=0; i < bads.size(); ++i)
     {
-        DD (bads[i]->GetID(), Telegram_AI, {   });
+        DD (bads[i]->GetID(), Telegram_AI, {delta});
         DD (bads[i]->GetID(), Telegram_UPDATE, { delta });
     }
     thinginterval=0;
-
+	//DD(ball->GetID(), Telegram_UPDATE, { delta });
 
 }
 
@@ -152,8 +162,8 @@ void HelloWorld::draw()
     for (int i = 0; i < bads.size(); ++i)
     {
 
-        DD (bads[i]->GetID(), Telegram_DRAW, {});
+      DD (bads[i]->GetID(), Telegram_DRAW, {});
     }
-
+	//DD(ball->GetID(), Telegram_DRAW, {});
 }
 

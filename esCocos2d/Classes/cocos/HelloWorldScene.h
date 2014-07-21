@@ -27,6 +27,7 @@ public:
     virtual void ccTouchCancelled (CCTouch *pTouch, CCEvent *pEvent);
     Component*				man;
     Component  *			bg;
+	Component  *			ball;
     vector< Component* >    bads;
     CCSpriteBatchNode* _batchNode ;
     CCSize				_winsize;
