@@ -2,7 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-#include "Component.h"
+#include "es/Component.h"
 using namespace cocos2d;
 class HelloWorld : public cocos2d::CCLayer
 {
@@ -27,6 +27,7 @@ public:
     virtual void ccTouchCancelled (CCTouch *pTouch, CCEvent *pEvent);
     Component*				man;
     Component  *			bg;
+	Component  *			ball;
     vector< Component* >    bads;
     CCSpriteBatchNode* _batchNode ;
     CCSize				_winsize;

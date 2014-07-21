@@ -8,6 +8,7 @@ enum eComponent
     Component_WEAPON,
     Component_AI,
     Component_RADAR,
+	Component_BOX2D,
 
     Entity_,
     Component_COUNT,

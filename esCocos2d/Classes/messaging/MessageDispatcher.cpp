@@ -1,7 +1,7 @@
 #include "MessageDispatcher.h"
-#include "Component.h"
+#include "es/Component.h"
 #include "Time/CrudeTimer.h"
-#include "ComponentMgr.h"
+#include "es/ComponentMgr.h"
 #include "Telegram.h"
 #include "stdarg.h"
 

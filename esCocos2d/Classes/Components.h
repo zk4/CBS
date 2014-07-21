@@ -1,210 +1,22 @@
 #pragma  once
 
-#include "Component.h"
+#include "es/Component.h"
 #include "Configuration.h"
 #include "messaging/MessageDispatcher.h"
 #include "cocos2d.h"
-#include "ComponentMgr.h"
+#include "es/ComponentMgr.h"
 using namespace cocos2d;
 static bool ifOutWindow (Component* c);
-class  AIComponent :public Component
-{
-public:
-    static  AIComponent*  Create()
-    {
-        return  new AIComponent();
-    }
-    AIComponent() :Component (Component_AI) { }
-
-    bool HandleMessage (const Telegram& msg)
-    {
-        switch (msg.Msg)
-        {
-        /*  case AI:
-          {
-
-          DD (GetParent()->GetID(), FOLLOW_POS, { 100, 100 });
-          DD (GetParent()->GetID(), ROTATE, { 1 });
-
-          }
-          break;*/
-
-        default:
-            break;
-        }
-        return false;
-    }
-};
-
-//
-//class  MoveComponent :public Component
-//{
-//
-//    vector<int>  ids_insight;
-//public:
-//    CCPoint  _pos;
-//    CCPoint  _moveTarget;
-//    CCPoint  _velocity;
-//    CCPoint  _acceleration;
-//    float    _maxVelocity;
-//    float    _separate_threshhold;
-//    float    _maxAcceleration;
-//
-//    static MoveComponent* C (
-//
-//        CCPoint  moveTarget,
-//        CCPoint  velocity,
-//        CCPoint  acceleration,
-//        float    maxVelocity,
-//        float    maxAcceleration,
-//        float     maxtolerateRnage
-//    )
-//    {
-//        return new MoveComponent (
-//
-//                   moveTarget,
-//                   velocity,
-//                   acceleration,
-//                   maxVelocity,
-//                   maxAcceleration,
-//                   maxtolerateRnage
-//
-//               );
-//    }
-//    MoveComponent (
-//
-//        CCPoint  moveTarget,
-//        CCPoint  velocity,
-//        CCPoint  acceleration,
-//        float    maxVelocity,
-//        float    maxAcceleration,
-//        float     separate_threshhold
-//    ) :Component (Component_MOVE)
-//    {
-//
-//        _moveTarget = moveTarget;
-//        _velocity = velocity;
-//        _acceleration = acceleration;
-//        _maxVelocity = maxVelocity;
-//        _maxAcceleration = maxAcceleration;
-//        _separate_threshhold = separate_threshhold;
-//
-//    }
-//
-//    CCPoint arriveEntity (MoveComponent* m)
-//    {
-//
-//        CCPoint vector = ccpSub (m->_pos, _pos);
-//        float distance = ccpLength (vector);
-//
-//        float targetRadius = 5;
-//        float slowRadius = targetRadius + 25;
-//        static float timeToTarget = 0.1;
-//
-//        if (distance < targetRadius)
-//        {
-//            return CCPointZero;
-//        }
-//
-//        float targetSpeed;
-//        if (distance > slowRadius)
-//        {
-//            targetSpeed = _maxVelocity;
-//        }
-//        else
-//        {
-//            targetSpeed = _maxVelocity * distance / slowRadius;
-//        }
-//
-//        CCPoint targetVelocity = ccpMult (ccpNormalize (vector), targetSpeed);
-//
-//        CCPoint acceleration = ccpMult (ccpSub (targetVelocity, _velocity), 1 / timeToTarget);
-//        if (ccpLength (acceleration) > _maxAcceleration)
-//        {
-//            acceleration = ccpMult (ccpNormalize (acceleration), _maxAcceleration);
-//        }
-//        return acceleration;
-//    }
-//
-//    CCPoint  separate()
-//    {
-//
-//        CCPoint steering = CCPointZero;
-//
-//        for (int i = 0; i < ids_insight.size(); ++i)
-//        {
-//            auto c = CompMgr->GetComponentFromID (ids_insight[i]);
-//            auto moveC = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
-//            CCPoint direction = ccpSub (moveC->_pos, _pos);
-//            float distance = ccpLength (direction);
-//
-//
-//            if (distance < _separate_threshhold)
-//            {
-//                direction = ccpNormalize (direction);
-//                steering =   ccpAdd (steering, ccpMult (direction, _maxAcceleration));
-//            }
-//        }
-//        return -steering;
-//    }
-//
-//    bool HandleMessage (const Telegram& msg)
-//    {
-//        switch (msg.Msg)
-//        {
-//        case Telegram_AI:
-//        {
-//
-//            if ( ifOutWindow (GetParent()))return false;
-//
-//
-//
-//            DD (GetParent()->GetID(), Telegram_SEARCH, {});
-//            auto pos = separate();
-//            if (ccpLength (pos) == 0)
-//            {
-//                pos = ccp (rand() % 3 - 1, rand() % 3 - 1)*0.3f  ;
-//            }
-//            DD (GetParent()->GetID(), Telegram_FOLLOW_POS, { pos.x, pos.y });
-//            _pos = _pos + pos;
-//        }
-//        break;
-//        case Telegram_SET_POS:
-//        {
-//            _pos = ccp (msg.args[0], msg.args[1]);
-//
-//        }
-//        break;
-//        case  Telegram_SEARCH_RESULT:
-//        {
-//            ids_insight.clear();
-//            vector<int>* lists = (vector<int>*) (size_t) (msg.args[0]);
-//            for (int i = 0; i < lists->size(); ++i)
-//            {
-//                ids_insight.push_back ((*lists)[i]);
-//            }
-//        }
-//        break;
-//
-//        default:
-//            break;
-//        }
-//        return false;
-//    }
-//
-//
-//
-//};
-
+  
 
 
 class  CocosComponent :public Component
 {
 public:
-    CCNode*   _node;
+    CCLayer*   _delegate;
     inline CCNode* Node()
     {
-        return _node;
+        return _delegate;
     };
     static  CocosComponent* Create (CCNode* node)
     {
@@ -212,21 +24,28 @@ public:
     }
     ~CocosComponent()
     {
-        _node->release();
+	 
+        _delegate->release();
     }
     CocosComponent (CCNode* node) :Component (Component_COCOS)
     {
-        _node = CCSprite::create();
-        _node->retain();
-        _node->addChild (node);
+		_delegate = CCLayer::create();
+ 
+        _delegate->retain();
+        _delegate->addChild (node);
     }
+	void addChild(CCNode* c)
+	{
+		_delegate->addChild(c);
+	
+	}
     bool HandleMessage (const Telegram& msg)
     {
         switch (msg.Msg)
         {
         case Telegram_SET_POS:
         {
-            _node->setPosition (ccp (msg.args[0], msg.args[1]));
+            _delegate->setPosition (ccp (msg.args[0], msg.args[1]));
         }
         break;
 
@@ -234,13 +53,13 @@ public:
         case Telegram_ROTATE:
         {
 
-            _node->setRotation (_node->getRotation() + msg.args[0]);
+            _delegate->setRotation (_delegate->getRotation() + msg.args[0]);
         }
         break;
         case Telegram_DRAW:
 
         {
-            _node->visit();
+            _delegate->visit();
         }
         break;
         default:
@@ -544,8 +363,8 @@ public:
         //move the target into a position WanderDist in front of the agent
         CCPoint target = _vWanderTarget + CCPoint (_dWanderDistance, 0);
 
-        assert (0);
-        return CCPointZero;
+       // assert (0);
+		return target ;
         //project the target into world space
         /*CCPoint Target = PointToWorldSpace(target,
         	_vHeading,
@@ -697,7 +516,9 @@ public:
         _dMaxTurnRate = dMaxTurnRate;
         _vHeading = _vVelocity = ccp (0, 0);
         _dFrictionMu = dFrictionMu;
-
+		_dWanderJitter = 1;
+		_dWanderRadius = 10;
+		_dWanderDistance = 10;
         ttf_velocity = CCLabelTTF::create();
         ttf_velocity->setFontSize (32);
         ttf_velocity->setString ("V");
@@ -752,7 +573,17 @@ public:
         case Telegram_AI:
         {
             DD (GetParent()->GetID(), Telegram_SEARCH, {});
-            _vSteeringForce =  Separation();
+			static int count =0;
+			if (count<1000)
+			{_vSteeringForce = Separation();
+			 
+			}
+			count++;
+			if (count>1000)
+			{
+				if (ids_insight.size()>0)
+				_vSteeringForce = Pursuit((MoveComponent*)CompMgr->GetComponentFromID(ids_insight[rand() % (ids_insight.size())]));
+			}
 
 
 
@@ -799,9 +630,7 @@ public:
     }
     RadarComponent (float  range) :Component (Component_RADAR), _range (range)
     {
-
     }
-
 
     bool HandleMessage (const Telegram& msg)
     {
@@ -829,10 +658,6 @@ public:
                         targets.push_back (target->GetParent()->GetID());
                     }
                 }
-            }
-            if (targets.size()>400)
-            {
-                printf ("h");
             }
             DD (GetParent()->GetID(), Telegram_SEARCH_RESULT, { (double) (size_t)&targets });
         }
@@ -901,8 +726,7 @@ public:
         default:
             break;
         }
-
-
+ 
         return false;
     }
 
@@ -929,9 +753,6 @@ public:
         {
         case Telegram_AI:
         {
-            static int  checkcount=0;
-            //   if (checkcount>10)
-            {
                 if (ids_insight.size() > 0)
                 {
                     Component* a=NULL;
@@ -955,11 +776,7 @@ public:
                         DD (a->GetID(), Telegram_HURT, { 1 });
                     }
                 }
-                checkcount=0;
-
-
-            }
-            checkcount++;
+        
         }
         break;
         case     Telegram_DRAW  :
@@ -998,8 +815,104 @@ public:
         Dispatcher->DispatchMessageZZ (0, GetID(), id, Telegram_HURT, { hp });
     }
 };
+#define PTM_RATIO 32.0
+#include "Box2D/Box2D.h"
 
+class Box2DComponent :public Component
+{
+public:
+	b2World *_world;
+	b2Body *_body;
+	CCSprite *_ball;
+	static  Box2DComponent* Create()
+	{
+		return new Box2DComponent();
+	}
+	~Box2DComponent()
+	{
+		_ball->release();
+	}
+	Box2DComponent() :Component(Component_BOX2D)
+	{
+		CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 
+		// Create sprite and add it to the layer
+		_ball = CCSprite::create("1.png" );
+		_ball->setPosition(winSize/2);
+		_ball->retain();
+
+		// Create a world
+		b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
+		bool doSleep = true;
+		_world = new b2World(gravity );
+
+		// Create edges around the entire screen
+		b2BodyDef groundBodyDef;
+		groundBodyDef.position.Set(0, 0);
+		b2Body *groundBody = _world->CreateBody(&groundBodyDef);
+		b2PolygonShape groundBox;
+		b2FixtureDef boxShapeDef;
+		boxShapeDef.shape = &groundBox;
+		 
+		groundBox.SetAsBox(4 , winSize.height / PTM_RATIO/2 );
+		groundBody->CreateFixture(&boxShapeDef);
+		 
+
+		// Create ball body and shape
+		b2BodyDef ballBodyDef;
+		ballBodyDef.type = b2_dynamicBody;
+		ballBodyDef.position.Set(winSize.width / 2 / PTM_RATIO, winSize.height / 2 / PTM_RATIO);
+		ballBodyDef.userData = _ball;
+		_body = _world->CreateBody(&ballBodyDef);
+
+		b2CircleShape circle;
+		circle.m_radius = 26.0 / PTM_RATIO;
+
+		b2FixtureDef ballShapeDef;
+		ballShapeDef.shape = &circle;
+		ballShapeDef.density = 1.0f;
+		ballShapeDef.friction = 0.2f;
+		ballShapeDef.restitution = 0.8f;
+		_body->CreateFixture(&ballShapeDef);
+
+		 
+	}
+	void tick(float dt){
+
+		_world->Step(dt, 10, 10);
+		for (b2Body *b = _world->GetBodyList(); b; b = b->GetNext()) {
+			if (b->GetUserData() != NULL) {
+				CCSprite *ballData = (CCSprite *)b->GetUserData();
+				ballData->setPosition (ccp(b->GetPosition().x * PTM_RATIO,
+					b->GetPosition().y * PTM_RATIO));
+				ballData->setRotation( -1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
+			}
+		}
+
+	}
+	bool HandleMessage(const Telegram& msg)
+	{
+		switch (msg.Msg)
+		{
+	 
+		case    Telegram_UPDATE:
+		{
+				tick(msg.args[0]);
+		}
+			break;
+		case    Telegram_DRAW:
+		{
+					  _ball->visit();
+		}
+			break;
+
+		default:
+			break;
+		}
+		return false;
+
+	}
+};
 
 
 bool ifOutWindow (Component* c)
