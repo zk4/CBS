@@ -31,6 +31,7 @@ public:
     vector< Component* >    bads;
     CCSpriteBatchNode* _batchNode ;
     CCSize				_winsize;
+ 
 };
 
 #endif // __HELLOWORLD_SCENE_H__
