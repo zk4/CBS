@@ -9,6 +9,61 @@ using namespace cocos2d;
 static bool ifOutWindow (Component* c);
   
 
+class SpriteComponent :public Component
+{
+public:
+	CCSprite*   _sprite;
+	inline CCNode* Node()
+	{
+		return _sprite;
+	};
+	static  SpriteComponent* Create(CCSprite* c)
+	{
+		return  new SpriteComponent(c);
+	}
+	~SpriteComponent()
+	{
+
+		_sprite->release();
+	}
+	SpriteComponent(CCSprite* c) :Component(Component_SPRITE)
+	{
+		_sprite = c;
+		_sprite->retain();
+	 
+	}
+ 
+	bool HandleMessage(const Telegram& msg)
+	{
+		switch (msg.Msg)
+		{
+		case Telegram_SET_POS:
+		{
+								 _sprite->setPosition(ccp(msg.args[0], msg.args[1]));
+		}
+			break;
+		case Telegram_SET_ROTATION:
+		{
+			 _sprite->setRotation( CC_RADIANS_TO_DEGREES( ccpToAngle(ccp(msg.args[0], msg.args[1]).normalize()) ) );
+			// _sprite->setRotation(CC_RADIANS_TO_DEGREES(M_PI/2));
+					 
+				   
+								 
+		}
+			break;
+	 
+		case Telegram_DRAW:
+
+		{
+				 _sprite->visit();
+		}
+			break;
+		default:
+			break;
+		}
+		return false;
+	}
+};
 
 class  CocosComponent :public Component
 {
@@ -48,14 +103,12 @@ public:
             _delegate->setPosition (ccp (msg.args[0], msg.args[1]));
         }
         break;
+		case Telegram_SET_ROTATION:
+		{
+			_delegate->setRotation(acosf(ccp(0, 1).cross(ccp(msg.args[0], msg.args[1]).normalize())));
+		}
 
-
-        case Telegram_ROTATE:
-        {
-
-            _delegate->setRotation (_delegate->getRotation() + msg.args[0]);
-        }
-        break;
+     
         case Telegram_DRAW:
 
         {
@@ -162,8 +215,7 @@ public:
         //update the heading if the vehicle has a non zero velocity
         if (ccpLength (_vVelocity) > 0.00000001)
         {
-            //  _vHeading =   _vVelocity.normalize() ;
-
+             _vHeading =   _vVelocity.normalize() ;
             _vSide = ccpPerp (_vHeading);
 
         }
@@ -322,6 +374,37 @@ public:
         return Seek (evader->_pos + evader->_vVelocity * LookAheadTime);
     }
 
+	//--------------------- PointToWorldSpace --------------------------------
+	//
+	//  Transforms a point from the agent's local space into world space
+	//------------------------------------------------------------------------
+	inline CCPoint PointToWorldSpace(const CCPoint &point,
+		const CCPoint &AgentHeading,
+		const CCPoint &AgentSide,
+		const CCPoint &AgentPosition)
+	{
+		//make a copy of the point
+		CCPoint TransPoint = point;
+
+		//create a transformation matrix
+		CCAffineTransform matTransform;
+
+		//rotate
+		//matTransform.Rotate(AgentHeading, AgentSide);
+		auto ac= AgentHeading.normalize();
+		auto bd= AgentSide.normalize();
+		matTransform.a = ac.x;
+		matTransform.c = ac.y;
+		matTransform.b = bd.x;
+		matTransform.d = bd.x;
+ 
+		//and translate
+		 
+		CCAffineTransformTranslate(matTransform, AgentPosition.x, AgentPosition.y);
+		//now transform the vertices
+		TransPoint=CCPointApplyAffineTransform(TransPoint, matTransform);
+		return TransPoint;
+	}
     CCPoint  Evade (const MoveComponent* pursuer)
     {
         /* Not necessary to include the check for facing direction this time */
@@ -347,11 +430,11 @@ public:
     {
         //this behavior is dependent on the update rate, so this line must
         //be included when using time independent framerate.
-        double JitterThisTimeSlice = _dWanderJitter * deltaTime;
+ 
 
         //first, add a small random vector to the target's position
-        _vWanderTarget = _vWanderTarget+ CCPoint (CCRANDOM_MINUS1_1() * JitterThisTimeSlice,
-                         CCRANDOM_MINUS1_1() * JitterThisTimeSlice);
+        _vWanderTarget = _vWanderTarget+ CCPoint (CCRANDOM_MINUS1_1() ,
+                         CCRANDOM_MINUS1_1() );
 
         //reproject this new vector back on to a unit circle
         _vWanderTarget=_vWanderTarget.normalize();
@@ -360,19 +443,8 @@ public:
         //of the wander circle
         _vWanderTarget = _vWanderTarget* _dWanderRadius;
 
-        //move the target into a position WanderDist in front of the agent
-        CCPoint target = _vWanderTarget + CCPoint (_dWanderDistance, 0);
-
-       // assert (0);
-		return target ;
-        //project the target into world space
-        /*CCPoint Target = PointToWorldSpace(target,
-        	_vHeading,
-        	_vSide,
-        	_pos);
-        */
-        //and steer towards it
-        //  return Target - _pos;
+		return _vWanderTarget;
+      
     }
     CCPoint  Interpose (const MoveComponent* AgentA,
                         const MoveComponent* AgentB)
@@ -556,8 +628,10 @@ public:
         break;
         case Telegram_UPDATE:
         {
-            update (_vSteeringForce, msg.args[0]);
+			_vSteeringForce =Wander(msg.args[0])+Separation();
+			update(_vSteeringForce, msg.args[0]);
             DD (GetParent()->GetID(), Telegram_SET_POS, { _pos.x, _pos.y });
+			DD(GetParent()->GetID(), Telegram_SET_ROTATION, { 1, 1 });
         }
         break;
         case Telegram_ARRIVE:
@@ -572,19 +646,11 @@ public:
         break;
         case Telegram_AI:
         {
-            DD (GetParent()->GetID(), Telegram_SEARCH, {});
-			static int count =0;
-			if (count<1000)
-			{_vSteeringForce = Separation();
+         DD (GetParent()->GetID(), Telegram_SEARCH, {});
 			 
-			}
-			count++;
-			if (count>1000)
-			{
-				if (ids_insight.size()>0)
-				_vSteeringForce = Pursuit((MoveComponent*)CompMgr->GetComponentFromID(ids_insight[rand() % (ids_insight.size())]));
-			}
-
+			 
+	//	 _vSteeringForce = Wander();
+		 
 
 
         }
@@ -733,6 +799,75 @@ public:
 };
 
 
+class TrailComponent : public Component
+{
+
+public:
+	CCRenderTexture*  _rt;
+	CCSprite*    _pBrush;
+	TrailComponent(CCRenderTexture*  rt) :Component(Component_TRAIL), _rt(rt)
+	{
+		_pBrush = CCSprite::create("stroke.png");
+		_pBrush->retain();
+		_pBrush->setColor(ccRED);
+		_pBrush->setOpacity(20);
+	}
+	~TrailComponent() 
+	{
+		_pBrush->release();
+	}
+	static  TrailComponent* Create(CCRenderTexture*  rt)
+	{
+		return new TrailComponent(rt);
+	}
+
+	bool HandleMessage(const Telegram& msg)
+	{
+		switch (msg.Msg)
+		{
+		case Telegram_SET_POS:
+		{
+ 
+								 auto moveC = (MoveComponent*)GetParent()->GetC(Component_MOVE);
+								 CCPoint start = ccp(  msg.args[0], msg.args[1] );
+	 
+								 // begin drawing to the render texture
+								 _rt->begin();
+
+								 // for extra points, we'll draw this smoothly from the last position and vary the sprite's
+								 // scale/rotation/offset
+							 
+							  
+								_pBrush->setPosition(start);
+								_pBrush->setRotation(rand() % 360);
+								float r = (float)(rand() % 3 / 20.f)  ;
+								_pBrush->setScale(r);
+								/*m_pBrush->setColor(ccc3(CCRANDOM_0_1() * 127 + 128, 255, 255));*/
+								// Use CCRANDOM_0_1() will cause error when loading libtests.so on android, I don't know why.
+								_pBrush->setColor(ccc3(rand() % 127 + 128, 255, 255));
+								// Call visit to draw the brush, don't call draw..
+								_pBrush->visit();
+									 
+							 
+
+								 // finish drawing and return context back to the screen
+								 _rt->end();
+		}
+			break;
+		case Telegram_DRAW:
+		{ 
+						   _rt->visit();
+		}
+			break;
+	 
+		default:
+			break;
+		}
+		return false;
+
+	}
+ 
+};
 
 class WeaponComponent : public Component
 {
@@ -781,13 +916,13 @@ public:
         break;
         case     Telegram_DRAW  :
         {
-            auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
+        /*    auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
 
             if (moveC)
             {
                 ccDrawColor4B (122, 122, 255, 255);
                 ccDrawLine (moveC->_pos, _ccpTarget);
-            }
+            }*/
         }
         break;
         case  Telegram_SEARCH_RESULT:
@@ -912,7 +1047,7 @@ public:
 		return false;
 
 	}
-};
+}; 
 
 
 bool ifOutWindow (Component* c)

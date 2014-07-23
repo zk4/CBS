@@ -53,14 +53,23 @@ bool HelloWorld::init()
      double			 dMaxForce,
      double			 dMaxTurnRate
     */
+	 
     srand (time (NULL));
 	//ball = Component::Create(Entity_);
 	//ball->AddC(Box2DComponent::Create());
+
+	  auto _rt = CCRenderTexture::create(_winsize.width, _winsize.height, kCCTexture2DPixelFormat_RGBA8888);
+	  _rt->setPosition(_winsize/2 );
+	  _rt->retain();
+	  
+
+
     for (int i=0; i<10; ++i)
     {
 		
         auto   bad = Component::Create (Entity_);
-		auto sprite = CCSprite::createWithSpriteFrameName("munch1.png");
+		auto sprite = CCSprite::create("airplane.png");
+		sprite->setScale(.1f);
 		CCMenuItemImage* cc = CCMenuItemImage::create("CloseNormal.png", "CloseSelected.png", "CloseSelected.png", this, menu_selector(HelloWorld::menuCloseCallback));
 		CCMenu* c = CCMenu::create(cc,NULL);
 		CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(c, 0,false);
@@ -68,16 +77,16 @@ bool HelloWorld::init()
 		sprite->setPosition(CCPointZero);
 		cc->setPosition(CCPointZero);
 		c->setPosition(CCPointZero);
-
+		bad->AddC(TrailComponent::Create(_rt));
         bad->AddC (RadarComponent::Create (50));
-        bad->AddC (MoveComponent::Create (   { 100, 100 }, 1,100, 1000, 100,10));
-		bad->AddC(CocosComponent::Create(sprite));
+        bad->AddC (MoveComponent::Create ({ 100, 100 }, 1,100, 1000, 100,1));
+		bad->AddC(SpriteComponent::Create(sprite));
 		 
         bad->AddC (HPComponent::Create (100));
         bad->AddC (WeaponComponent::Create());
         bads.push_back (bad);
 
-        DD (bad->GetID(), Telegram_SET_POS, { double (500 + rand() % 30), double (500 + rand() % 30) });
+        DD (bad->GetID(), Telegram_SET_POS, { double (200 + rand() % 30), double (200 + rand() % 30) });
     }
     for (auto a:bads)
     {
@@ -165,5 +174,6 @@ void HelloWorld::draw()
       DD (bads[i]->GetID(), Telegram_DRAW, {});
     }
 	//DD(ball->GetID(), Telegram_DRAW, {});
+ 
 }
 
