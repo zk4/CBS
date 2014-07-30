@@ -324,14 +324,15 @@ public:
     bool  SetNodeValidate (T& nodename, bool validate)
     {
         OrthoNode<T>* a = _OL->findNode (nodename);
+        if (!a)return false;
         assert (a);
         bool old = a->_validate;
         a->_validate = validate;
         return old;
     }
-
-private:
     OrthoList<T>*		_OL;
+private:
+
 
     // update nodes around choosen_nodes,return smallest weighted node
     OrthoNode<T>*  updateNodeAroundChoosen (vector<OrthoNode<T>*>& choosen_nodes_)

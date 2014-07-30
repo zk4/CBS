@@ -1056,6 +1056,7 @@ public:
 #include <functional>
 #include <mutex>
 #include <condition_variable>
+#include <iterator>
 bool operator== (const CCPoint& p1, const CCPoint& p2)
 {
     return p1.x == p2.x && p1.y == p2.y;
@@ -1151,17 +1152,18 @@ public:
             }
 
         }
-        int i = 0;
-        for (auto & p : _nodes)
+
+        int size = _nodes.size();
+        for (int i = 0; i<size; ++i)
         {
             if (i == 0 || i == 1)    //start & end
             {
-                ++i;
+
                 continue;
             }
 
 
-            _graph.SetNodeValidate (p, false);
+            _graph.SetNodeValidate (_nodes[i], false);
         }
     }
     void findshort()
@@ -1187,7 +1189,6 @@ public:
         }
 
     }
-
 
     bool HandleMessage (const Telegram& msg)
     {
@@ -1223,6 +1224,7 @@ public:
                     found_in_list = true;
             }
 
+
             if (!found_in_list)
                 _nodes.push_back (ccp (x, y));
             _cv.notify_all();
@@ -1245,10 +1247,14 @@ public:
                         continue;;
                     }
                     if (i == _shorest.size())break;
+
                     ccColor4F c = { 255, 0, 255, 255 };
 
-                    ccDrawSolidRect (ccp (a.x*_width, a.y*_width), ccp ((a.x + 1)*_width, (a.y + 1)*_width), c);
 
+
+                    ccDrawSolidRect (ccp (a.x*_width, a.y*_width), ccp ((a.x + 1)*_width, (a.y + 1)*_width), c);
+                    ++i;
+                    if (i>=_shorest.size())break;
                 }
 
             }
