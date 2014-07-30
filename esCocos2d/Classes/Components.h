@@ -1248,7 +1248,7 @@ public:
                     }
                     if (i == _shorest.size())break;
 
-                    ccColor4F c = { 255, 0, 255, 255 };
+                    ccColor4F c = { 1, 1, 1, 1 };
 
 
 
@@ -1264,14 +1264,14 @@ public:
                 for (auto & p : _nodes)
                 {
 
-
+                    static float middle=0.3f;
                     ccColor4F c;
                     if (i == 0)
-                        c = { 255, 255, 0, 255 };
+                        c = { 1, 1, middle, 1 };
                     else if (i == 1)
-                        c = { 0, 0, 255, 255 };
+                        c = { middle, middle, 1, 1 };
                     else
-                        c = { 255, 0, 0, 255 };
+                        c = { 1, middle, middle, 1 };
                     ccDrawSolidRect (ccp (p.x*_width, p.y*_width), ccp ((p.x + 1)*_width, (p.y + 1)*_width), c);
 
                     ++i;
@@ -1282,12 +1282,12 @@ public:
             //    //draw bg
             //    for (auto a : _graph._OL->nodes)
             //    {
-            //        OrthoEdge* edge = a->get_nextOut();
+            //        auto edge = a->get_nextOut();
             //        while (edge)
             //        {
 
-            //            CCPoint from = getPoint (edge->fromNode->_data);
-            //            CCPoint to = getPoint (edge->toNode->_data);
+            //            CCPoint from =  (edge->fromNode->_data);
+            //            CCPoint to =  (edge->toNode->_data);
             //            ccDrawColor4F (255, 255, 255, 255);
             //            ccDrawLine (ccp (from.x*_width, from.y*_width), ccp (_width*to.x, _width*to.y));
 

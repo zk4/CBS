@@ -17,11 +17,11 @@ template<typename T>
 class OrthoNode
 {
 public:
-    T			_data;
+    T				_data;
     OrthoNode<T>*	_parent;
-    int			_distance_from_start;
-    bool		_choosen;
-    bool		_validate;
+    int				_distance_from_start;
+    bool			_choosen;
+    bool			_validate;
 
     inline bool  operator== (const OrthoNode<T>& n) const
     {
@@ -273,12 +273,15 @@ public:
     }
     ~Graph()
     {
-        clear();
+        delete (_OL);
     }
     void  clear()
     {
-        delete (_OL);
-        _OL = new OrthoList<T>;
+        for (auto a : _OL->nodes)
+        {
+            delete (a);
+        }
+        _OL->nodes.clear();
     }
     void  addNEdge (T from, T to, int weight)
     {
@@ -419,9 +422,6 @@ private:
         }
         return OK;
     }
-
-
-
 
 
     void  BFS (std::queue<OrthoNode<T>*>& ns, OrthoNode<T>* n)
