@@ -42,9 +42,6 @@
     <ClCompile Include="..\Classes\cocos\VisibleRect.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\algorithm\Path.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

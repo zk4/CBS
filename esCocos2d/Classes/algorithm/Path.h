@@ -195,9 +195,7 @@ public:
 
     OrthoNode<T>*  findNode (T node)
     {
-
-        static OrthoNode<T> n (0, NULL, NULL);
-        n._data = node;
+        OrthoNode<T> n (node, NULL, NULL);
         auto ret = nodes.find (&n);
         if (ret != nodes.end())
             return *ret;

@@ -1061,17 +1061,20 @@ bool operator== (const CCPoint& p1, const CCPoint& p2)
     return p1.x == p2.x && p1.y == p2.y;
 }
 
+bool operator< (const CCPoint& p1, const CCPoint& p2)
+{
+    return p1.x<p2.x || (p1.x==p2.x && p1.y<p2.y);
+}
 class WallComponents :public Component
 {
     std::mutex					_cv_m;
     std::condition_variable		_cv;
-    Graph<int>						_graph;
+    Graph<CCPoint>				_graph;
     CCPoint						_ccp_RL;
     vector<CCPoint>				_nodes;
-    list<int>					_shorest;
+    list<CCPoint>				_shorest;
     int							_width;
     std::thread					_thread;
-
 
 public:
     static  WallComponents* Create (int width)
@@ -1097,14 +1100,14 @@ public:
                 p.y >= 0
                );
     }
-    int getPointId (CCPoint & p)
-    {
-        return ((int)p.x << 16) + (int)p.y;
-    }
-    CCPoint getPoint (int id)
-    {
-        return ccp (id >> 16, id & 0xffff);
-    }
+    /* int getPointId (CCPoint & p)
+     {
+     return ((int)p.x << 16) + (int)p.y;
+     }
+     CCPoint getPoint (int id)
+     {
+     return ccp (id >> 16, id & 0xffff);
+     }*/
     bool isBock (CCPoint & p)
     {
         int i = 0;
@@ -1138,11 +1141,11 @@ public:
                 {
 
                     CCPoint possibale = p + go;
-                    int idd = getPointId (p);
-                    CCPoint test = getPoint (idd);
-                    assert (p == test);
+                    /*     int idd = getPointId (p);
+                         CCPoint test = getPoint (idd);
+                         assert (p == test);*/
                     if (inMap (possibale))
-                        _graph.addNEdge (getPointId (p), getPointId (possibale), 1);
+                        _graph.addNEdge ( (p),   (possibale), 1);
 
                 }
             }
@@ -1157,8 +1160,8 @@ public:
                 continue;
             }
 
-            int id = getPointId (p);
-            _graph.SetNodeValidate (id, false);
+
+            _graph.SetNodeValidate (p, false);
         }
     }
     void findshort()
@@ -1177,7 +1180,7 @@ public:
             if (_nodes.size() >= 2)
             {
 
-                _graph.findShortestPath (getPointId (_nodes[0]), getPointId (_nodes[1]), _shorest);
+                _graph.findShortestPath (  (_nodes[0]),   (_nodes[1]), _shorest);
 
             }
             _cv.notify_all();
@@ -1243,8 +1246,8 @@ public:
                     }
                     if (i == _shorest.size())break;
                     ccColor4F c = { 255, 0, 255, 255 };
-                    CCPoint p = getPoint (a);
-                    ccDrawSolidRect (ccp (p.x*_width, p.y*_width), ccp ((p.x + 1)*_width, (p.y + 1)*_width), c);
+
+                    ccDrawSolidRect (ccp (a.x*_width, a.y*_width), ccp ((a.x + 1)*_width, (a.y + 1)*_width), c);
 
                 }
 
