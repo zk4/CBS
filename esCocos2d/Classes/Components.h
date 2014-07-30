@@ -1233,7 +1233,7 @@ public:
             {
 
                 int i = 0;
-                std::lock_guard<std::mutex> lk (_cv_m);
+
                 for (auto a : _shorest)
                 {
                     if (i == 0)
