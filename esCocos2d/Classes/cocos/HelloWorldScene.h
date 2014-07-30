@@ -28,6 +28,7 @@ public:
     Component*				man;
     Component  *			bg;
 	Component  *			ball;
+	Component  *			wall;
     vector< Component* >    bads;
     CCSpriteBatchNode* _batchNode ;
     CCSize				_winsize;

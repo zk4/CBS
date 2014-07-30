@@ -11,6 +11,7 @@ enum eComponent
     Component_AI,
     Component_RADAR,
 	Component_BOX2D,
+	Component_WALLS,
 
     Entity_,
     Component_COUNT,
@@ -25,11 +26,15 @@ enum eTelegram
     Telegram_ACTION_HURT,
     Telegram_SET_POS,
 	Telegram_SET_ROTATION,
+	Telegram_SET_SCALE,
+	Telegram_SET_CONTENSIZE,
     Telegram_ARRIVE,
     Telegram_UPDATE,
     Telegram_AI,
     Telegram_DRAW,
- 
+	
+
+	Telegram_ADD_WALL,
     Telegram_ADD_TARGET,
     Telegram_SEARCH,
     Telegram_SEARCH_RESULT,
