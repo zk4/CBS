@@ -47,7 +47,7 @@ public:
     Component (eComponent id);
 
     Component* 	AddC (Component* c);
-    inline  Component* Component::GetC (eComponent name)
+    inline  Component*  GetC (eComponent name)
     {
         return components[name];
     }
