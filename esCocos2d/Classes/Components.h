@@ -17,40 +17,45 @@ public:
     {
         return _sprite;
     };
-    static  SpriteComponent* Create(CCSprite* c)
+    static  SpriteComponent* Create (CCSprite* c)
     {
-        return  new SpriteComponent(c);
+        return  new SpriteComponent (c);
     }
     ~SpriteComponent()
     {
 
         _sprite->release();
     }
-    SpriteComponent(CCSprite* c) :Component(Component_SPRITE)
+    SpriteComponent (CCSprite* c) :Component (Component_SPRITE)
     {
         _sprite = c;
         _sprite->retain();
 
     }
 
-    bool HandleMessage(const Telegram& msg)
+    bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg) {
-        case Telegram_SET_POS: {
-            _sprite->setPosition(ccp(msg.args[0], msg.args[1]));
+        switch (msg.Msg)
+        {
+        case Telegram_SET_POS:
+        {
+            _sprite->setPosition (ccp (msg.args[0], msg.args[1]));
         }
         break;
-        case Telegram_SET_ROTATION: {
-            _sprite->setRotation( CC_RADIANS_TO_DEGREES( ccpToAngle(ccp(msg.args[0], msg.args[1])) ) );
+        case Telegram_SET_ROTATION:
+        {
+            _sprite->setRotation (CC_RADIANS_TO_DEGREES (ccpToAngle (ccp (msg.args[0], msg.args[1]))));
 
         }
         break;
-        case Telegram_SET_SCALE: {
-            _sprite->setScaleX( msg.args[0] );
+        case Telegram_SET_SCALE:
+        {
+            _sprite->setScaleX (msg.args[0]);
         }
         break;
-        case  Telegram_SET_CONTENSIZE: {
-            _sprite->setContentSize(CCSizeMake(msg.args[0], msg.args[1]));
+        case  Telegram_SET_CONTENSIZE:
+        {
+            _sprite->setContentSize (CCSizeMake (msg.args[0], msg.args[1]));
         }
         break;
         case Telegram_DRAW:
@@ -90,20 +95,23 @@ public:
         _delegate->retain();
         _delegate->addChild (node);
     }
-    void addChild(CCNode* c)
+    void addChild (CCNode* c)
     {
-        _delegate->addChild(c);
+        _delegate->addChild (c);
 
     }
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg) {
-        case Telegram_SET_POS: {
+        switch (msg.Msg)
+        {
+        case Telegram_SET_POS:
+        {
             _delegate->setPosition (ccp (msg.args[0], msg.args[1]));
         }
         break;
-        case Telegram_SET_ROTATION: {
-            _delegate->setRotation(acosf(ccp(0, 1).cross(ccp(msg.args[0], msg.args[1]).normalize())));
+        case Telegram_SET_ROTATION:
+        {
+            _delegate->setRotation (acosf (ccp (0, 1).cross (ccp (msg.args[0], msg.args[1]).normalize())));
         }
 
 
@@ -175,30 +183,31 @@ public:
     }
 
 
-    void update (CCPoint  SteeringForce,float time_elapsed)
+    void update (CCPoint  SteeringForce, float time_elapsed)
     {
 
 
         //Acceleration = Force/Mass
-        CCPoint friction = (ccpLength (_vVelocity)>0) ? -_vVelocity.normalize()*_dFrictionMu*_dMass: CCPointZero;
+        CCPoint friction = (ccpLength (_vVelocity) > 0) ? -_vVelocity.normalize()*_dFrictionMu*_dMass : CCPointZero;
 
 
         SteeringForce = friction + SteeringForce;
 
-        auto  acceleration =  SteeringForce   / _dMass;
+        auto  acceleration = SteeringForce / _dMass;
 
 
         //update velocity
 
-        _vVelocity = _vVelocity+ acceleration * time_elapsed;
+        _vVelocity = _vVelocity + acceleration * time_elapsed;
 
         //make sure vehicle does not exceed maximum velocity
-        if (ccpLength (_vVelocity) > _dMaxSpeed) {
+        if (ccpLength (_vVelocity) > _dMaxSpeed)
+        {
             _vVelocity = _vVelocity.normalize()*_dMaxSpeed;
         }
 
         //update the position
-        _pos = _pos+ _vVelocity * time_elapsed;
+        _pos = _pos + _vVelocity * time_elapsed;
 
         CCSize size = CCDirector::sharedDirector()->getWinSize();
         if (_pos.x<0 || _pos.x>size.width)
@@ -210,16 +219,17 @@ public:
 
 
         //update the heading if the vehicle has a non zero velocity
-        if (ccpLength (_vVelocity) > 0.00000001) {
-            _vHeading =   _vVelocity.normalize() ;
+        if (ccpLength (_vVelocity) > 0.00000001)
+        {
+            _vHeading = _vVelocity.normalize();
             _vSide = ccpPerp (_vHeading);
 
         }
     }
     CCPoint  Seek (CCPoint TargetPos)
     {
-        CCPoint DesiredVelocity =   (TargetPos - _pos).normalize()
-                                    * _dMaxSpeed;
+        CCPoint DesiredVelocity = (TargetPos - _pos).normalize()
+                                  * _dMaxSpeed;
 
         return (DesiredVelocity - _vVelocity);
     }
@@ -239,8 +249,8 @@ public:
         }
         */
 
-        CCPoint DesiredVelocity =   (_pos - TargetPos).normalize()
-                                    * _dMaxSpeed;
+        CCPoint DesiredVelocity = (_pos - TargetPos).normalize()
+                                  * _dMaxSpeed;
 
         return (DesiredVelocity - _vVelocity);
     }
@@ -258,21 +268,23 @@ public:
         int NeighborCount = 0;
 
         //iterate through the neighbors and sum up all the position vectors
-        for (unsigned int a = 0; a < neighbors.size(); ++a) {
+        for (unsigned int a = 0; a < neighbors.size(); ++a)
+        {
             //make sure *this* agent isn't included in the calculations and that
             //the agent being examined is close enough ***also make sure it doesn't
             //include the evade target ***
 
 
-            CenterOfMass  = CenterOfMass+ neighbors[a]->_pos;
+            CenterOfMass = CenterOfMass + neighbors[a]->_pos;
 
             ++NeighborCount;
 
         }
 
-        if (NeighborCount > 0) {
+        if (NeighborCount > 0)
+        {
             //the center of mass is the average of the sum of positions
-            CenterOfMass  = CenterOfMass/ (double)NeighborCount;
+            CenterOfMass = CenterOfMass / (double)NeighborCount;
 
             //now seek towards that position
             SteeringForce = Seek (CenterOfMass);
@@ -280,13 +292,14 @@ public:
 
         //the magnitude of cohesion is usually much larger than separation or
         //allignment so it usually helps to normalize it.
-        return    SteeringForce.normalize() ;
+        return    SteeringForce.normalize();
     }
-    CCPoint  Separation ( )
+    CCPoint  Separation()
     {
         CCPoint SteeringForce;
 
-        for (unsigned int i = 0; i < ids_insight.size(); ++i) {
+        for (unsigned int i = 0; i < ids_insight.size(); ++i)
+        {
             //make sure this agent isn't included in the calculations and that
             //the agent being examined is close enough. ***also make sure it doesn't
             //include the evade target ***
@@ -313,12 +326,13 @@ public:
     CCPoint  Arrive (CCPoint     TargetPos,
                      Deceleration deceleration)
     {
-        CCPoint ToTarget = TargetPos - _pos ;
+        CCPoint ToTarget = TargetPos - _pos;
 
         //calculate the distance to the target
         double dist = ccpLength (ToTarget);
 
-        if (dist > 0) {
+        if (dist > 0)
+        {
             //because Deceleration is enumerated as an int, this value is required
             //to provide fine tweaking of the deceleration..
             const double DecelerationTweaker = 0.3;
@@ -346,10 +360,11 @@ public:
         //for the evader's current position.
         CCPoint ToEvader = evader->_pos - _pos;
 
-        double RelativeHeading = ccpDot (_vHeading ,evader->_vHeading);
+        double RelativeHeading = ccpDot (_vHeading, evader->_vHeading);
 
-        if (ccpDot (ToEvader,_vHeading) > 0  &&
-                (RelativeHeading < -0.95)) { //acos(0.95)=18 degs
+        if (ccpDot (ToEvader, _vHeading) > 0 &&
+                (RelativeHeading < -0.95))   //acos(0.95)=18 degs
+        {
             return Seek (evader->_pos);
         }
 
@@ -369,10 +384,10 @@ public:
     //
     //  Transforms a point from the agent's local space into world space
     //------------------------------------------------------------------------
-    inline CCPoint PointToWorldSpace(const CCPoint &point,
-                                     const CCPoint &AgentHeading,
-                                     const CCPoint &AgentSide,
-                                     const CCPoint &AgentPosition)
+    inline CCPoint PointToWorldSpace (const CCPoint &point,
+                                      const CCPoint &AgentHeading,
+                                      const CCPoint &AgentSide,
+                                      const CCPoint &AgentPosition)
     {
         //make a copy of the point
         CCPoint TransPoint = point;
@@ -382,8 +397,8 @@ public:
 
         //rotate
         //matTransform.Rotate(AgentHeading, AgentSide);
-        auto ac= AgentHeading.normalize();
-        auto bd= AgentSide.normalize();
+        auto ac = AgentHeading.normalize();
+        auto bd = AgentSide.normalize();
         matTransform.a = ac.x;
         matTransform.c = ac.y;
         matTransform.b = bd.x;
@@ -391,30 +406,30 @@ public:
 
         //and translate
 
-        CCAffineTransformTranslate(matTransform, AgentPosition.x, AgentPosition.y);
+        CCAffineTransformTranslate (matTransform, AgentPosition.x, AgentPosition.y);
         //now transform the vertices
-        TransPoint=CCPointApplyAffineTransform(TransPoint, matTransform);
+        TransPoint = CCPointApplyAffineTransform (TransPoint, matTransform);
         return TransPoint;
     }
     CCPoint  Evade (const MoveComponent* pursuer)
     {
         /* Not necessary to include the check for facing direction this time */
 
-        CCPoint ToPursuer = pursuer->_pos -_pos;
+        CCPoint ToPursuer = pursuer->_pos - _pos;
 
         //uncomment the following two lines to have Evade only consider pursuers
         //within a 'threat range'
         const double ThreatRange = 100.0;
-        if ( ccpLengthSQ (ToPursuer) > ThreatRange * ThreatRange) return CCPointZero;
+        if (ccpLengthSQ (ToPursuer) > ThreatRange * ThreatRange) return CCPointZero;
 
         //the lookahead time is propotional to the distance between the pursuer
         //and the pursuer; and is inversely proportional to the sum of the
         //agents' velocities
-        double LookAheadTime = ccpLength  (ToPursuer) /
+        double LookAheadTime = ccpLength (ToPursuer) /
                                (_dMaxSpeed + ccpLength (pursuer->_vVelocity));
 
         //now flee away from predicted future position of the pursuer
-        return Flee (pursuer->_pos  + pursuer->_vVelocity  * LookAheadTime);
+        return Flee (pursuer->_pos + pursuer->_vVelocity  * LookAheadTime);
     }
 
     CCPoint   Wander (double deltaTime)
@@ -424,11 +439,11 @@ public:
 
 
         //first, add a small random vector to the target's position
-        _vWanderTarget = _vWanderTarget+ CCPoint (CCRANDOM_MINUS1_1() ,
-                         CCRANDOM_MINUS1_1() );
+        _vWanderTarget = _vWanderTarget + CCPoint (CCRANDOM_MINUS1_1(),
+                         CCRANDOM_MINUS1_1());
 
         //reproject this new vector back on to a unit circle
-        _vWanderTarget=_vWanderTarget.normalize();
+        _vWanderTarget = _vWanderTarget.normalize();
 
         //increase the length of the vector to the same as the radius
         //of the wander circle
@@ -472,17 +487,19 @@ public:
         std::vector<MoveComponent*>::const_iterator curOb = obstacles.begin();
         std::vector<MoveComponent*>::const_iterator closest;
 
-        while (curOb != obstacles.end()) {
+        while (curOb != obstacles.end())
+        {
             //calculate the position of the hiding spot for this obstacle
-            CCPoint HidingSpot = GetHidingPosition ((*curOb)->_pos ,
-                                                    (*curOb)->_dBoundingRadius ,
+            CCPoint HidingSpot = GetHidingPosition ((*curOb)->_pos,
+                                                    (*curOb)->_dBoundingRadius,
                                                     hunter->_pos);
 
             //work in distance-squared space to find the closest hiding
             //spot to the agent
             double dist = ccpDistanceSQ (HidingSpot, _pos);
 
-            if (dist < DistToClosest) {
+            if (dist < DistToClosest)
+            {
                 DistToClosest = dist;
 
                 BestHidingSpot = HidingSpot;
@@ -495,7 +512,8 @@ public:
         }//end while
 
         //if no suitable obstacles found then Evade the hunter
-        if (DistToClosest == (std::numeric_limits<float>::max)()) {
+        if (DistToClosest == (std::numeric_limits<float>::max)())
+        {
             return Evade (hunter);
         }
 
@@ -512,7 +530,7 @@ public:
         double       DistAway = radiusOb + DistanceFromBoundary;
 
         //calculate the heading toward the object from the hunter
-        CCPoint ToOb =   (posOb - posHunter).normalize();
+        CCPoint ToOb = (posOb - posHunter).normalize();
 
         //scale it to size and add to the obstacles position to get
         //the hiding spot.
@@ -534,13 +552,14 @@ public:
         int    NeighborCount = 0;
 
         //iterate through all the tagged vehicles and sum their heading vectors
-        for (unsigned int a = 0; a < neighbors.size(); ++a) {
+        for (unsigned int a = 0; a < neighbors.size(); ++a)
+        {
             //make sure *this* agent isn't included in the calculations and that
             //the agent being examined  is close enough ***also make sure it doesn't
             //include any evade target ***
 
             {
-                AverageHeading  = AverageHeading + neighbors[a]->_vHeading;
+                AverageHeading = AverageHeading + neighbors[a]->_vHeading;
 
                 ++NeighborCount;
             }
@@ -548,10 +567,11 @@ public:
 
         //if the neighborhood contained one or more vehicles, average their
         //heading vectors.
-        if (NeighborCount > 0) {
-            AverageHeading = AverageHeading/ (double)NeighborCount;
+        if (NeighborCount > 0)
+        {
+            AverageHeading = AverageHeading / (double)NeighborCount;
 
-            AverageHeading = AverageHeading- _vHeading;
+            AverageHeading = AverageHeading - _vHeading;
         }
 
         return AverageHeading;
@@ -586,16 +606,19 @@ public:
         ttf_head->setFontSize (32);
         ttf_head->setString ("H");
         ttf_head->retain();
-        ttf_head->setColor (ccc3 (255, 0, 255 ));
+        ttf_head->setColor (ccc3 (255, 0, 255));
 
     }
     CCLabelTTF* ttf_velocity;
     CCLabelTTF* ttf_head;
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg) {
-        case Telegram_DRAW: {
-            if (ccpLength (_vVelocity)>0.5) {
+        switch (msg.Msg)
+        {
+        case Telegram_DRAW:
+        {
+            if (ccpLength (_vVelocity) > 0.5)
+            {
                 ccDrawColor4B (255, 255, 255, 255);
                 ccDrawLine (_pos, _pos + _vVelocity);
                 ttf_velocity->setPosition (_pos + _vVelocity / 2);
@@ -609,23 +632,26 @@ public:
 
         }
         break;
-        case Telegram_UPDATE: {
-            _vSteeringForce =Wander(msg.args[0]) ;
-            update(_vSteeringForce, msg.args[0]);
+        case Telegram_UPDATE:
+        {
+            _vSteeringForce = Wander (msg.args[0]);
+            update (_vSteeringForce, msg.args[0]);
             DD (GetParent()->GetID(), Telegram_SET_POS, { _pos.x, _pos.y });
-            DD(GetParent()->GetID(), Telegram_SET_ROTATION, { _vVelocity.y, _vVelocity.x });
+            DD (GetParent()->GetID(), Telegram_SET_ROTATION, { _vVelocity.y, _vVelocity.x });
         }
         break;
-        case Telegram_ARRIVE: {
+        case Telegram_ARRIVE:
+        {
             DD (GetParent()->GetID(), Telegram_SEARCH, {});
-            _vSteeringForce =  Arrive (ccp (msg.args[0], msg.args[1]), fast);
-            _vHeading = ccp (msg.args[0], msg.args[1])-_pos;
-            update (_vSteeringForce,  0.1);
+            _vSteeringForce = Arrive (ccp (msg.args[0], msg.args[1]), fast);
+            _vHeading = ccp (msg.args[0], msg.args[1]) - _pos;
+            update (_vSteeringForce, 0.1);
 
 
         }
         break;
-        case Telegram_AI: {
+        case Telegram_AI:
+        {
             DD (GetParent()->GetID(), Telegram_SEARCH, {});
 
 
@@ -635,15 +661,18 @@ public:
 
         }
         break;
-        case Telegram_SET_POS: {
+        case Telegram_SET_POS:
+        {
             _pos = ccp (msg.args[0], msg.args[1]);
 
         }
         break;
-        case  Telegram_SEARCH_RESULT: {
+        case  Telegram_SEARCH_RESULT:
+        {
             ids_insight.clear();
             vector<int>* lists = (vector<int>*) (size_t) (msg.args[0]);
-            for (int i = 0; i < lists->size(); ++i) {
+            for (int i = 0; i < lists->size(); ++i)
+            {
                 ids_insight.push_back ((*lists)[i]);
             }
         }
@@ -678,21 +707,26 @@ public:
     bool HandleMessage (const Telegram& msg)
     {
         if (ifOutWindow (GetParent()))return false;
-        switch (msg.Msg) {
+        switch (msg.Msg)
+        {
 
-        case Telegram_SEARCH: {
+        case Telegram_SEARCH:
+        {
 
             MoveComponent* self = dynamic_cast<MoveComponent*> (GetParent()->GetC (Component_MOVE));
             targets.clear();
-            for (int i = 0; i < CompMgr->_ComponentMap.size(); ++i) {
+            for (int i = 0; i < CompMgr->_ComponentMap.size(); ++i)
+            {
                 auto c = CompMgr->_ComponentMap[i];
                 if (!c)continue;
                 if (c->GetParent() && c->GetID() == c->GetParent()->GetID())continue;
                 MoveComponent* target = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
                 if (!target)continue;
-                if (target->GetParent() != GetParent()) {
+                if (target->GetParent() != GetParent())
+                {
 
-                    if (ccpLength (ccpSub (target->_pos, self->_pos)) < _range) {
+                    if (ccpLength (ccpSub (target->_pos, self->_pos)) < _range)
+                    {
                         targets.push_back (target->GetParent()->GetID());
                     }
                 }
@@ -700,14 +734,16 @@ public:
             DD (GetParent()->GetID(), Telegram_SEARCH_RESULT, { (double) (size_t)&targets });
         }
         break;
-        case Telegram_DRAW: {
+        case Telegram_DRAW:
+        {
             MoveComponent* self = dynamic_cast<MoveComponent*> (GetParent()->GetC (Component_MOVE));
 
             ccDrawColor4B (122, 255, 122, 255);
             ccDrawCircle (self->_pos, _range, 0, 40, false);
             ccDrawColor4B (255, rand() % 255, rand() % 255, 255);
 
-            for (auto a : targets) {
+            for (auto a : targets)
+            {
 
                 MoveComponent* target = dynamic_cast<MoveComponent*> (CompMgr->_ComponentMap[a]->GetC (Component_MOVE));
                 ccDrawLine (self->_pos, target->_pos);
@@ -740,18 +776,22 @@ public:
     bool  HandleMessage (const Telegram& msg)
     {
 
-        switch (msg.Msg) {
-        case Telegram_HURT: {
+        switch (msg.Msg)
+        {
+        case Telegram_HURT:
+        {
             HP -= (int)msg.args[0];
-            if (HP < 0) {
-                HP=0;
-                DD (  Telegram_DEAD, { (double) GetParent()->GetID() });
+            if (HP < 0)
+            {
+                HP = 0;
+                DD (Telegram_DEAD, { (double)GetParent()->GetID() });
             }
         }
         break;
-        case Telegram_DRAW: {
+        case Telegram_DRAW:
+        {
             auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
-            ccDrawSolidRect (moveC->_pos+ ccp (-HP/2,40), moveC->_pos + ccp (HP/2, 45),  {255,0,0,122});
+            ccDrawSolidRect (moveC->_pos + ccp (-HP / 2, 40), moveC->_pos + ccp (HP / 2, 45), { 255, 0, 0, 122 });
         }
         break;
 
@@ -771,29 +811,31 @@ class TrailComponent : public Component
 public:
     CCRenderTexture*  _rt;
     CCSprite*    _pBrush;
-    TrailComponent(CCRenderTexture*  rt) :Component(Component_TRAIL), _rt(rt)
+    TrailComponent (CCRenderTexture*  rt) :Component (Component_TRAIL), _rt (rt)
     {
-        _pBrush = CCSprite::create("stroke.png");
+        _pBrush = CCSprite::create ("stroke.png");
         _pBrush->retain();
-        _pBrush->setColor(ccRED);
-        _pBrush->setOpacity(20);
+        _pBrush->setColor (ccRED);
+        _pBrush->setOpacity (20);
     }
     ~TrailComponent()
     {
         _pBrush->release();
     }
-    static  TrailComponent* Create(CCRenderTexture*  rt)
+    static  TrailComponent* Create (CCRenderTexture*  rt)
     {
-        return new TrailComponent(rt);
+        return new TrailComponent (rt);
     }
 
-    bool HandleMessage(const Telegram& msg)
+    bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg) {
-        case Telegram_SET_POS: {
+        switch (msg.Msg)
+        {
+        case Telegram_SET_POS:
+        {
 
-            auto moveC = (MoveComponent*)GetParent()->GetC(Component_MOVE);
-            CCPoint start = ccp(  msg.args[0], msg.args[1] );
+            auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
+            CCPoint start = ccp (msg.args[0], msg.args[1]);
 
             // begin drawing to the render texture
             _rt->begin();
@@ -802,13 +844,13 @@ public:
             // scale/rotation/offset
 
 
-            _pBrush->setPosition(start);
-            _pBrush->setRotation(rand() % 360);
-            float r = (float)(rand() % 3 / 20.f)  ;
-            _pBrush->setScale(r);
+            _pBrush->setPosition (start);
+            _pBrush->setRotation (rand() % 360);
+            float r = (float) (rand() % 3 / 20.f);
+            _pBrush->setScale (r);
             /*m_pBrush->setColor(ccc3(CCRANDOM_0_1() * 127 + 128, 255, 255));*/
             // Use CCRANDOM_0_1() will cause error when loading libtests.so on android, I don't know why.
-            _pBrush->setColor(ccc3(rand() % 127 + 128, 255, 0));
+            _pBrush->setColor (ccc3 (rand() % 127 + 128, 255, 0));
             // Call visit to draw the brush, don't call draw..
             _pBrush->visit();
 
@@ -818,7 +860,8 @@ public:
             _rt->end();
         }
         break;
-        case Telegram_DRAW: {
+        case Telegram_DRAW:
+        {
             _rt->visit();
         }
         break;
@@ -847,14 +890,19 @@ public:
 
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg) {
-        case Telegram_AI: {
-            if (ids_insight.size() > 0) {
-                Component* a=NULL;
-                for (auto c : ids_insight) {
+        switch (msg.Msg)
+        {
+        case Telegram_AI:
+        {
+            if (ids_insight.size() > 0)
+            {
+                Component* a = NULL;
+                for (auto c : ids_insight)
+                {
 
                     auto hpC = (HPComponent*)CompMgr->GetComponentFromID (c)->GetC (Component_HP);
-                    if (hpC && hpC->HP>0) {
+                    if (hpC && hpC->HP > 0)
+                    {
                         a = CompMgr->GetComponentFromID (c);
                         break;
                     }
@@ -862,7 +910,8 @@ public:
                 if (!a)return false;
 
                 auto moveC = (MoveComponent*)a->GetC (Component_MOVE);
-                if (moveC) {
+                if (moveC)
+                {
                     _ccpTarget = moveC->_pos;
                     DD (a->GetID(), Telegram_ARRIVE, { moveC->_pos.x, moveC->_pos.y });
                     DD (a->GetID(), Telegram_HURT, { 1 });
@@ -871,20 +920,24 @@ public:
 
         }
         break;
-        case     Telegram_DRAW  : {
+        case     Telegram_DRAW:
+        {
             /*    auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
 
-                if (moveC)
-                {
-                    ccDrawColor4B (122, 122, 255, 255);
-                    ccDrawLine (moveC->_pos, _ccpTarget);
-                }*/
+              if (moveC)
+              {
+              ccDrawColor4B (122, 122, 255, 255);
+              ccDrawLine (moveC->_pos, _ccpTarget);
+              }*/
         }
         break;
-        case  Telegram_SEARCH_RESULT: {
-            if ( ids_insight.empty()) {
+        case  Telegram_SEARCH_RESULT:
+        {
+            if (ids_insight.empty())
+            {
                 vector<int>* lists = (vector<int>*) (size_t) (msg.args[0]);
-                for (int i = 0; i < lists->size(); ++i) {
+                for (int i = 0; i < lists->size(); ++i)
+                {
                     ids_insight.push_back ((*lists)[i]);
                 }
             }
@@ -920,38 +973,38 @@ public:
     {
         _ball->release();
     }
-    Box2DComponent() :Component(Component_BOX2D)
+    Box2DComponent() :Component (Component_BOX2D)
     {
         CCSize winSize = CCDirector::sharedDirector()->getWinSize();
 
         // Create sprite and add it to the layer
-        _ball = CCSprite::create("1.png" );
-        _ball->setPosition(winSize/2);
+        _ball = CCSprite::create ("1.png");
+        _ball->setPosition (winSize / 2);
         _ball->retain();
 
         // Create a world
-        b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
+        b2Vec2 gravity = b2Vec2 (0.0f, -10.0f);
         bool doSleep = true;
-        _world = new b2World(gravity );
+        _world = new b2World (gravity);
 
         // Create edges around the entire screen
         b2BodyDef groundBodyDef;
-        groundBodyDef.position.Set(0, 0);
-        b2Body *groundBody = _world->CreateBody(&groundBodyDef);
+        groundBodyDef.position.Set (0, 0);
+        b2Body *groundBody = _world->CreateBody (&groundBodyDef);
         b2PolygonShape groundBox;
         b2FixtureDef boxShapeDef;
         boxShapeDef.shape = &groundBox;
 
-        groundBox.SetAsBox(4 , winSize.height / PTM_RATIO/2 );
-        groundBody->CreateFixture(&boxShapeDef);
+        groundBox.SetAsBox (4, winSize.height / PTM_RATIO / 2);
+        groundBody->CreateFixture (&boxShapeDef);
 
 
         // Create ball body and shape
         b2BodyDef ballBodyDef;
         ballBodyDef.type = b2_dynamicBody;
-        ballBodyDef.position.Set(winSize.width / 2 / PTM_RATIO, winSize.height / 2 / PTM_RATIO);
+        ballBodyDef.position.Set (winSize.width / 2 / PTM_RATIO, winSize.height / 2 / PTM_RATIO);
         ballBodyDef.userData = _ball;
-        _body = _world->CreateBody(&ballBodyDef);
+        _body = _world->CreateBody (&ballBodyDef);
 
         b2CircleShape circle;
         circle.m_radius = 26.0 / PTM_RATIO;
@@ -961,33 +1014,38 @@ public:
         ballShapeDef.density = 1.0f;
         ballShapeDef.friction = 0.2f;
         ballShapeDef.restitution = 0.8f;
-        _body->CreateFixture(&ballShapeDef);
+        _body->CreateFixture (&ballShapeDef);
 
 
     }
-    void tick(float dt)
+    void tick (float dt)
     {
 
-        _world->Step(dt, 10, 10);
-        for (b2Body *b = _world->GetBodyList(); b; b = b->GetNext()) {
-            if (b->GetUserData() != NULL) {
+        _world->Step (dt, 10, 10);
+        for (b2Body *b = _world->GetBodyList(); b; b = b->GetNext())
+        {
+            if (b->GetUserData() != NULL)
+            {
                 CCSprite *ballData = (CCSprite *)b->GetUserData();
-                ballData->setPosition (ccp(b->GetPosition().x * PTM_RATIO,
-                                           b->GetPosition().y * PTM_RATIO));
-                ballData->setRotation( -1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
+                ballData->setPosition (ccp (b->GetPosition().x * PTM_RATIO,
+                                            b->GetPosition().y * PTM_RATIO));
+                ballData->setRotation (-1 * CC_RADIANS_TO_DEGREES (b->GetAngle()));
             }
         }
 
     }
-    bool HandleMessage(const Telegram& msg)
+    bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg) {
+        switch (msg.Msg)
+        {
 
-        case    Telegram_UPDATE: {
-            tick(msg.args[0]);
+        case    Telegram_UPDATE:
+        {
+            tick (msg.args[0]);
         }
         break;
-        case    Telegram_DRAW: {
+        case    Telegram_DRAW:
+        {
             _ball->visit();
         }
         break;
@@ -1003,58 +1061,67 @@ public:
 #include "algorithm/Path.h"
 #include "algorithm/OrthoList.h"
 #include "algorithm/OrthoEdge.h"
-
+#include <thread>
+#include <functional>
+#include <mutex>
+#include <condition_variable>
 bool operator== (const CCPoint& p1, const CCPoint& p2)
 {
-    return p1.x == p2.x && p1.y ==p2.y;
+    return p1.x == p2.x && p1.y == p2.y;
 }
+
 class WallComponents :public Component
 {
-
+    std::mutex				  cv_m;
+    std::condition_variable   cv;
 
     Graph					_graph;
     CCPoint					right_left;
-    vector<CCPoint>		  nodes;
-    list<int>			shorest;
-    int					  width;
+    vector<CCPoint>			nodes;
+    list<int>				shorest;
+    int						width;
+    std::thread				helper2;
 
 
 public:
-    static  WallComponents* Create(int width)
+    static  WallComponents* Create (int width)
     {
-        return new WallComponents(width);
+        return new WallComponents (width);
     }
     ~WallComponents()
     {
 
     }
-    WallComponents(int w) :Component(Component_BOX2D), width(w)
+
+    WallComponents (int w) :Component (Component_BOX2D), width (w), helper2 (std::bind (&WallComponents::findshort, this))
     {
-        MakeGraph({100,100});
+
     }
 
-    bool inMap(CCPoint& p)
+    bool inMap (CCPoint& p)
     {
 
-        return (p.x <=  right_left.x &&
+        return (p.x <= right_left.x &&
                 p.y <= right_left.y &&
-                p.x >=0 &&
-                p.y >=0
+                p.x >= 0 &&
+                p.y >= 0
                );
     }
-    int getPointId(CCPoint & p)
+    int getPointId (CCPoint & p)
     {
-        return ((int)p.x<<16)+(int)p.y;
+        return ((int)p.x << 16) + (int)p.y;
     }
-    CCPoint getPoint(int id)
+    CCPoint getPoint (int id)
     {
-        return ccp( id >> 16, id & 0xffff );
+        return ccp (id >> 16, id & 0xffff);
     }
-    bool isBock(CCPoint & p)
+    bool isBock (CCPoint & p)
     {
-        int i=0;
-        for (auto &a :nodes) {
-            if (i == 0 || i ==1) {  //start & end
+        int i = 0;
+        for (auto &a : nodes)
+        {
+            if (i == 0 || i == 1)    //start & end
+            {
                 ++i;
                 continue;
             }
@@ -1064,103 +1131,150 @@ public:
         }
         return false;
     }
-    void  MakeGraph(CCPoint  right_left)
+    void  MakeGraph (CCPoint  right_left)
     {
         _graph.clear();
 
 
-        for (int x = 0; x<=right_left.x; ++x) {
+        for (int x = 0; x <= right_left.x; ++x)
+        {
 
-            for (int y = 0; y <=right_left.y; ++y) {
+            for (int y = 0; y <= right_left.y; ++y)
+            {
 
-                CCPoint p = ccp( x, y );
-                CCPoint p4[] = {{1,0},{-1,0},{0,1},{0,-1}};
-                for (auto& go: p4) {
+                CCPoint p = ccp (x, y);
+                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+                for (auto& go : p4)
+                {
 
-                    CCPoint possibale = p+go;
-                    int idd = getPointId(p);
-                    CCPoint test = getPoint(idd);
-                    assert(p == test);
-                    if (inMap(possibale) )
-                        _graph._OL->addNEdge(getPointId(p), getPointId(possibale), 1);
+                    CCPoint possibale = p + go;
+                    int idd = getPointId (p);
+                    CCPoint test = getPoint (idd);
+                    assert (p == test);
+                    if (inMap (possibale))
+                        _graph._OL->addNEdge (getPointId (p), getPointId (possibale), 1);
 
                 }
             }
 
         }
-        int i=0;
-        for (auto & p :nodes) {
-            if (i == 0 || i == 1) {  //start & end
+        int i = 0;
+        for (auto & p : nodes)
+        {
+            if (i == 0 || i == 1)    //start & end
+            {
                 ++i;
                 continue;
             }
 
-            _graph.SetNodeValidate(getPointId(p), false);
+            _graph.SetNodeValidate (getPointId (p), false);
         }
     }
-
-    bool HandleMessage(const Telegram& msg)
+    void findshort()
     {
-        switch (msg.Msg) {
 
-        case    Telegram_UPDATE: {
+
+        while (true)
+        {
+            std::unique_lock<std::mutex> lk (cv_m);
+            int old = nodes.size();
+            cv.wait (lk, [=] {return old != nodes.size(); });
+
+            MakeGraph (right_left);
+
+            shorest.clear();
+            if (nodes.size() >= 2)
+            {
+
+                _graph.findShortestPath (getPointId (nodes[0]), getPointId (nodes[1]), shorest);
+
+            }
+
+        }
+
+
+
+    }
+
+
+    bool HandleMessage (const Telegram& msg)
+    {
+        switch (msg.Msg)
+        {
+
+        case    Telegram_UPDATE:
+        {
 
         }
         break;
-        case Telegram_ADD_WALL: {
-
-            CCPoint  world_pos = ccp( msg.args[0], msg.args[1] );
-            int x =world_pos.x/width;
+        case Telegram_ADD_WALL:
+        {
+            std::lock_guard<std::mutex> lk (cv_m);
+            cv.notify_all();
+            CCPoint  world_pos = ccp (msg.args[0], msg.args[1]);
+            int x = world_pos.x / width;
             int y = world_pos.y / width;
 
-            if (right_left.x<x) {
-                right_left.x=(x+1);
+            if (right_left.x < x)
+            {
+                right_left.x = (x + 1);
 
             }
-            if (right_left.y<y)
-                right_left.y=(y+1);
+            if (right_left.y < y)
+                right_left.y = (y + 1);
 
 
-            bool found_in_list=false;
-            for (auto & p: nodes) {
-                if (p.x == x && p.y ==y)
-                    found_in_list=true;
+            bool found_in_list = false;
+            for (auto & p : nodes)
+            {
+                if (p.x == x && p.y == y)
+                    found_in_list = true;
             }
 
-            if (!found_in_list )
-                nodes.push_back(ccp(x,y));
-
-            MakeGraph(right_left);
-            shorest.clear();
-            if (nodes.size() >= 2) {
-                _graph.findShortestPath(getPointId(nodes[0]), getPointId(nodes[1]), shorest);
+            if (!found_in_list)
+                nodes.push_back (ccp (x, y));
 
 
-            }
+
+
+            /*   MakeGraph (right_left);
+             shorest.clear();
+             if (nodes.size() >= 2)
+             {
+             _graph.findShortestPath (getPointId (nodes[0]), getPointId (nodes[1]), shorest);
+
+
+             }*/
 
         }
         break;
-        case    Telegram_DRAW: {
+        case    Telegram_DRAW:
+        {
             {
-                int i = 0;
 
-                for (auto & a : shorest) {
-                    if (i == 0) {
+                int i = 0;
+                cv_m.lock();
+                for (auto a : shorest)
+                {
+                    if (i == 0)
+                    {
                         ++i;
                         continue;;
                     }
                     if (i == shorest.size())break;
                     ccColor4F c = { 255, 0, 255, 255 };
-                    CCPoint p = getPoint(a);
-                    ccDrawSolidRect(ccp(p.x*width, p.y*width), ccp((p.x + 1)*width, (p.y + 1)*width), c);
+                    CCPoint p = getPoint (a);
+                    ccDrawSolidRect (ccp (p.x*width, p.y*width), ccp ((p.x + 1)*width, (p.y + 1)*width), c);
 
                 }
+                cv_m.unlock();
             }
 
 
             {
                 int i = 0;
-                for (auto & p : nodes) {
+                for (auto & p : nodes)
+                {
 
 
                     ccColor4F c;
@@ -1170,7 +1284,7 @@ public:
                         c = { 0, 0, 255, 255 };
                     else
                         c = { 255, 0, 0, 255 };
-                    ccDrawSolidRect(ccp(p.x*width, p.y*width), ccp((p.x + 1)*width, (p.y + 1)*width), c);
+                    ccDrawSolidRect (ccp (p.x*width, p.y*width), ccp ((p.x + 1)*width, (p.y + 1)*width), c);
 
                     ++i;
 
@@ -1211,7 +1325,8 @@ bool ifOutWindow (Component* c)
     MoveComponent* m = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
     //MoveComponent* m2 = dynamic_cast<MoveComponent*> (c->GetC(Component_MOVE));
     auto  _winsize = CCDirector::sharedDirector()->getWinSize();
-    if (_winsize.width < (m->_pos.x) || _winsize.height < (m->_pos.y) || (m->_pos.x) < 0 || (m->_pos.y < 0)) {
+    if (_winsize.width < (m->_pos.x) || _winsize.height < (m->_pos.y) || (m->_pos.x) < 0 || (m->_pos.y < 0))
+    {
         return true;
     }
     return false;
