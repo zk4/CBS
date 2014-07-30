@@ -1051,8 +1051,7 @@ public:
 };
 
 #include "algorithm/Path.h"
-#include "algorithm/OrthoList.h"
-#include "algorithm/OrthoEdge.h"
+
 #include <thread>
 #include <functional>
 #include <mutex>
@@ -1066,7 +1065,7 @@ class WallComponents :public Component
 {
     std::mutex					_cv_m;
     std::condition_variable		_cv;
-    Graph						_graph;
+    Graph<int>						_graph;
     CCPoint						_ccp_RL;
     vector<CCPoint>				_nodes;
     list<int>					_shorest;
@@ -1143,7 +1142,7 @@ public:
                     CCPoint test = getPoint (idd);
                     assert (p == test);
                     if (inMap (possibale))
-                        _graph._OL->addNEdge (getPointId (p), getPointId (possibale), 1);
+                        _graph.addNEdge (getPointId (p), getPointId (possibale), 1);
 
                 }
             }
@@ -1158,7 +1157,8 @@ public:
                 continue;
             }
 
-            _graph.SetNodeValidate (getPointId (p), false);
+            int id = getPointId (p);
+            _graph.SetNodeValidate (id, false);
         }
     }
     void findshort()

@@ -42,12 +42,6 @@
     <ClCompile Include="..\Classes\cocos\VisibleRect.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\algorithm\OrthoList.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\algorithm\OrthoNode.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\algorithm\Path.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -93,15 +87,6 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\cocos\VisibleRect.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\algorithm\OrthoEdge.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\algorithm\OrthoList.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\algorithm\OrthoNode.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\algorithm\Path.h">

@@ -129,8 +129,6 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Classes\algorithm\OrthoList.cpp" />
-    <ClCompile Include="..\Classes\algorithm\OrthoNode.cpp" />
     <ClCompile Include="..\Classes\algorithm\Path.cpp" />
     <ClCompile Include="..\Classes\cJSON\cJSON.c" />
     <ClCompile Include="..\Classes\cocos\AppDelegate.cpp" />
@@ -145,9 +143,6 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Classes\algorithm\OrthoEdge.h" />
-    <ClInclude Include="..\Classes\algorithm\OrthoList.h" />
-    <ClInclude Include="..\Classes\algorithm\OrthoNode.h" />
     <ClInclude Include="..\Classes\algorithm\Path.h" />
     <ClInclude Include="..\Classes\cJSON\cJSON.h" />
     <ClInclude Include="..\Classes\cocos\AppDelegate.h" />
