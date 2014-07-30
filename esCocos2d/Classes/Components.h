@@ -837,26 +837,18 @@ public:
             auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
             CCPoint start = ccp (msg.args[0], msg.args[1]);
 
-            // begin drawing to the render texture
+
             _rt->begin();
-
-            // for extra points, we'll draw this smoothly from the last position and vary the sprite's
-            // scale/rotation/offset
-
 
             _pBrush->setPosition (start);
             _pBrush->setRotation (rand() % 360);
             float r = (float) (rand() % 3 / 20.f);
             _pBrush->setScale (r);
-            /*m_pBrush->setColor(ccc3(CCRANDOM_0_1() * 127 + 128, 255, 255));*/
-            // Use CCRANDOM_0_1() will cause error when loading libtests.so on android, I don't know why.
+
             _pBrush->setColor (ccc3 (rand() % 127 + 128, 255, 0));
-            // Call visit to draw the brush, don't call draw..
+
             _pBrush->visit();
 
-
-
-            // finish drawing and return context back to the screen
             _rt->end();
         }
         break;
@@ -1072,15 +1064,14 @@ bool operator== (const CCPoint& p1, const CCPoint& p2)
 
 class WallComponents :public Component
 {
-    std::mutex				  cv_m;
-    std::condition_variable   cv;
-
-    Graph					_graph;
-    CCPoint					right_left;
-    vector<CCPoint>			nodes;
-    list<int>				shorest;
-    int						width;
-    std::thread				helper2;
+    std::mutex					_cv_m;
+    std::condition_variable		_cv;
+    Graph						_graph;
+    CCPoint						_ccp_RL;
+    vector<CCPoint>				_nodes;
+    list<int>					_shorest;
+    int							_width;
+    std::thread					_thread;
 
 
 public:
@@ -1093,7 +1084,7 @@ public:
 
     }
 
-    WallComponents (int w) :Component (Component_BOX2D), width (w), helper2 (std::bind (&WallComponents::findshort, this))
+    WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::findshort, this))
     {
 
     }
@@ -1101,8 +1092,8 @@ public:
     bool inMap (CCPoint& p)
     {
 
-        return (p.x <= right_left.x &&
-                p.y <= right_left.y &&
+        return (p.x <= _ccp_RL.x &&
+                p.y <= _ccp_RL.y &&
                 p.x >= 0 &&
                 p.y >= 0
                );
@@ -1118,7 +1109,7 @@ public:
     bool isBock (CCPoint & p)
     {
         int i = 0;
-        for (auto &a : nodes)
+        for (auto &a : _nodes)
         {
             if (i == 0 || i == 1)    //start & end
             {
@@ -1159,7 +1150,7 @@ public:
 
         }
         int i = 0;
-        for (auto & p : nodes)
+        for (auto & p : _nodes)
         {
             if (i == 0 || i == 1)    //start & end
             {
@@ -1173,26 +1164,24 @@ public:
     void findshort()
     {
 
-
         while (true)
         {
-            std::unique_lock<std::mutex> lk (cv_m);
-            int old = nodes.size();
-            cv.wait (lk, [=] {return old != nodes.size(); });
+            std::unique_lock<std::mutex> lk (_cv_m);
+            int old = _nodes.size();
 
-            MakeGraph (right_left);
+            _cv.wait (lk, [=] {return old != _nodes.size(); });
 
-            shorest.clear();
-            if (nodes.size() >= 2)
+            MakeGraph (_ccp_RL);
+
+            _shorest.clear();
+            if (_nodes.size() >= 2)
             {
 
-                _graph.findShortestPath (getPointId (nodes[0]), getPointId (nodes[1]), shorest);
+                _graph.findShortestPath (getPointId (_nodes[0]), getPointId (_nodes[1]), _shorest);
 
             }
-
+            _cv.notify_all();
         }
-
-
 
     }
 
@@ -1209,42 +1198,33 @@ public:
         break;
         case Telegram_ADD_WALL:
         {
-            std::lock_guard<std::mutex> lk (cv_m);
-            cv.notify_all();
-            CCPoint  world_pos = ccp (msg.args[0], msg.args[1]);
-            int x = world_pos.x / width;
-            int y = world_pos.y / width;
 
-            if (right_left.x < x)
+
+            CCPoint  world_pos = ccp (msg.args[0], msg.args[1]);
+            int x = world_pos.x / _width;
+            int y = world_pos.y / _width;
+
+            if (_ccp_RL.x < x)
             {
-                right_left.x = (x + 1);
+                _ccp_RL.x = (x + 1);
 
             }
-            if (right_left.y < y)
-                right_left.y = (y + 1);
+            if (_ccp_RL.y < y)
+                _ccp_RL.y = (y + 1);
 
 
             bool found_in_list = false;
-            for (auto & p : nodes)
+            for (auto & p : _nodes)
             {
                 if (p.x == x && p.y == y)
                     found_in_list = true;
             }
 
             if (!found_in_list)
-                nodes.push_back (ccp (x, y));
+                _nodes.push_back (ccp (x, y));
+            _cv.notify_all();
 
 
-
-
-            /*   MakeGraph (right_left);
-             shorest.clear();
-             if (nodes.size() >= 2)
-             {
-             _graph.findShortestPath (getPointId (nodes[0]), getPointId (nodes[1]), shorest);
-
-
-             }*/
 
         }
         break;
@@ -1253,27 +1233,26 @@ public:
             {
 
                 int i = 0;
-                cv_m.lock();
-                for (auto a : shorest)
+                std::lock_guard<std::mutex> lk (_cv_m);
+                for (auto a : _shorest)
                 {
                     if (i == 0)
                     {
                         ++i;
                         continue;;
                     }
-                    if (i == shorest.size())break;
+                    if (i == _shorest.size())break;
                     ccColor4F c = { 255, 0, 255, 255 };
                     CCPoint p = getPoint (a);
-                    ccDrawSolidRect (ccp (p.x*width, p.y*width), ccp ((p.x + 1)*width, (p.y + 1)*width), c);
+                    ccDrawSolidRect (ccp (p.x*_width, p.y*_width), ccp ((p.x + 1)*_width, (p.y + 1)*_width), c);
 
                 }
-                cv_m.unlock();
-            }
 
+            }
 
             {
                 int i = 0;
-                for (auto & p : nodes)
+                for (auto & p : _nodes)
                 {
 
 
@@ -1284,23 +1263,24 @@ public:
                         c = { 0, 0, 255, 255 };
                     else
                         c = { 255, 0, 0, 255 };
-                    ccDrawSolidRect (ccp (p.x*width, p.y*width), ccp ((p.x + 1)*width, (p.y + 1)*width), c);
+                    ccDrawSolidRect (ccp (p.x*_width, p.y*_width), ccp ((p.x + 1)*_width, (p.y + 1)*_width), c);
 
                     ++i;
 
                 }
             }
-
             //{
             //    //draw bg
-            //    for (auto a : _graph._OL->nodes) {
+            //    for (auto a : _graph._OL->nodes)
+            //    {
             //        OrthoEdge* edge = a->get_nextOut();
-            //        while (edge) {
+            //        while (edge)
+            //        {
 
-            //            CCPoint from = getPoint(edge->fromNode->_data);
-            //            CCPoint to = getPoint(edge->toNode->_data);
-            //            ccDrawColor4F(255, 255, 255, 255);
-            //            ccDrawLine(ccp(from.x*width, from.y*width), ccp(width*to.x, width*to.y));
+            //            CCPoint from = getPoint (edge->fromNode->_data);
+            //            CCPoint to = getPoint (edge->toNode->_data);
+            //            ccDrawColor4F (255, 255, 255, 255);
+            //            ccDrawLine (ccp (from.x*_width, from.y*_width), ccp (_width*to.x, _width*to.y));
 
             //            edge = edge->nextOutedge;
             //        }

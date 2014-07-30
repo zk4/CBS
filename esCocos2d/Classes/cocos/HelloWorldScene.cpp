@@ -58,7 +58,7 @@ bool HelloWorld::init()
     for (int i=0; i<0; ++i)
     {
 
-        auto   bad = Component::Create (Entity_);
+        auto   planes = Component::Create (Entity_);
         auto sprite = CCSprite::create ("airplane.png");
         sprite->setScale (.05f);
         CCMenuItemImage* cc = CCMenuItemImage::create ("CloseNormal.png", "CloseSelected.png", "CloseSelected.png", this, menu_selector (HelloWorld::menuCloseCallback));
@@ -68,16 +68,16 @@ bool HelloWorld::init()
         sprite->setPosition (CCPointZero);
         cc->setPosition (CCPointZero);
         c->setPosition (CCPointZero);
-        bad->AddC (TrailComponent::Create (_rt));
-        bad->AddC (RadarComponent::Create (50));
-        bad->AddC (MoveComponent::Create ({ 100, 100 }, 1,100, 1000, 100,1));
-        bad->AddC (SpriteComponent::Create (sprite));
+        planes->AddC (TrailComponent::Create (_rt));
+        planes->AddC (RadarComponent::Create (50));
+        planes->AddC (MoveComponent::Create ({ 100, 100 }, 1,100, 1000, 100,1));
+        planes->AddC (SpriteComponent::Create (sprite));
 
-        bad->AddC (HPComponent::Create (100));
-        bad->AddC (WeaponComponent::Create());
-        bads.push_back (bad);
+        planes->AddC (HPComponent::Create (100));
+        planes->AddC (WeaponComponent::Create());
+        bads.push_back (planes);
 
-        DD (bad->GetID(), Telegram_SET_POS, { double (200 + rand() % 30), double (200 + rand() % 30) });
+        DD (planes->GetID(), Telegram_SET_POS, { double (200 + rand() % 30), double (200 + rand() % 30) });
     }
     for (auto a:bads)
     {
