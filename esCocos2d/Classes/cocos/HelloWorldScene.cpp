@@ -112,7 +112,7 @@ bool HelloWorld::ccTouchBegan (CCTouch *pTouch, CCEvent *pEvent)
           m->_pos = target;
       }*/
     // DD (a->GetID(), Telegram_ARRIVE, { target.x, target.y});
-    DD (wall->GetID(), Telegram_ADD_WALL, { target.x, target.y });
+    DD (wall->GetID(), Telegram_CLIK_ON_WALL, { target.x, target.y });
 
     return true;
 }
@@ -120,7 +120,7 @@ bool HelloWorld::ccTouchBegan (CCTouch *pTouch, CCEvent *pEvent)
 void HelloWorld::ccTouchMoved (CCTouch *pTouch, CCEvent *pEvent)
 {
     target = pTouch->getLocation();
-    DD (wall->GetID(), Telegram_ADD_WALL, { target.x, target.y });
+    DD(wall->GetID(), Telegram_CLIK_ON_WALL, { target.x, target.y });
 }
 
 

@@ -1127,7 +1127,9 @@ public:
 
         }
         break;
-        case Telegram_ADD_WALL: {
+
+
+        case Telegram_CLIK_ON_WALL: {
 
 
             CCPoint  world_pos = ccp (msg.args[0], msg.args[1]);
@@ -1137,30 +1139,22 @@ public:
 
 
             static CCPoint ccp_last_modifed=CCPointZero;
+            static CCPoint ccp_last_world = CCPointZero;
+            if (ccp_last_world == world_pos) {
+                addBrick(ccp_last_modifed, x, y);
+
+            }
             if (_nodes.size()>2) {
                 if (ccp_last_modifed != ccp(x,y)) {
                     ccp_last_modifed = ccp(x, y);
-                    auto it = std::find_if(std::begin(_nodes),
-                                           std::end(_nodes),
-                    [&](const CCPoint v) {
-                        return v==ccp_last_modifed;
-                    });
-                    bool found = it != _nodes.end();
-                    if (found)
-                        _nodes.erase(it);
-                    else
-                        _nodes.push_back(ccp(x, y));
-
-                    _graph.SetNodeValidate(ccp(x, y), found);
-                    _graph.SetNodeValidate(*_nodes.begin(), true);
-                    _graph.SetNodeValidate(*(_nodes.begin() + 1), true);
+                    addBrick(ccp_last_modifed, x, y);
                 }
             } else
                 _nodes.push_back (ccp (x, y));
             _cv.notify_all();
 
 
-
+            ccp_last_world = world_pos;
         }
         break;
         case    Telegram_DRAW: {
@@ -1226,6 +1220,24 @@ public:
         }
         return false;
 
+    }
+
+    void addBrick(CCPoint ccp_last_modifed, int x, int y)
+    {
+        auto it = std::find_if(std::begin(_nodes),
+                               std::end(_nodes),
+        [&](const CCPoint v) {
+            return v == ccp_last_modifed;
+        });
+        bool found = it != _nodes.end();
+        if (found)
+            _nodes.erase(it);
+        else
+            _nodes.push_back(ccp(x, y));
+
+        _graph.SetNodeValidate(ccp(x, y), found);
+        _graph.SetNodeValidate(*_nodes.begin(), true);
+        _graph.SetNodeValidate(*(_nodes.begin() + 1), true);
     }
 
 };
