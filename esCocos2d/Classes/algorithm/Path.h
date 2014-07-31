@@ -237,7 +237,7 @@ public:
 
 };
 
-
+#include "messaging/MessageDispatcher.h"
 template<typename T>
 class Graph
 {
@@ -319,6 +319,7 @@ private:
     {
         OrthoNode<T>*  smallest=NULL;
         for (auto  choosen_node : choosen_nodes_) {
+            DD(Telegram_ACCESS_NODE, {(double)(int)(&choosen_node ->_data)});
             OrthoEdge<T>*  edge = choosen_node->get_nextOut();
             while (edge) {
                 if (edge->weight == INVALID_VALUE) {

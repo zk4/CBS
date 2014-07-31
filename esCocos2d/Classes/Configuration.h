@@ -31,6 +31,7 @@ enum eTelegram {
     Telegram_AI,
     Telegram_DRAW,
 
+    Telegram_ACCESS_NODE,
     Telegram_MOVE_ON_WALL,
     Telegram_CLIK_ON_WALL,
     Telegram_ADD_TARGET,
