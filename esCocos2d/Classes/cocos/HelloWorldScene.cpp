@@ -43,7 +43,7 @@ bool HelloWorld::init()
 
 
     wall = Component::Create (Entity_);
-    wall->AddC (WallComponents::Create (10));
+    wall->AddC (WallComponents::Create (40));
     wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 300, 300, 100, 1));
     DD (wall->GetID(), Telegram_SET_POS, { 0,0 });
 

@@ -1031,7 +1031,8 @@ public:
 
     WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::findshort, this))
     {
-
+        _ccp_RL = ccp(100,100);
+        MakeGraph(_ccp_RL);
     }
 
     bool inMap (CCPoint& p)
@@ -1110,7 +1111,7 @@ public:
 
             _cv.wait (lk, [=] {return old != _nodes.size(); });
 
-            MakeGraph (_ccp_RL);
+
 
             _shorest.clear();
             if (_nodes.size() >= 2) {
@@ -1138,12 +1139,12 @@ public:
             int x = world_pos.x / _width;
             int y = world_pos.y / _width;
 
-            if (_ccp_RL.x < x) {
-                _ccp_RL.x = (x + 1);
+            /*  if (_ccp_RL.x < x) {
+                  _ccp_RL.x = (x + 1);
 
-            }
-            if (_ccp_RL.y < y)
-                _ccp_RL.y = (y + 1);
+              }
+              if (_ccp_RL.y < y)
+                  _ccp_RL.y = (y + 1);*/
 
 
             bool found_in_list = false;
@@ -1151,6 +1152,9 @@ public:
                 if (p.x == x && p.y == y)
                     found_in_list = true;
             }
+
+            if (_nodes.size()>2)
+                _graph.SetNodeValidate(ccp(x,y), false);
 
 
             if (!found_in_list)
@@ -1204,11 +1208,9 @@ public:
             }
             //{
             //    //draw bg
-            //    for (auto a : _graph._OL->nodes)
-            //    {
+            //    for (auto a : _graph._OL->nodes) {
             //        auto edge = a->get_nextOut();
-            //        while (edge)
-            //        {
+            //        while (edge) {
 
             //            CCPoint from =  (edge->fromNode->_data);
             //            CCPoint to =  (edge->toNode->_data);

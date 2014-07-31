@@ -317,8 +317,6 @@ private:
     // update nodes around choosen_nodes,return smallest weighted node
     inline OrthoNode<T>*  updateNodeAroundChoosen (vector<OrthoNode<T>*>& choosen_nodes_)
     {
-
-
         OrthoNode<T>*  smallest=NULL;
         for (auto  choosen_node : choosen_nodes_) {
             OrthoEdge<T>*  edge = choosen_node->get_nextOut();
@@ -327,7 +325,6 @@ private:
                     edge = edge->nextOutedge;
                     continue;
                 }
-                // OrthoNode<T>* toNode = edge->toNode;
                 if (edge->toNode->_choosen) {
                     edge = edge->nextOutedge;
                     continue;
