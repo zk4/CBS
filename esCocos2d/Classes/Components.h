@@ -1004,6 +1004,10 @@ bool operator== (const CCPoint& p1, const CCPoint& p2)
     return p1.x == p2.x && p1.y == p2.y;
 }
 
+bool operator!= (const CCPoint& p1, const CCPoint& p2)
+{
+    return  !(p1==p2);
+}
 bool operator< (const CCPoint& p1, const CCPoint& p2)
 {
     return p1.x<p2.x || (p1.x==p2.x && p1.y<p2.y);
@@ -1044,14 +1048,7 @@ public:
                 p.y >= 0
                );
     }
-    /* int getPointId (CCPoint & p)
-     {
-     return ((int)p.x << 16) + (int)p.y;
-     }
-     CCPoint getPoint (int id)
-     {
-     return ccp (id >> 16, id & 0xffff);
-     }*/
+
     bool isBock (CCPoint & p)
     {
         int i = 0;
@@ -1080,9 +1077,7 @@ public:
                 for (auto& go : p4) {
 
                     CCPoint possibale = p + go;
-                    /*     int idd = getPointId (p);
-                         CCPoint test = getPoint (idd);
-                         assert (p == test);*/
+
                     if (inMap (possibale))
                         _graph.addNEdge ( (p),   (possibale), 1);
 
@@ -1139,25 +1134,28 @@ public:
             int x = world_pos.x / _width;
             int y = world_pos.y / _width;
 
-            /*  if (_ccp_RL.x < x) {
-                  _ccp_RL.x = (x + 1);
-
-              }
-              if (_ccp_RL.y < y)
-                  _ccp_RL.y = (y + 1);*/
 
 
-            bool found_in_list = false;
-            for (auto & p : _nodes) {
-                if (p.x == x && p.y == y)
-                    found_in_list = true;
-            }
+            static CCPoint ccp_last_modifed=CCPointZero;
+            if (_nodes.size()>2) {
+                if (ccp_last_modifed != ccp(x,y)) {
+                    ccp_last_modifed = ccp(x, y);
+                    auto it = std::find_if(std::begin(_nodes),
+                                           std::end(_nodes),
+                    [&](const CCPoint v) {
+                        return v==ccp_last_modifed;
+                    });
+                    bool found = it != _nodes.end();
+                    if (found)
+                        _nodes.erase(it);
+                    else
+                        _nodes.push_back(ccp(x, y));
 
-            if (_nodes.size()>2)
-                _graph.SetNodeValidate(ccp(x,y), false);
-
-
-            if (!found_in_list)
+                    _graph.SetNodeValidate(ccp(x, y), found);
+                    _graph.SetNodeValidate(*_nodes.begin(), true);
+                    _graph.SetNodeValidate(*(_nodes.begin() + 1), true);
+                }
+            } else
                 _nodes.push_back (ccp (x, y));
             _cv.notify_all();
 
@@ -1178,8 +1176,6 @@ public:
                     if (i == _shorest.size())break;
 
                     ccColor4F c = { 1, 1, 1, 1 };
-
-
 
                     ccDrawSolidRect (ccp (a.x*_width, a.y*_width), ccp ((a.x + 1)*_width, (a.y + 1)*_width), c);
                     ++i;
