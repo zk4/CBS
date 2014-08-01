@@ -1023,6 +1023,7 @@ class WallComponents :public Component
     list<CCPoint>				_shorest;
     int							_width;
     std::thread					_thread;
+    CCLabelTTF*					_access_count;
     struct ccp_ext {
         CCPoint  p;
         int      iAccessTimes;
@@ -1043,6 +1044,8 @@ public:
     {
         _ccp_RL = ccp(100,100);
         MakeGraph(_ccp_RL);
+        _access_count = CCLabelTTF::create("", "Helvetica", 16);
+        _access_count->retain();
     }
 
     bool inMap (CCPoint& p)
@@ -1134,17 +1137,17 @@ public:
         }
         break;
         case Telegram_ACCESS_NODE: {
-            double d=msg.args[0];
-            CCPoint * world_pos = reinterpret_cast<CCPoint*>((int)d) ;
+            /*      double d=msg.args[0];
+                  CCPoint * world_pos = reinterpret_cast<CCPoint*>((int)d) ;
 
-            auto  ite = find_if(_access_nodes.begin(), _access_nodes.end(), [=](const  ccp_ext & ce) {
-                return ce.p == *world_pos;
-            });
-            if (ite != _access_nodes.end()) {
-                ite->iAccessTimes++;
-            } else {
-                _access_nodes.push_back({ *world_pos, 1 });
-            }
+                  auto  ite = find_if(_access_nodes.begin(), _access_nodes.end(), [=](const  ccp_ext & ce) {
+                      return ce.p == *world_pos;
+                  });
+                  if (ite != _access_nodes.end()) {
+                      ite->iAccessTimes++;
+                  } else {
+                      _access_nodes.push_back({ *world_pos, 1 });
+                  }*/
         }
         break;
 
@@ -1215,30 +1218,36 @@ public:
 
                 }
             }
-            //{
-            //    //draw bg
-            //    for (auto a : _graph._OL->nodes) {
-            //        auto edge = a->get_nextOut();
-            //        while (edge) {
+            {
+                //draw bg
+                /*for (auto a : _graph._OL->nodes) {
+                	auto edge = a->get_nextOut();
+                	while (edge) {
 
-            //            CCPoint from = (edge->fromNode->_data);
-            //            CCPoint to = (edge->toNode->_data);
-            //            ccDrawColor4F(255, 255, 255, 255);
-            //            ccDrawLine(ccp(from.x*_width, from.y*_width), ccp(_width*to.x, _width*to.y));
+                		CCPoint from = (edge->fromNode->_data);
+                		CCPoint to = (edge->toNode->_data);
+                		ccDrawColor4F(255, 255, 255, 255);
+                		ccDrawLine(ccp(from.x*_width, from.y*_width), ccp(_width*to.x, _width*to.y));
 
-            //            edge = edge->nextOutedge;
-            //        }
-            //    }
-            //}
+                		edge = edge->nextOutedge;
+                	}
+                }*/
+            }
 
             {
 //draw access
+
                 int size = _access_nodes.size();
                 for (int i =0; i < size; ++i) {
 
                     ccp_ext p = _access_nodes[i];
                     float ff = p.iAccessTimes / 4000.0f + 0.5f;
-                    ccDrawSolidRect(ccp(p.p.x*_width, p.p.y*_width), ccp((p.p.x + 1)*_width, (p.p.y + 1)*_width), { ff, ff, ff, ff});
+//                    ccDrawSolidRect(ccp(p.p.x*_width, p.p.y*_width), ccp((p.p.x + 1)*_width, (p.p.y + 1)*_width), { ff, ff, ff, ff});
+                    static char buffer[4];
+                    sprintf(buffer, "%i ", p.iAccessTimes);
+                    _access_count->setString(buffer);
+                    _access_count->setPosition(ccp(p.p.x*_width+_width/2, p.p.y*_width+_width/2));
+                    _access_count->visit();
 
 
                 }
