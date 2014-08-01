@@ -303,7 +303,7 @@ public:
             //make sure this agent isn't included in the calculations and that
             //the agent being examined is close enough. ***also make sure it doesn't
             //include the evade target ***
-            auto c = CompMgr::GetComponentFromID (ids_insight[i]);
+            auto c = CompMgr->GetComponentFromID (ids_insight[i]);
             if (!c)continue;
             auto moveC = (MoveComponent*)c->GetC (Component_MOVE);
             if (!moveC)continue;
@@ -715,9 +715,9 @@ public:
 
             MoveComponent* self = dynamic_cast<MoveComponent*> (GetParent()->GetC (Component_MOVE));
             targets.clear();
-            for (int i = 0; i < CompMgr::_ComponentMap.size(); ++i)
+            for (int i = 0; i < CompMgr->_ComponentMap.size(); ++i)
             {
-                auto c = CompMgr::_ComponentMap[i];
+                auto c = CompMgr->_ComponentMap[i];
                 if (!c)continue;
                 if (c->GetParent() && c->GetID() == c->GetParent()->GetID())continue;
                 MoveComponent* target = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
@@ -745,7 +745,7 @@ public:
             for (auto a : targets)
             {
 
-                MoveComponent* target = dynamic_cast<MoveComponent*> (CompMgr::_ComponentMap[a]->GetC (Component_MOVE));
+                MoveComponent* target = dynamic_cast<MoveComponent*> (CompMgr->_ComponentMap[a]->GetC (Component_MOVE));
                 ccDrawLine (self->_pos, target->_pos);
             }
 
@@ -892,10 +892,10 @@ public:
                 for (auto c : ids_insight)
                 {
 
-                    auto hpC = (HPComponent*)CompMgr::GetComponentFromID (c)->GetC (Component_HP);
+                    auto hpC = (HPComponent*)CompMgr->GetComponentFromID (c)->GetC (Component_HP);
                     if (hpC && hpC->HP > 0)
                     {
-                        a = CompMgr::GetComponentFromID (c);
+                        a = CompMgr->GetComponentFromID (c);
                         break;
                     }
                 }
@@ -945,7 +945,7 @@ public:
     }
     void Attack (int id, double hp)
     {
-        DD (  GetID(), id, Telegram_HURT, { hp });
+        DD (0,  GetID(), id, Telegram_HURT, { hp });
     }
 };
 #define PTM_RATIO 32.0
