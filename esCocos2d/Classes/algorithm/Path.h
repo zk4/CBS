@@ -48,19 +48,20 @@ public:
     ~OrthoNode()
     {
         OrthoEdge<T>* now = _nextOut;
-        while (now) {
+        while (now)
+        {
             OrthoEdge<T>* next = now->nextOutedge;
             delete (now);
             now = next;
         }
     }
 
-    inline void  AddNextOut(OrthoEdge<T>* next)
+    inline void  AddNextOut (OrthoEdge<T>* next)
     {
         AddNextOut (&_nextOut, next);
     }
 
-    inline void  AddNextOut(OrthoEdge<T>** e, OrthoEdge<T>* next)
+    inline void  AddNextOut (OrthoEdge<T>** e, OrthoEdge<T>* next)
     {
         if (*e == 0)
             *e = next;
@@ -68,12 +69,12 @@ public:
             AddNextOut (& ((*e)->nextOutedge), next);
     }
 
-    inline void  AddNextIn(OrthoEdge<T>* next)
+    inline void  AddNextIn (OrthoEdge<T>* next)
     {
         AddNextIn (&_nextIn, next);
     }
 
-    inline void  AddNextIn(OrthoEdge<T>** e, OrthoEdge<T>* next)
+    inline void  AddNextIn (OrthoEdge<T>** e, OrthoEdge<T>* next)
     {
         if (*e == 0)
             *e = next;
@@ -129,7 +130,8 @@ public:
 
 
 template<typename T>
-struct OrthoNodeComp {
+struct OrthoNodeComp
+{
     bool operator() (const OrthoNode<T>*  lhs, const OrthoNode<T>* rhs) const
     {
         return lhs->data < rhs->data;
@@ -142,24 +144,27 @@ public:
 
     std::set<OrthoNode<T> *, OrthoNodeComp<T> > nodes;
 
-    inline void  addEdge(T from_data, T to_data, int weight)
+    inline void  addEdge (T from_data, T to_data, int weight)
     {
         //TODO: find duplicated
 
         OrthoNode<T> * f = findNode (from_data);
-        if (!f) {
+        if (!f)
+        {
             f = new OrthoNode<T> (from_data, 0, 0);
             nodes.insert (f);
         }
 
         OrthoNode<T> * t = findNode (to_data);
-        if (!t) {
+        if (!t)
+        {
             t = new OrthoNode<T> (to_data, 0, 0);
             nodes.insert (t);
         }
 
         OrthoEdge<T> * ef2t = findEdge (f, t);
-        if (!ef2t) {
+        if (!ef2t)
+        {
             ef2t = new OrthoEdge<T> (f, t, NULL, NULL);
             ef2t->weight = weight;
             f->AddNextOut (ef2t);
@@ -190,7 +195,7 @@ public:
     //    }
     //}
 
-    inline OrthoNode<T>*  findNode(T node)
+    inline OrthoNode<T>*  findNode (T node)
     {
         OrthoNode<T> n (node, NULL, NULL);
         auto ret = nodes.find (&n);
@@ -199,13 +204,12 @@ public:
         return NULL;
     }
 
-
-
-    inline OrthoEdge<T>*  findEdge(OrthoNode<T>* from, OrthoNode<T>* to)
+    inline OrthoEdge<T>*  findEdge (OrthoNode<T>* from, OrthoNode<T>* to)
     {
         assert (from && to);
         OrthoEdge<T>* e = from->get_nextOut();
-        while (e) {
+        while (e)
+        {
             if (e->toNode == to)
                 return e;
             else
@@ -216,7 +220,8 @@ public:
 
     ~OrthoList()
     {
-        for (auto a : nodes) {
+        for (auto a : nodes)
+        {
             delete (a);
         }
         nodes.clear();
@@ -224,12 +229,13 @@ public:
 
     inline void  initNodes()
     {
-        for (auto a : nodes) {
+        for (auto a : nodes)
+        {
             a->init();
         }
     }
 
-    inline  void  addNEdge(T from, T to, int weight)
+    inline  void  addNEdge (T from, T to, int weight)
     {
         addEdge (from, to, weight);
         addEdge (to, from, weight);
@@ -244,7 +250,8 @@ template<typename T>
 class Graph
 {
 public:
-    enum eConst {
+    enum eConst
+    {
         OK,
         NODE_NOT_EXSIT,
         NODE_NOT_VALID,
@@ -261,7 +268,8 @@ public:
     }
     void  clear()
     {
-        for (auto a : _OL->nodes) {
+        for (auto a : _OL->nodes)
+        {
             delete (a);
         }
         _OL->nodes.clear();
@@ -292,52 +300,6 @@ public:
     OrthoList<T>*		_OL;
 private:
 
-
-    // update nodes around choosen_nodes,return smallest weighted node
-    inline OrthoNode<T>*  updateAround ( OrthoNode<T>*  node )
-    {
-        OrthoNode<T>*  smallest=NULL;
-
-#ifdef MESSAGE_SUPPORT
-        DD(Telegram_ACCESS_NODE, {(double)(int)(&node ->data)});
-#endif // MESSAGE_SUPPORT
-        OrthoEdge<T>*  edge = node->get_nextOut();
-        while (edge) {
-            if (edge->weight == INVALID_VALUE) {
-                edge = edge->nextOutedge;
-                continue;
-            }
-            if (edge->toNode->_closed) {
-                edge = edge->nextOutedge;
-                continue;
-            }
-            if (!edge->toNode->_validate) {
-                edge = edge->nextOutedge;
-                continue;
-            }
-            int nodefromstart = edge->weight + node->d;
-            if (edge->toNode->d > nodefromstart) {
-                edge->toNode->p = node;
-                edge->toNode->d = nodefromstart;
-            }
-
-            if (!smallest)
-                smallest = edge->toNode;
-            else {
-                if (smallest->d > edge->toNode->d) {
-                    smallest = edge->toNode;
-                }
-            }
-
-            edge = edge->nextOutedge;
-        }
-
-
-        node->_closed = true;
-        return smallest;
-    }
-
-
     OrthoNode<T>*  findNode (T nodename)
     {
         return _OL->findNode (nodename);
@@ -346,88 +308,81 @@ private:
     eConst  _findShortestPath (OrthoNode<T>* from_, OrthoNode<T>* to_, list<T>& shortestPath/*out*/)
     {
         //Dijkstra algorithm
-        if (! (from_ &&  to_)) {
+        if (! (from_ &&  to_))
+        {
             return NODE_NOT_EXSIT;
         }
-        if (!from_->_validate || !to_->_validate) {
+        if (!from_->_validate || !to_->_validate)
+        {
             return NODE_NOT_VALID;
         }
-        _OL->initNodes();
-
-        from_->d = 0;
-        from_->_closed = false;
-        OrthoNode<T>* chosen_node = from_;
-        while (!to_->_closed) {
-            chosen_node = updateAround(chosen_node);
-            if (!to_->_closed && chosen_node == NULL) {
-                return  DEAD_END;
-            }
-
-        }
-        //reconstruct result
-        OrthoNode<T>* nownode = to_;
-        while (nownode) {
-            shortestPath.insert (shortestPath.begin(), 1, nownode->data);
-            nownode = nownode->p;
-        }
+        Dijkstra (from_,to_,shortestPath);
 
         return OK;
     }
     template<typename T>
     struct node_greater
-            : public binary_function<OrthoNode<T>*, OrthoNode<T>*, bool> {
+            : public binary_function<OrthoNode<T>*, OrthoNode<T>*, bool>
+    {
         // functor for operator>
         bool operator() (const OrthoNode<T>*  _Left, const OrthoNode<T>* _Right) const
         {
             // apply operator> to operands
-            return _Left->d > _Right->d;
+            return _Left->d > _Right->d || _Left->d == _Right->d &&  _Left <_Right;
         }
     };
 
-
 public:
 
-    void Dijkstra(T  s,T e,list<T>& path/*out*/)
+    void Dijkstra (T  s,T e,list<T>& path/*out*/)
     {
-        Dijkstra(findNode(s), findNode(e),  path/*out*/);
+        Dijkstra (findNode (s), findNode (e),  path/*out*/);
     }
-    void Dijkstra(OrthoNode<T>*  from_, OrthoNode<T>*  to_, list<T>& path/*out*/)
+    void Dijkstra (OrthoNode<T>*  from_, OrthoNode<T>*  to_, list<T>& path/*out*/)
     {
+        priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> Q;
 
-        set<OrthoNode<T>*> Q;
-        for (auto  v : _OL->nodes) {
+        for (auto  v : _OL->nodes)
+        {
             if (!v->_validate)continue;
+
             v->d = INT_MAX;
             v->p = NULL;
-            Q.insert(v);
+            v->_closed=false;
+
         }
-        from_->d  = 0;
-        set<OrthoNode<T>* > S;
-
-        while (!Q.empty()) {
-            //auto u = Q.top();
-            auto u= *std::min_element(Q.begin(), Q.end(), [](const OrthoNode<T>*  _Left, const OrthoNode<T>* _Right) {
-                return _Left->d< _Right->d;
-            });
-            Q.erase(u);
-            S.insert(u);
-
+        from_->d = 0;
+        Q.push (from_);
+        while (!Q.empty() && !to_->_closed)
+        {
+            OrthoNode<T>* u = Q.top();
+            Q.pop();
             OrthoEdge<T>*  edge = u->get_nextOut();
-            while (edge) {
+            while (edge)
+            {
                 auto v = edge->toNode;
                 auto u = edge->fromNode;
-                if (v->d > u->d + edge->weight) {
+#ifdef MESSAGE_SUPPORT
+                DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data) });
+#endif // MESSAGE_SUPPORT
+                if (v->d > u->d + edge->weight)
+                {
                     v->d = u->d + edge->weight;
                     v->p=u;
+                    Q.push (v);
+
                 }
                 edge=edge->nextOutedge;
             }
+            u->_closed=true;
 
         }
+
         //reconstruct result
         OrthoNode<T>* nownode = to_;
-        while (nownode) {
-            path.insert(path.begin(), 1, nownode->data);
+        while (nownode)
+        {
+            path.insert (path.begin(), 1, nownode->data);
             nownode = nownode->p;
         }
 
@@ -436,8 +391,10 @@ public:
     eConst  findAround (OrthoNode<T>* n, bool check_chosen, set<OrthoNode<T>*>& around/*out*/)
     {
         OrthoEdge<T>*  edge = n->get_nextOut();
-        while (edge) {
-            if (edge->toNode->_closed) {
+        while (edge)
+        {
+            if (edge->toNode->_closed)
+            {
                 around.insert (edge->toNode);
             }
             edge = edge->nextOutedge;

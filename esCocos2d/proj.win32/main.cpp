@@ -16,6 +16,6 @@ int APIENTRY _tWinMain (HINSTANCE hInstance,
     AppDelegate app;
     CCEGLView* eglView = CCEGLView::sharedOpenGLView();
     eglView->setViewName ("esCocos2d");
-    eglView->setFrameSize (480 , 320 );
+    eglView->setFrameSize (480*2 , 320*2 );
     return CCApplication::sharedApplication()->run();
 }
