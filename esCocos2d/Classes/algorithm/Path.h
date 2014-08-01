@@ -287,7 +287,6 @@ public:
         return _findShortestPath (_OL->findNode (nodename_from), _OL->findNode (nodename_to), shortestPath);
     }
 
-
     bool  SetNodeValidate (T& nodename, bool validate)
     {
         OrthoNode<T>* a = _OL->findNode (nodename);
@@ -316,9 +315,9 @@ private:
         {
             return NODE_NOT_VALID;
         }
-        Dijkstra (from_,to_,shortestPath);
+        return  Dijkstra (from_, to_, shortestPath);
 
-        return OK;
+
     }
     template<typename T>
     struct node_greater
@@ -327,18 +326,17 @@ private:
         // functor for operator>
         bool operator() (const OrthoNode<T>*  _Left, const OrthoNode<T>* _Right) const
         {
-            // apply operator> to operands
             return _Left->d > _Right->d || _Left->d == _Right->d &&  _Left <_Right;
         }
     };
 
 public:
 
-    void Dijkstra (T  s,T e,list<T>& path/*out*/)
+    eConst Dijkstra (T  s, T e, list<T>& path/*out*/)
     {
-        Dijkstra (findNode (s), findNode (e),  path/*out*/);
+        return   Dijkstra (findNode (s), findNode (e),  path/*out*/);
     }
-    void Dijkstra (OrthoNode<T>*  from_, OrthoNode<T>*  to_, list<T>& path/*out*/)
+    eConst Dijkstra (OrthoNode<T>*  from_, OrthoNode<T>*  to_, list<T>& path/*out*/)
     {
         priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> Q;
 
@@ -385,7 +383,7 @@ public:
             path.insert (path.begin(), 1, nownode->data);
             nownode = nownode->p;
         }
-
+        return OK;
     }
 
     eConst  findAround (OrthoNode<T>* n, bool check_chosen, set<OrthoNode<T>*>& around/*out*/)
