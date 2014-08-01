@@ -892,7 +892,7 @@ public:
     }
     void Attack (int id, double hp)
     {
-        Dispatcher->DispatchMessageZZ (0, GetID(), id, Telegram_HURT, { hp });
+        DD(0, GetID(), id, Telegram_HURT, { hp });
     }
 };
 #define PTM_RATIO 32.0
@@ -1215,21 +1215,21 @@ public:
 
                 }
             }
-            {
-                //draw bg
-                for (auto a : _graph._OL->nodes) {
-                    auto edge = a->get_nextOut();
-                    while (edge) {
+            //{
+            //    //draw bg
+            //    for (auto a : _graph._OL->nodes) {
+            //        auto edge = a->get_nextOut();
+            //        while (edge) {
 
-                        CCPoint from = (edge->fromNode->_data);
-                        CCPoint to = (edge->toNode->_data);
-                        ccDrawColor4F(255, 255, 255, 255);
-                        ccDrawLine(ccp(from.x*_width, from.y*_width), ccp(_width*to.x, _width*to.y));
+            //            CCPoint from = (edge->fromNode->_data);
+            //            CCPoint to = (edge->toNode->_data);
+            //            ccDrawColor4F(255, 255, 255, 255);
+            //            ccDrawLine(ccp(from.x*_width, from.y*_width), ccp(_width*to.x, _width*to.y));
 
-                        edge = edge->nextOutedge;
-                    }
-                }
-            }
+            //            edge = edge->nextOutedge;
+            //        }
+            //    }
+            //}
 
             {
 //draw access
