@@ -282,10 +282,10 @@ public:
     {
         _OL->addEdge (from, to, weight);
     }
-    eConst	 findShortestPath (T nodename_from, T nodename_to, list<T >& shortestPath/*out*/)
-    {
-        return _findShortestPath (_OL->findNode (nodename_from), _OL->findNode (nodename_to), shortestPath);
-    }
+    /*   eConst	 findShortestPath (T nodename_from, T nodename_to )
+       {
+           return _findShortestPath (_OL->findNode (nodename_from), _OL->findNode (nodename_to) );
+       }*/
 
     bool  SetNodeValidate (T& nodename, bool validate)
     {
@@ -297,14 +297,14 @@ public:
         return old;
     }
     OrthoList<T>*		_OL;
-private:
+
 
     OrthoNode<T>*  findNode (T nodename)
     {
         return _OL->findNode (nodename);
     }
 
-    eConst  _findShortestPath (OrthoNode<T>* from_, OrthoNode<T>* to_, list<T>& shortestPath/*out*/)
+    eConst  _findShortestPath (OrthoNode<T>* from_, OrthoNode<T>* to_ )
     {
         //Dijkstra algorithm
         if (! (from_ &&  to_))
@@ -315,8 +315,7 @@ private:
         {
             return NODE_NOT_VALID;
         }
-        return  Dijkstra (from_, to_, shortestPath);
-
+        return  Dijkstra (from_, to_ );
 
     }
     template<typename T>
@@ -332,18 +331,62 @@ private:
 
 public:
 
-    eConst Dijkstra (T  s, T e, list<T>& path/*out*/)
+    eConst road (T  start  )
     {
-        return   Dijkstra (findNode (s), findNode (e),  path/*out*/);
+        return   Dijkstra (findNode (s) );
     }
-    eConst Dijkstra (OrthoNode<T>*  from_, OrthoNode<T>*  to_, list<T>& path/*out*/)
+    void construct (  OrthoNode<T>* from_)
     {
+        if (_OL->nodes.empty())return ;
+        priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> Q;
+
+        for (auto v : _OL->nodes)
+        {
+            if (!v->_validate)continue;
+            v->d = INT_MAX;
+            v->p = NULL;
+            v->_closed = false;
+
+        }
+
+        from_->d = 0;
+        Q.push (from_);
+        while (!Q.empty() )
+        {
+            OrthoNode<T>* u = Q.top();
+            Q.pop();
+            OrthoEdge<T>*  edge = u->get_nextOut();
+            while (edge)
+            {
+                auto v = edge->toNode;
+                auto u = edge->fromNode;
+
+                if (v->d > u->d + edge->weight)
+                {
+                    v->d = u->d + edge->weight;
+                    v->p = u;
+#ifdef MESSAGE_SUPPORT
+                    //      DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
+#endif // MESSAGE_SUPPORT
+                    Q.push (v);
+
+                }
+                edge = edge->nextOutedge;
+            }
+            u->_closed = true;
+
+        }
+
+
+    }
+    eConst Dijkstra (OrthoNode<T>*  from_, OrthoNode<T>*  to_ )
+    {
+        if (_OL->nodes.empty())return;
         priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> Q;
 
         for (auto  v : _OL->nodes)
         {
             if (!v->_validate)continue;
-
             v->d = INT_MAX;
             v->p = NULL;
             v->_closed=false;
@@ -376,13 +419,6 @@ public:
 
         }
 
-        //reconstruct result
-        OrthoNode<T>* nownode = to_;
-        while (nownode)
-        {
-            path.insert (path.begin(), 1, nownode->data);
-            nownode = nownode->p;
-        }
         return OK;
     }
 

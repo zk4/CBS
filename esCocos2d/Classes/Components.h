@@ -303,7 +303,7 @@ public:
             //make sure this agent isn't included in the calculations and that
             //the agent being examined is close enough. ***also make sure it doesn't
             //include the evade target ***
-            auto c = CompMgr->GetComponentFromID (ids_insight[i]);
+            auto c = CompMgr::GetComponentFromID (ids_insight[i]);
             if (!c)continue;
             auto moveC = (MoveComponent*)c->GetC (Component_MOVE);
             if (!moveC)continue;
@@ -715,9 +715,9 @@ public:
 
             MoveComponent* self = dynamic_cast<MoveComponent*> (GetParent()->GetC (Component_MOVE));
             targets.clear();
-            for (int i = 0; i < CompMgr->_ComponentMap.size(); ++i)
+            for (int i = 0; i < CompMgr::_ComponentMap.size(); ++i)
             {
-                auto c = CompMgr->_ComponentMap[i];
+                auto c = CompMgr::_ComponentMap[i];
                 if (!c)continue;
                 if (c->GetParent() && c->GetID() == c->GetParent()->GetID())continue;
                 MoveComponent* target = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
@@ -745,7 +745,7 @@ public:
             for (auto a : targets)
             {
 
-                MoveComponent* target = dynamic_cast<MoveComponent*> (CompMgr->_ComponentMap[a]->GetC (Component_MOVE));
+                MoveComponent* target = dynamic_cast<MoveComponent*> (CompMgr::_ComponentMap[a]->GetC (Component_MOVE));
                 ccDrawLine (self->_pos, target->_pos);
             }
 
@@ -892,10 +892,10 @@ public:
                 for (auto c : ids_insight)
                 {
 
-                    auto hpC = (HPComponent*)CompMgr->GetComponentFromID (c)->GetC (Component_HP);
+                    auto hpC = (HPComponent*)CompMgr::GetComponentFromID (c)->GetC (Component_HP);
                     if (hpC && hpC->HP > 0)
                     {
-                        a = CompMgr->GetComponentFromID (c);
+                        a = CompMgr::GetComponentFromID (c);
                         break;
                     }
                 }
@@ -945,7 +945,7 @@ public:
     }
     void Attack (int id, double hp)
     {
-        DD (0, GetID(), id, Telegram_HURT, { hp });
+        DD (  GetID(), id, Telegram_HURT, { hp });
     }
 };
 #define PTM_RATIO 32.0
@@ -1086,6 +1086,7 @@ class WallComponents :public Component
     {
         CCPoint  p;
         int      iAccessTimes;
+        CCPoint  direction;
     };
     vector<ccp_ext>			    _access_nodes;
 
@@ -1099,9 +1100,9 @@ public:
 
     }
 
-    WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::findshort, this))
+    WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
     {
-        _ccp_RL = ccp (100,100);
+        _ccp_RL = ccp (200,200);
         MakeGraph (_ccp_RL);
         _access_count = CCLabelTTF::create ("", "Helvetica", 16);
         _access_count->retain();
@@ -1145,7 +1146,7 @@ public:
             {
 
                 CCPoint p = ccp (x, y);
-                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },{1,1},{1,-1},{-1,1},{-1,-1} };
                 for (auto& go : p4)
                 {
 
@@ -1172,7 +1173,7 @@ public:
             _graph.SetNodeValidate (_nodes[i], false);
         }
     }
-    void findshort()
+    void construct()
     {
 
         while (true)
@@ -1187,9 +1188,15 @@ public:
             _shorest.clear();
             if (_nodes.size() >= 2)
             {
-                _access_nodes.clear();
-                _graph.findShortestPath (  (_nodes[0]),   (_nodes[1]), _shorest);
+                auto from = _graph.findNode (_nodes[0]);
+                _graph.construct (from);
+                auto  current = _graph.findNode (_nodes[1]);
 
+                while (current && current != from)
+                {
+                    _shorest.push_back (current->data);
+                    current = current->p;
+                }
             }
             _cv.notify_all();
         }
@@ -1208,9 +1215,10 @@ public:
         break;
         case Telegram_ACCESS_NODE:
         {
-            double d=msg.args[0];
-            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int)d) ;
 
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[0]));
+            CCPoint * world_parent_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[1]));
+            CCPoint  direction = ccpSub (*world_parent_pos, *world_pos).normalize();
             auto  ite = find_if (_access_nodes.begin(), _access_nodes.end(), [=] (const  ccp_ext & ce)
             {
                 return ce.p == *world_pos;
@@ -1218,10 +1226,12 @@ public:
             if (ite != _access_nodes.end())
             {
                 ite->iAccessTimes++;
+                ite->direction=direction;
             }
             else
             {
                 _access_nodes.push_back ({ *world_pos, 1 });
+                _access_nodes.rbegin()->direction = direction;
             }
         }
         break;
@@ -1331,13 +1341,31 @@ public:
                     ccp_ext p = _access_nodes[i];
                     float ff = p.iAccessTimes / 4000.0f + 0.5f;
 //                    ccDrawSolidRect(ccp(p.p.x*_width, p.p.y*_width), ccp((p.p.x + 1)*_width, (p.p.y + 1)*_width), { ff, ff, ff, ff});
-                    static char buffer[4];
-                    sprintf (buffer, "%i ", p.iAccessTimes);
-                    _access_count->setString (buffer);
+                    // static char buffer[4];
+                    // sprintf (buffer, "%i ", p.iAccessTimes);
+                    //  _access_count->setString (buffer);
                     _access_count->setPosition (ccp (p.p.x*_width+_width/2, p.p.y*_width+_width/2));
-                    _access_count->visit();
+                    // _access_count->visit();
+                    static struct
+                    {
+                        CCPoint dir;
+                        const char* symb;
+                    } directions[]=
+                    {
+                        {{ 1, 0 },"<"}
+                        , {{ -1, 0 },">"},{ { 0, 1 },"^"}, {{ 0, -1 },"v"},{ { 0, 0 },"X"}
+                    };
+                    for (auto & a : directions)
+                    {
+                        if (a.dir == p.direction)
+                        {
+                            _access_count->setString (a.symb);
+                            _access_count->visit();
+                        }
 
 
+
+                    }
                 }
 
             }
