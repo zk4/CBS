@@ -1,12 +1,19 @@
+/*
+Date	2014/8/3
+author: ZK liuzq7@gmail.com
+*/
 #pragma  once
 
 #include <set>
 #include <assert.h>
 #include <list>
-#include <stack>
 #include <queue>
 #include <algorithm>
+#include <unordered_map>
 
+#ifdef MESSAGE_SUPPORT
+#include "messaging/MessageDispatcher.h"
+#endif // MESSAGE_SUPPORT
 
 using namespace std;
 namespace algorithm
@@ -21,9 +28,7 @@ class OrthoNode
 public:
     T				data;
     OrthoNode<T>*	p;    //parent
-    float			iF;   //distance_from_start
-
-
+    float			iF;   //distance_from_star
     bool			_closed;
     bool			_validate;
 
@@ -115,7 +120,7 @@ public:
     OrthoNode<T>*		toNode;
     OrthoEdge<T>*		nextInEdge;
     OrthoEdge<T>*		nextOutedge;
-    int				weight;
+    float				weight;
 
     OrthoEdge (OrthoNode<T>*		fromNode_,
                OrthoNode<T>*		toNode_,
@@ -147,7 +152,7 @@ public:
 
     std::set<OrthoNode<T> *, OrthoNodeComp<T> > nodes;
 
-    inline void  addEdge (T from_data, T to_data, int weight)
+    inline void  addEdge (T from_data, T to_data, float weight)
     {
         //TODO: find duplicated
 
@@ -238,7 +243,7 @@ public:
         }
     }
 
-    inline  void  addNEdge (T from, T to, int weight)
+    inline  void  addNEdge (T from, T to, float weight)
     {
         addEdge (from, to, weight);
         addEdge (to, from, weight);
@@ -246,9 +251,6 @@ public:
 
 };
 
-#ifdef MESSAGE_SUPPORT
-#include "messaging/MessageDispatcher.h"
-#endif // MESSAGE_SUPPORT
 template<typename T>
 class Graph
 {
@@ -278,11 +280,11 @@ public:
         }
         _OL->nodes.clear();
     }
-    void  addNEdge (T from, T to, int weight)
+    void  addNEdge (T from, T to, float weight)
     {
         _OL->addNEdge (from, to, weight);
     }
-    void  addEdge (T from, T to, int weight)
+    void  addEdge (T from, T to, float weight)
     {
         _OL->addEdge (from, to, weight);
     }
@@ -334,7 +336,48 @@ public:
 
 public:
 
-    eConst AStar (OrthoNode<T>* from_, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic )
+    eConst AStar (OrthoNode<T>* start, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic)
+    {
+        if (! (start && to_)) return NODE_NOT_VALID;
+        if (_OL->nodes.empty())return NO_MAP;
+        priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> frontier;
+        unordered_map<OrthoNode<T>*, float> cost_so_far;
+        unordered_map<OrthoNode<T>*, bool> closed;
+        start->p = NULL;
+        cost_so_far[start] = 0;
+        frontier.push (start );
+
+
+        while   (!frontier.empty())
+        {
+            OrthoNode<T>*  current = frontier.top();
+            if (current==to_)return OK;
+            frontier.pop();
+            OrthoEdge<T>*  next = current->get_nextOut();
+            while (next &&   next->toNode->_validate)
+            {
+
+                float new_cost = cost_so_far[current] + heuristic (current->data, next->toNode->data);
+                if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) )
+                {
+                    cost_so_far[next->toNode] = new_cost;
+#ifdef MESSAGE_SUPPORT
+                    DD (Telegram_ACCESS_NODE, { (double) (int) (&next->toNode->data), (double) (int) (&next->toNode->data) });
+#endif // MESSAGE_SUPPORT
+                    next->toNode->iF = new_cost + heuristic (to_->data, next->toNode->data);
+                    if (closed.find (next->toNode) == closed.end())
+                        frontier.push (next->toNode);
+                    closed[next->toNode] = true;
+                    next->toNode->p= current;
+                }
+                next = next->nextOutedge;
+            }
+        }
+
+
+        return DEAD_END;
+    }
+    eConst GreedySearch (OrthoNode<T>* from_, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic )
     {
         if (! (from_ && to_)) return NODE_NOT_VALID;
         if (_OL->nodes.empty())return NO_MAP;
@@ -362,7 +405,7 @@ public:
                     v->iF = heuristic (v->data, to_->data) + edge->weight;
                     v->p = u;
 #ifdef MESSAGE_SUPPORT
-                    //   DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
+                    DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
 #endif // MESSAGE_SUPPORT
 
                     OpenList.push (v);
@@ -376,7 +419,8 @@ public:
         }
         return DEAD_END;
     }
-    void Dijkstra (OrthoNode<T>* from_, OrthoNode<T>*  to_=NULL)
+
+    void Dijkstra  (OrthoNode<T>* from_, OrthoNode<T>*  to_=NULL)
     {
         if (_OL->nodes.empty())return ;
         priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> Q;
@@ -384,13 +428,13 @@ public:
         for (auto v : _OL->nodes)
         {
             if (!v->_validate)continue;
-            v->d = INT_MAX;
+            v->iF = INT_MAX;
             v->p = NULL;
             v->_closed = false;
 
         }
 
-        from_->G = 0;
+        from_->iF = 0;
         Q.push (from_);
         while (!to_ && !Q.empty() || (!Q.empty() &&  !to_->_closed))
         {
@@ -402,9 +446,9 @@ public:
                 auto v = edge->toNode;
                 auto u = edge->fromNode;
 
-                if (v->G > u->G + edge->weight)
+                if (v->iF > u->iF + edge->weight)
                 {
-                    v->G = u->G + edge->weight;
+                    v->iF = u->iF + edge->weight;
                     v->p = u;
 #ifdef MESSAGE_SUPPORT
                     //         DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });

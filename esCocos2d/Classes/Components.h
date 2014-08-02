@@ -1100,13 +1100,6 @@ public:
 
     }
 
-    WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
-    {
-        _ccp_RL = ccp (200,200);
-        MakeGraph (_ccp_RL);
-        _access_count = CCLabelTTF::create ("", "Helvetica", 16);
-        _access_count->retain();
-    }
 
     bool inMap (CCPoint& p)
     {
@@ -1134,6 +1127,14 @@ public:
         }
         return false;
     }
+    WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
+    {
+        _ccp_RL = ccp (50, 50);
+        MakeGraph (_ccp_RL);
+        _access_count = CCLabelTTF::create ("", "Helvetica", 16);
+        _access_count->retain();
+    }
+
     void  MakeGraph (CCPoint  right_left)
     {
         _graph.clear();
@@ -1146,32 +1147,21 @@ public:
             {
 
                 CCPoint p = ccp (x, y);
-                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }/*,{1,1},{1,-1},{-1,1},{-1,-1} */};
+                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1,1 }, { -1, 1 }, { -1, -1 }, { 1, -1 } };
                 for (auto& go : p4)
                 {
 
                     CCPoint possibale = p + go;
 
-                    if (inMap (possibale))
-                        _graph.addNEdge ( (p),   (possibale), 1);
+
+                    _graph.addNEdge ( (p),   (possibale), go.getLength());
 
                 }
             }
 
         }
 
-        int size = _nodes.size();
-        for (int i = 0; i<size; ++i)
-        {
-            if (i == 0 || i == 1)    //start & end
-            {
 
-                continue;
-            }
-
-
-            _graph.SetNodeValidate (_nodes[i], false);
-        }
     }
     void construct()
     {
@@ -1191,10 +1181,10 @@ public:
                 auto from = _graph.findNode (_nodes[0]);
                 auto  current = _graph.findNode (_nodes[1]);
 
-                _graph.AStar (from, current, [] (CCPoint& a, CCPoint& b  )
+                _graph.Dijkstra (from, current/*, [] (CCPoint& a, CCPoint& b  )
                 {
                     return ccpSub (a,b).getLength();
-                }   );
+                }  */ );
 
 
 
@@ -1332,18 +1322,20 @@ public:
             }
             {
                 //draw bg
-                /*for (auto a : _graph._OL->nodes) {
-                	auto edge = a->get_nextOut();
-                	while (edge) {
+                for (auto a : _graph._OL->nodes)
+                {
+                    auto edge = a->get_nextOut();
+                    while (edge)
+                    {
 
-                		CCPoint from = (edge->fromNode->_data);
-                		CCPoint to = (edge->toNode->_data);
-                		ccDrawColor4F(255, 255, 255, 255);
-                		ccDrawLine(ccp(from.x*_width, from.y*_width), ccp(_width*to.x, _width*to.y));
+                        CCPoint from = (edge->fromNode->data);
+                        CCPoint to = (edge->toNode->data);
+                        ccDrawColor4F (255, 255, 255, 255);
+                        ccDrawLine (ccp (from.x*_width, from.y*_width), ccp (_width*to.x, _width*to.y));
 
-                		edge = edge->nextOutedge;
-                	}
-                }*/
+                        edge = edge->nextOutedge;
+                    }
+                }
             }
 
             {
