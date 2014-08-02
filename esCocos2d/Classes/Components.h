@@ -1102,7 +1102,7 @@ public:
 
     WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
     {
-        _ccp_RL = ccp (50,50);
+        _ccp_RL = ccp (200,200);
         MakeGraph (_ccp_RL);
         _access_count = CCLabelTTF::create ("", "Helvetica", 16);
         _access_count->retain();

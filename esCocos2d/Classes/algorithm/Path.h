@@ -22,8 +22,8 @@ public:
     T				data;
     OrthoNode<T>*	p;    //parent
     float			iF;   //distance_from_start
-    float			iH;   //heuristic_distance_from_end
-    float			iG;   //final value
+
+
     bool			_closed;
     bool			_validate;
 
@@ -88,7 +88,7 @@ public:
     {
         p = 0;
         iF = INT_MAX;
-        iH = INT_MAX;
+
         _closed = false;
 
     }
@@ -259,6 +259,7 @@ public:
         NODE_NOT_EXSIT,
         NODE_NOT_VALID,
         DEAD_END,
+        NO_MAP,
         INVALID_VALUE = INT_MAX
     };
     Graph::Graph()
@@ -333,9 +334,10 @@ public:
 
 public:
 
-    void AStar (OrthoNode<T>* from_, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic )
+    eConst AStar (OrthoNode<T>* from_, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic )
     {
-        if (_OL->nodes.empty())return;
+        if (! (from_ && to_)) return NODE_NOT_VALID;
+        if (_OL->nodes.empty())return NO_MAP;
         priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> OpenList;
         set<OrthoNode<T>*> closedlist;
         from_->iF = heuristic (from_->data,to_->data);
@@ -360,7 +362,7 @@ public:
                     v->iF = heuristic (v->data, to_->data) + edge->weight;
                     v->p = u;
 #ifdef MESSAGE_SUPPORT
-                    DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
+                    //   DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
 #endif // MESSAGE_SUPPORT
 
                     OpenList.push (v);
@@ -369,10 +371,10 @@ public:
 
                 edge = edge->nextOutedge;
             }
-            if (u == to_)break;
+            if (u == to_) return OK ;
 
         }
-
+        return DEAD_END;
     }
     void Dijkstra (OrthoNode<T>* from_, OrthoNode<T>*  to_=NULL)
     {
