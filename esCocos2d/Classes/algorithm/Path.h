@@ -20,8 +20,10 @@ class OrthoNode
 {
 public:
     T				data;
-    OrthoNode<T>*	p;   //parent
-    int				d;   //_distance_from_start
+    OrthoNode<T>*	p;    //parent
+    float			iF;   //distance_from_start
+    float			iH;   //heuristic_distance_from_end
+    float			iG;   //final value
     bool			_closed;
     bool			_validate;
 
@@ -85,7 +87,8 @@ public:
     void  init()
     {
         p = 0;
-        d = INT_MAX;
+        iF = INT_MAX;
+        iH = INT_MAX;
         _closed = false;
 
     }
@@ -282,10 +285,7 @@ public:
     {
         _OL->addEdge (from, to, weight);
     }
-    /*   eConst	 findShortestPath (T nodename_from, T nodename_to )
-       {
-           return _findShortestPath (_OL->findNode (nodename_from), _OL->findNode (nodename_to) );
-       }*/
+
 
     bool  SetNodeValidate (T& nodename, bool validate)
     {
@@ -325,17 +325,56 @@ public:
         // functor for operator>
         bool operator() (const OrthoNode<T>*  _Left, const OrthoNode<T>* _Right) const
         {
-            return _Left->d > _Right->d || _Left->d == _Right->d &&  _Left <_Right;
+            return _Left->iF > _Right->iF || _Left->iF== _Right->iF &&  _Left <_Right;
         }
     };
 
+
+
 public:
 
-    eConst road (T  start  )
+    void AStar (OrthoNode<T>* from_, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic )
     {
-        return   Dijkstra (findNode (s) );
+        if (_OL->nodes.empty())return;
+        priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> OpenList;
+        set<OrthoNode<T>*> closedlist;
+        from_->iF = heuristic (from_->data,to_->data);
+
+        OpenList.push (from_);
+
+        while (!OpenList.empty()  )
+        {
+            OrthoNode<T>* u = OpenList.top();
+            closedlist.insert (u);
+
+            OpenList.pop();
+            OrthoEdge<T>*  edge = u->get_nextOut();
+            while (edge)
+            {
+                auto v = edge->toNode;
+
+                if (closedlist.find (v) == closedlist.end() &&  v->_validate )
+                {
+                    auto u = edge->fromNode;
+
+                    v->iF = heuristic (v->data, to_->data) + edge->weight;
+                    v->p = u;
+#ifdef MESSAGE_SUPPORT
+                    DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
+#endif // MESSAGE_SUPPORT
+
+                    OpenList.push (v);
+
+                }
+
+                edge = edge->nextOutedge;
+            }
+            if (u == to_)break;
+
+        }
+
     }
-    void construct (  OrthoNode<T>* from_)
+    void Dijkstra (OrthoNode<T>* from_, OrthoNode<T>*  to_=NULL)
     {
         if (_OL->nodes.empty())return ;
         priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> Q;
@@ -349,24 +388,24 @@ public:
 
         }
 
-        from_->d = 0;
+        from_->G = 0;
         Q.push (from_);
-        while (!Q.empty() )
+        while (!to_ && !Q.empty() || (!Q.empty() &&  !to_->_closed))
         {
             OrthoNode<T>* u = Q.top();
             Q.pop();
             OrthoEdge<T>*  edge = u->get_nextOut();
-            while (edge)
+            while (edge )
             {
                 auto v = edge->toNode;
                 auto u = edge->fromNode;
 
-                if (v->d > u->d + edge->weight)
+                if (v->G > u->G + edge->weight)
                 {
-                    v->d = u->d + edge->weight;
+                    v->G = u->G + edge->weight;
                     v->p = u;
 #ifdef MESSAGE_SUPPORT
-                    //      DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
+                    //         DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
 #endif // MESSAGE_SUPPORT
                     Q.push (v);
 
@@ -377,49 +416,6 @@ public:
 
         }
 
-
-    }
-    eConst Dijkstra (OrthoNode<T>*  from_, OrthoNode<T>*  to_ )
-    {
-        if (_OL->nodes.empty())return;
-        priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> Q;
-
-        for (auto  v : _OL->nodes)
-        {
-            if (!v->_validate)continue;
-            v->d = INT_MAX;
-            v->p = NULL;
-            v->_closed=false;
-
-        }
-        from_->d = 0;
-        Q.push (from_);
-        while (!Q.empty() && !to_->_closed)
-        {
-            OrthoNode<T>* u = Q.top();
-            Q.pop();
-            OrthoEdge<T>*  edge = u->get_nextOut();
-            while (edge)
-            {
-                auto v = edge->toNode;
-                auto u = edge->fromNode;
-#ifdef MESSAGE_SUPPORT
-                DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data) });
-#endif // MESSAGE_SUPPORT
-                if (v->d > u->d + edge->weight)
-                {
-                    v->d = u->d + edge->weight;
-                    v->p=u;
-                    Q.push (v);
-
-                }
-                edge=edge->nextOutedge;
-            }
-            u->_closed=true;
-
-        }
-
-        return OK;
     }
 
     eConst  findAround (OrthoNode<T>* n, bool check_chosen, set<OrthoNode<T>*>& around/*out*/)

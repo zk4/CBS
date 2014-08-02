@@ -1102,7 +1102,7 @@ public:
 
     WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
     {
-        _ccp_RL = ccp (200,200);
+        _ccp_RL = ccp (50,50);
         MakeGraph (_ccp_RL);
         _access_count = CCLabelTTF::create ("", "Helvetica", 16);
         _access_count->retain();
@@ -1146,7 +1146,7 @@ public:
             {
 
                 CCPoint p = ccp (x, y);
-                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 },{1,1},{1,-1},{-1,1},{-1,-1} };
+                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }/*,{1,1},{1,-1},{-1,1},{-1,-1} */};
                 for (auto& go : p4)
                 {
 
@@ -1180,8 +1180,8 @@ public:
         {
             std::unique_lock<std::mutex> lk (_cv_m);
             int old = _nodes.size();
-
-            _cv.wait (lk, [=] {return old != _nodes.size(); });
+            CCPoint end = _nodes.size()>1?_nodes[1]:CCPointZero;
+            _cv.wait (lk, [=] {return old != _nodes.size() || end != (_nodes.size()>1 ? _nodes[1] : CCPointZero); });
 
 
 
@@ -1189,8 +1189,14 @@ public:
             if (_nodes.size() >= 2)
             {
                 auto from = _graph.findNode (_nodes[0]);
-                _graph.construct (from);
                 auto  current = _graph.findNode (_nodes[1]);
+
+                _graph.AStar (from, current, [] (CCPoint& a, CCPoint& b  )
+                {
+                    return ccpSub (a,b).getLength();
+                }   );
+
+
 
                 while (current && current != from)
                 {
@@ -1251,15 +1257,24 @@ public:
             {
                 return v == p;
             });
-            bool found = it != _nodes.end();
-            if (!found)
+            if (_nodes.size() > 20)
             {
-                _nodes.push_back (ccp (x, y));
-                _graph.SetNodeValidate (p, false);
+                _graph.SetNodeValidate (_nodes[1], true);
+                _nodes[1]=ccp (x, y);
+                _graph.SetNodeValidate (_nodes[1], false);
+            }
+            else
+            {
+                bool found = it != _nodes.end();
+                if (!found)
+                {
+                    _nodes.push_back (ccp (x, y));
+                    _graph.SetNodeValidate (p, false);
+                }
             }
 
 
-            if (_nodes.size()>2)
+            if (_nodes.size()>1)
             {
                 _graph.SetNodeValidate ( _nodes[0], true);
                 _graph.SetNodeValidate ( _nodes[1], true);
