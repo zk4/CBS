@@ -323,66 +323,19 @@ public:
     }
     template<typename T>
     struct node_greater
-            : public binary_function<OrthoNode<T>*, OrthoNode<T>*, bool>
     {
         // functor for operator>
-        bool operator() (const OrthoNode<T>*  _Left, const OrthoNode<T>* _Right) const
+        bool operator() (const pair< OrthoNode<T>*, float> _Left, const pair<OrthoNode<T>*, float> _Right) const
         {
-            return _Left->iF > _Right->iF || _Left->iF== _Right->iF &&  _Left <_Right;
+            return _Left->second > _Right->second  ;
         }
     };
 
-
-
-public:
-
-    eConst AStar (OrthoNode<T>* start, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic)
+    void Dijkstra (OrthoNode<T>* from_, OrthoNode<T>*  to_ = NULL)
     {
-        if (! (start && to_)) return NODE_NOT_VALID;
-        if (_OL->nodes.empty())return NO_MAP;
-        priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> frontier;
-        unordered_map<OrthoNode<T>*, float> cost_so_far;
-
-        start->p = NULL;
-        cost_so_far[start] = 0;
-        frontier.push (start );
-
-
-        while   (!frontier.empty())
-        {
-            OrthoNode<T>*  current = frontier.top();
-            if (current==to_)return OK;
-            frontier.pop();
-            OrthoEdge<T>*  next = current->get_nextOut();
-            while (next &&   next->toNode->_validate)
-            {
-
-                float new_cost = cost_so_far[current] + heuristic (current->data, next->toNode->data);
-                if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) )
-                {
-                    cost_so_far[next->toNode] = new_cost;
-#ifdef MESSAGE_SUPPORT
-                    DD (Telegram_ACCESS_NODE, { (double) (int) (&current ->data), (double) (int) (&next->toNode->data) });
-#endif // MESSAGE_SUPPORT
-                    next->toNode->iF = new_cost + heuristic (to_->data, next->toNode->data);
-
-                    frontier.push (next->toNode);
-
-                    next->toNode->p= current;
-                }
-                next = next->nextOutedge;
-            }
-        }
-
-
-        return DEAD_END;
-    }
-
-    void Dijkstra  (OrthoNode<T>* from_, OrthoNode<T>*  to_=NULL)
-    {
-        if (_OL->nodes.empty())return ;
-        priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> Q;
-
+        if (_OL->nodes.empty())return;
+        // priority_queue<OrthoNode<T>*, vector<pair<OrthoNode<T>*,float> >, node_greater<T>> Q;
+        list<OrthoNode<T>*> Q;
         for (auto v : _OL->nodes)
         {
             if (!v->_validate)continue;
@@ -393,25 +346,37 @@ public:
         }
 
         from_->iF = 0;
-        Q.push (from_);
-        while (!to_ && !Q.empty() || (!Q.empty() &&  !to_->_closed))
+        Q.push_back (from_);
+        while (!to_ && !Q.empty() || (!Q.empty() && !to_->_closed))
         {
-            OrthoNode<T>* u = Q.top();
-            Q.pop();
-            OrthoEdge<T>*  edge = u->get_nextOut();
-            while (edge )
+            OrthoNode<T>*  u = NULL;
+            list<OrthoNode<T>*>::iterator ite;
+            for (list<OrthoNode<T>*>::iterator a = Q.begin(); a != Q.end(); ++a)
             {
-                auto v = edge->toNode;
-                auto u = edge->fromNode;
-
-                if (v->iF > u->iF + edge->weight)
+                if (!u || (*a)->iF<u->iF)
                 {
-                    v->iF = u->iF + edge->weight;
-                    v->p = u;
+                    u = *a;
+                    ite=a;
+                }
+            }
+
+
+            Q.erase (ite);
+            OrthoEdge<T>*  edge = u->get_nextOut();
+
+            while (edge)
+            {
+                auto toNode = edge->toNode;
+                auto fromNode = edge->fromNode;
+
+                if (toNode->iF > fromNode->iF + edge->weight)
+                {
+                    toNode->iF = fromNode->iF + edge->weight;
+                    toNode->p = fromNode;
 #ifdef MESSAGE_SUPPORT
-                    //         DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
+                    DD (Telegram_ACCESS_NODE, { (double) (int) (&u->data), (double) (int) (&toNode->data) });
 #endif // MESSAGE_SUPPORT
-                    Q.push (v);
+                    Q.push_back (toNode);
 
                 }
                 edge = edge->nextOutedge;
@@ -421,6 +386,65 @@ public:
         }
 
     }
+
+
+
+
+    eConst AStar (OrthoNode<T>* start, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic)
+    {
+        if (! (start && to_)) return NODE_NOT_VALID;
+        if (_OL->nodes.empty())return NO_MAP;
+        //priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> frontier;
+        list<OrthoNode<T>*> frontier;
+        unordered_map<OrthoNode<T>*, float> cost_so_far;
+
+        start->p = NULL;
+        cost_so_far[start] = 0;
+        frontier.push_back (start );
+
+
+        while   (!frontier.empty())
+        {
+            OrthoNode<T>*  current = NULL;
+            list<OrthoNode<T>*>::iterator ite;
+            for (list<OrthoNode<T>*>::iterator a = frontier.begin(); a != frontier.end(); ++a)
+            {
+                if (!current || (*a)->iF < current->iF)
+                {
+                    current = *a;
+                    ite = a;
+                }
+            }
+
+
+            frontier.erase (ite);
+            if (current==to_)return OK;
+
+            OrthoEdge<T>*  next = current->get_nextOut();
+            while (next &&   next->toNode->_validate)
+            {
+
+                float new_cost = cost_so_far[current] + next->weight;
+                if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) )
+                {
+                    cost_so_far[next->toNode] = new_cost;
+#ifdef MESSAGE_SUPPORT
+                    DD (Telegram_ACCESS_NODE, { (double) (int) (&current ->data), (double) (int) (&next->toNode->data) });
+#endif // MESSAGE_SUPPORT
+                    next->toNode->iF = new_cost + heuristic (to_->data, next->toNode->data);
+
+                    frontier.push_back (next->toNode);
+
+                    next->toNode->p = current;
+                }
+                next = next->nextOutedge;
+            }
+        }
+
+
+        return DEAD_END;
+    }
+
 
     eConst  findAround (OrthoNode<T>* n, bool check_chosen, set<OrthoNode<T>*>& around/*out*/)
     {

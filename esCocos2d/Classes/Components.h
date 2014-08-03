@@ -1147,7 +1147,7 @@ public:
             {
 
                 CCPoint p = ccp (x, y);
-                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }/*, { 1,1 }, { -1, 1 }, { -1, -1 }, { 1, -1 } */};
+                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } , { 1,1 }, { -1, 1 }, { -1, -1 }, { 1, -1 }  };
                 for (auto& go : p4)
                 {
 
@@ -1163,6 +1163,7 @@ public:
 
 
     }
+
     void construct()
     {
 
@@ -1186,7 +1187,7 @@ public:
                     _graph.AStar (from ,current  , [] (CCPoint& a, CCPoint& b  )
                     {
                         return abs (a.x - b.x) + abs (a.y - b.y);
-                    }   );
+                    }    );
                 }
 
 
