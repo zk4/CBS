@@ -1,4 +1,4 @@
-#pragma  once
+ï»¿#pragma  once
 
 #include "es/Component.h"
 #include "Configuration.h"
@@ -169,7 +169,7 @@ public:
         double			 dMaxSpeed,
         double			 dMaxForce,
         double			 dMaxTurnRate,
-        double			 dFriction¦Ì
+        double			 dFrictionï¿½ï¿½
     )
     {
         return new MoveComponent (
@@ -178,7 +178,7 @@ public:
                    dMaxSpeed,
                    dMaxForce,
                    dMaxTurnRate,
-                   dFriction¦Ì
+                   dFrictionï¿½ï¿½
                );
     }
 
@@ -1071,13 +1071,21 @@ bool operator< (const CCPoint& p1, const CCPoint& p2)
     return p1.x<p2.x || (p1.x==p2.x && p1.y<p2.y);
 }
 
+class SetComp
+{
+public:
+    int operator() (const CCPoint& p1, const CCPoint& p2)
+    {
+        return p1.x<p2.x || (p1.x == p2.x && p1.y<p2.y);
+    }
+};
 class WallComponents :public Component
 {
     std::mutex					_cv_m;
     std::condition_variable		_cv;
     algorithm::Graph<CCPoint>	_graph;
     CCPoint						_ccp_RL;
-    // vector<CCPoint>				_nodes;
+    set<CCPoint, SetComp>		 _nodes;
     list<CCPoint>				_shorest;
     int							_width;
     std::thread					_thread;
@@ -1130,6 +1138,11 @@ public:
     //    }
     //    return false;
     //}
+    void setWall (CCPoint& p)
+    {
+        _graph.SetNodeValidate (p, false);
+        _nodes.insert (p);
+    }
     WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
     {
         _ccp_RL = ccp (50, 50);
@@ -1139,6 +1152,8 @@ public:
         _start = ccp (5,5);
         _end= CCPointZero;
 
+        for (int i=0; i<5; ++i)
+            setWall (ccp (4,4+i));
     }
 
     void  MakeGraph (CCPoint  right_left)
@@ -1286,10 +1301,10 @@ public:
                 ccDrawSolidRect (ccp (_start.x*_width, _start.y*_width), ccp ((_start.x + 1)*_width, (_start.y + 1)*_width), { 1, 1, middle, 1 });
                 ccDrawSolidRect (ccp (_end.x*_width, _end.y*_width), ccp ((_end.x + 1)*_width, (_end.y + 1)*_width), { middle, middle, 1, 1 });
                 int i = 0;
-                /* for (auto & p : _graph._OL->nodes)
-                     ccDrawSolidRect (p->data*_width, ccpAdd (p->data, { 1, 1 })*_width, { 1, middle, middle, 1
-                                                                                         });
-                */
+                for (auto & p : _nodes)
+                    ccDrawSolidRect (p*_width, ccpAdd (p, { 1, 1 })*_width, { 1, middle, middle, 1
+                                                                            });
+
 
             }
             //{

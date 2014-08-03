@@ -353,18 +353,7 @@ public:
         {
             OrthoNode<T>*  u = Q.top().first;
             Q.pop();
-            /*    list<OrthoNode<T>*>::iterator ite;
-                for (list<OrthoNode<T>*>::iterator a = Q.begin(); a != Q.end(); ++a)
-                {
-                    if (!u || (*a)->iF<u->iF)
-                    {
-                        u = *a;
-                        ite=a;
-                    }
-                }
 
-
-                Q.erase (ite);*/
             OrthoEdge<T>*  edge = u->get_nextOut();
 
             while (edge)
@@ -414,9 +403,13 @@ public:
             if (current==to_)return OK;
 
             OrthoEdge<T>*  next = current->get_nextOut();
-            while (next &&   next->toNode->_validate)
+            while (next  )
             {
-
+                if (!next->toNode->_validate)
+                {
+                    next = next->nextOutedge;
+                    continue;
+                }
                 float new_cost = cost_so_far[current] + next->weight;
                 if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) )
                 {
