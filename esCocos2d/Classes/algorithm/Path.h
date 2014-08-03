@@ -179,29 +179,6 @@ public:
             t->AddNextIn (ef2t);
         }
     }
-    //
-    //void  getInEdge (OrthoNode* node, std::vector<OrthoEdge*>& inEdges/*out*/)
-    //{
-    //    OrthoEdge* nextIn = node->get_nextIn();
-    //    //TODO use iterator
-    //    while (nextIn)
-    //    {
-    //        inEdges.push_back (nextIn);
-    //        nextIn = nextIn->nextInEdge;
-    //    }
-    //}
-    //
-    //
-    //void  getOutEdge (OrthoNode* node, std::vector<OrthoEdge*>& outEdges/*out*/)
-    //{
-    //    OrthoEdge* nextOut = node->get_nextOut();
-    //    //TODO use iterator
-    //    while (nextOut)
-    //    {
-    //        outEdges.push_back (nextOut);
-    //        nextOut = nextOut->nextOutedge;
-    //    }
-    //}
 
     inline OrthoNode<T>*  findNode (T node)
     {
