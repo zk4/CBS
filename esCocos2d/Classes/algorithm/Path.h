@@ -388,28 +388,19 @@ public:
         if (_OL->nodes.empty())return NO_MAP;
         PQ frontier;
         unordered_map<OrthoNode<T>*, float> cost_so_far;
-
         start->p = NULL;
         cost_so_far[start] = 0;
         frontier.push ({start,0} );
-
-
         while   (!frontier.empty())
         {
             OrthoNode<T>*  current = frontier.top().first;
             frontier.pop();
-
-
             if (current==to_)return OK;
 
-            OrthoEdge<T>*  next = current->get_nextOut();
-            while (next  )
+            for (OrthoEdge<T>* next = current->get_nextOut(); next!=NULL; next = next->nextOutedge )
             {
-                if (!next->toNode->_validate)
-                {
-                    next = next->nextOutedge;
-                    continue;
-                }
+                if (!next->toNode->_validate) continue;
+
                 float new_cost = cost_so_far[current] + next->weight;
                 if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) )
                 {
@@ -417,16 +408,12 @@ public:
 #ifdef MESSAGE_SUPPORT
                     DD (Telegram_ACCESS_NODE, { (double) (int) (&current ->data)  });
 #endif // MESSAGE_SUPPORT
-
-
                     frontier.push ({ next->toNode, new_cost + heuristic (to_->data, next->toNode->data)});
-
                     next->toNode->p = current;
                 }
-                next = next->nextOutedge;
+
             }
         }
-
 
         return DEAD_END;
     }

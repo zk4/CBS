@@ -1145,15 +1145,14 @@ public:
     }
     WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
     {
-        _ccp_RL = ccp (50, 50);
+        _ccp_RL = ccp (200, 200);
         MakeGraph (_ccp_RL);
         _access_count = CCLabelTTF::create ("", "Helvetica", 16);
         _access_count->retain();
         _start = ccp (5,5);
         _end= CCPointZero;
 
-        for (int i=0; i<5; ++i)
-            setWall (ccp (4,4+i));
+
     }
 
     void  MakeGraph (CCPoint  right_left)
@@ -1264,7 +1263,12 @@ public:
             int x = world_pos.x / _width;
             int y = world_pos.y / _width;
 
-            _end = ccp (x, y);
+            if (_nodes.size() < 20)
+            {
+                setWall (ccp (x,y));
+            }
+            else
+                _end = ccp (x, y);
 
             _cv.notify_all();
 
