@@ -342,7 +342,7 @@ public:
         if (_OL->nodes.empty())return NO_MAP;
         priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> frontier;
         unordered_map<OrthoNode<T>*, float> cost_so_far;
-        unordered_map<OrthoNode<T>*, bool> closed;
+
         start->p = NULL;
         cost_so_far[start] = 0;
         frontier.push (start );
@@ -362,12 +362,12 @@ public:
                 {
                     cost_so_far[next->toNode] = new_cost;
 #ifdef MESSAGE_SUPPORT
-                    DD (Telegram_ACCESS_NODE, { (double) (int) (&next->toNode->data), (double) (int) (&next->toNode->data) });
+                    DD (Telegram_ACCESS_NODE, { (double) (int) (&current ->data), (double) (int) (&next->toNode->data) });
 #endif // MESSAGE_SUPPORT
                     next->toNode->iF = new_cost + heuristic (to_->data, next->toNode->data);
-                    if (closed.find (next->toNode) == closed.end())
-                        frontier.push (next->toNode);
-                    closed[next->toNode] = true;
+
+                    frontier.push (next->toNode);
+
                     next->toNode->p= current;
                 }
                 next = next->nextOutedge;
@@ -375,48 +375,6 @@ public:
         }
 
 
-        return DEAD_END;
-    }
-    eConst GreedySearch (OrthoNode<T>* from_, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic )
-    {
-        if (! (from_ && to_)) return NODE_NOT_VALID;
-        if (_OL->nodes.empty())return NO_MAP;
-        priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> OpenList;
-        set<OrthoNode<T>*> closedlist;
-        from_->iF = heuristic (from_->data,to_->data);
-
-        OpenList.push (from_);
-
-        while (!OpenList.empty()  )
-        {
-            OrthoNode<T>* u = OpenList.top();
-            closedlist.insert (u);
-
-            OpenList.pop();
-            OrthoEdge<T>*  edge = u->get_nextOut();
-            while (edge)
-            {
-                auto v = edge->toNode;
-
-                if (closedlist.find (v) == closedlist.end() &&  v->_validate )
-                {
-                    auto u = edge->fromNode;
-
-                    v->iF = heuristic (v->data, to_->data) + edge->weight;
-                    v->p = u;
-#ifdef MESSAGE_SUPPORT
-                    DD (Telegram_ACCESS_NODE, { (double) (int) (&v->data), (double) (int) (&u->data) });
-#endif // MESSAGE_SUPPORT
-
-                    OpenList.push (v);
-
-                }
-
-                edge = edge->nextOutedge;
-            }
-            if (u == to_) return OK ;
-
-        }
         return DEAD_END;
     }
 

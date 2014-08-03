@@ -1147,14 +1147,14 @@ public:
             {
 
                 CCPoint p = ccp (x, y);
-                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1,1 }, { -1, 1 }, { -1, -1 }, { 1, -1 } };
+                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }/*, { 1,1 }, { -1, 1 }, { -1, -1 }, { 1, -1 } */};
                 for (auto& go : p4)
                 {
 
                     CCPoint possibale = p + go;
 
 
-                    _graph.addNEdge ( (p),   (possibale), go.getLength());
+                    _graph.addNEdge ( (p),   (possibale), go.getLength()*10);
 
                 }
             }
@@ -1181,10 +1181,13 @@ public:
                 auto from = _graph.findNode (_nodes[0]);
                 auto  current = _graph.findNode (_nodes[1]);
 
-                _graph.Dijkstra (from, current/*, [] (CCPoint& a, CCPoint& b  )
+
                 {
-                    return ccpSub (a,b).getLength();
-                }  */ );
+                    _graph.AStar (from ,current  , [] (CCPoint& a, CCPoint& b  )
+                    {
+                        return abs (a.x - b.x) + abs (a.y - b.y);
+                    }   );
+                }
 
 
 
@@ -1320,23 +1323,23 @@ public:
 
                 }
             }
-            {
-                //draw bg
-                for (auto a : _graph._OL->nodes)
-                {
-                    auto edge = a->get_nextOut();
-                    while (edge)
-                    {
+            //{
+            //    //draw bg
+            //    for (auto a : _graph._OL->nodes)
+            //    {
+            //        auto edge = a->get_nextOut();
+            //        while (edge)
+            //        {
 
-                        CCPoint from = (edge->fromNode->data);
-                        CCPoint to = (edge->toNode->data);
-                        ccDrawColor4F (255, 255, 255, 255);
-                        ccDrawLine (ccp (from.x*_width, from.y*_width), ccp (_width*to.x, _width*to.y));
+            //            CCPoint from = (edge->fromNode->data);
+            //            CCPoint to = (edge->toNode->data);
+            //            ccDrawColor4F (255, 255, 255, 255);
+            //            ccDrawLine (ccp (from.x*_width, from.y*_width), ccp (_width*to.x, _width*to.y));
 
-                        edge = edge->nextOutedge;
-                    }
-                }
-            }
+            //            edge = edge->nextOutedge;
+            //        }
+            //    }
+            //}
 
             {
 //draw access
