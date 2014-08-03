@@ -1077,11 +1077,14 @@ class WallComponents :public Component
     std::condition_variable		_cv;
     algorithm::Graph<CCPoint>	_graph;
     CCPoint						_ccp_RL;
-    vector<CCPoint>				_nodes;
+    // vector<CCPoint>				_nodes;
     list<CCPoint>				_shorest;
     int							_width;
     std::thread					_thread;
     CCLabelTTF*					_access_count;
+    CCPoint 					_start;
+    CCPoint 					_end;
+
     struct ccp_ext
     {
         CCPoint  p;
@@ -1111,28 +1114,31 @@ public:
                );
     }
 
-    bool isBock (CCPoint & p)
-    {
-        int i = 0;
-        for (auto &a : _nodes)
-        {
-            if (i == 0 || i == 1)    //start & end
-            {
-                ++i;
-                continue;
-            }
-            if (a == p)
-                return true;
+    //bool isBock (CCPoint & p)
+    //{
+    //    int i = 0;
+    //    for (auto &a : _nodes)
+    //    {
+    //        if (i == 0 || i == 1)    //start & end
+    //        {
+    //            ++i;
+    //            continue;
+    //        }
+    //        if (a == p)
+    //            return true;
 
-        }
-        return false;
-    }
+    //    }
+    //    return false;
+    //}
     WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
     {
         _ccp_RL = ccp (50, 50);
         MakeGraph (_ccp_RL);
         _access_count = CCLabelTTF::create ("", "Helvetica", 16);
         _access_count->retain();
+        _start = ccp (5,5);
+        _end= CCPointZero;
+
     }
 
     void  MakeGraph (CCPoint  right_left)
@@ -1147,14 +1153,14 @@ public:
             {
 
                 CCPoint p = ccp (x, y);
-                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } , { 1,1 }, { -1, 1 }, { -1, -1 }, { 1, -1 }  };
+                CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }  , { 1,1 }, { -1, 1 }, { -1, -1 }, { 1, -1 }   };
                 for (auto& go : p4)
                 {
 
                     CCPoint possibale = p + go;
 
 
-                    _graph.addNEdge ( (p),   (possibale), go.getLength()*10);
+                    _graph.addNEdge ( (p),   (possibale), go.getLength());
 
                 }
             }
@@ -1170,34 +1176,33 @@ public:
         while (true)
         {
             std::unique_lock<std::mutex> lk (_cv_m);
-            int old = _nodes.size();
-            CCPoint end = _nodes.size()>1?_nodes[1]:CCPointZero;
-            _cv.wait (lk, [=] {return old != _nodes.size() || end != (_nodes.size()>1 ? _nodes[1] : CCPointZero); });
+            CCPoint oldend = _end;
+
+            _cv.wait (lk, [=] {return  oldend!=_end; });
 
 
 
             _shorest.clear();
-            if (_nodes.size() >= 2)
+
+            auto from = _graph.findNode (_start);
+            auto  current = _graph.findNode (_end);
+
+
             {
-                auto from = _graph.findNode (_nodes[0]);
-                auto  current = _graph.findNode (_nodes[1]);
-
-
+                _graph.AStar (from ,current   , [] (CCPoint& a, CCPoint& b  )
                 {
-                    _graph.AStar (from ,current  , [] (CCPoint& a, CCPoint& b  )
-                    {
-                        return abs (a.x - b.x) + abs (a.y - b.y);
-                    }    );
-                }
-
-
-
-                while (current && current != from)
-                {
-                    _shorest.push_back (current->data);
-                    current = current->p;
-                }
+                    return  a.getDistance (b);
+                }     );
             }
+
+
+
+            while (current && current != from)
+            {
+                _shorest.push_back (current->data);
+                current = current->p;
+            }
+
             _cv.notify_all();
         }
 
@@ -1217,8 +1222,8 @@ public:
         {
 
             CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[0]));
-            CCPoint * world_parent_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[1]));
-            CCPoint  direction = ccpSub (*world_parent_pos, *world_pos).normalize();
+            //  CCPoint * world_parent_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[1]));
+            CCPoint  direction = *world_pos;// ccpSub(*world_parent_pos, *world_pos).normalize();
             auto  ite = find_if (_access_nodes.begin(), _access_nodes.end(), [=] (const  ccp_ext & ce)
             {
                 return ce.p == *world_pos;
@@ -1244,36 +1249,7 @@ public:
             int x = world_pos.x / _width;
             int y = world_pos.y / _width;
 
-            auto p = ccp (x, y);
-            auto it = std::find_if (std::begin (_nodes),
-                                    std::end (_nodes),
-                                    [&] (const CCPoint v)
-            {
-                return v == p;
-            });
-            if (_nodes.size() > 20)
-            {
-                _graph.SetNodeValidate (_nodes[1], true);
-                _nodes[1]=ccp (x, y);
-                _graph.SetNodeValidate (_nodes[1], false);
-            }
-            else
-            {
-                bool found = it != _nodes.end();
-                if (!found)
-                {
-                    _nodes.push_back (ccp (x, y));
-                    _graph.SetNodeValidate (p, false);
-                }
-            }
-
-
-            if (_nodes.size()>1)
-            {
-                _graph.SetNodeValidate ( _nodes[0], true);
-                _graph.SetNodeValidate ( _nodes[1], true);
-            }
-
+            _end = ccp (x, y);
 
             _cv.notify_all();
 
@@ -1306,23 +1282,15 @@ public:
             }
 
             {
+                static float middle = 0.3f;
+                ccDrawSolidRect (ccp (_start.x*_width, _start.y*_width), ccp ((_start.x + 1)*_width, (_start.y + 1)*_width), { 1, 1, middle, 1 });
+                ccDrawSolidRect (ccp (_end.x*_width, _end.y*_width), ccp ((_end.x + 1)*_width, (_end.y + 1)*_width), { middle, middle, 1, 1 });
                 int i = 0;
-                for (auto & p : _nodes)
-                {
+                /* for (auto & p : _graph._OL->nodes)
+                     ccDrawSolidRect (p->data*_width, ccpAdd (p->data, { 1, 1 })*_width, { 1, middle, middle, 1
+                                                                                         });
+                */
 
-                    static float middle=0.3f;
-                    ccColor4F c;
-                    if (i == 0)
-                        c = { 1, 1, middle, 1 };
-                    else if (i == 1)
-                        c = { middle, middle, 1, 1 };
-                    else
-                        c = { 1, middle, middle, 1 };
-                    ccDrawSolidRect (ccp (p.x*_width, p.y*_width), ccp ((p.x + 1)*_width, (p.y + 1)*_width), c);
-
-                    ++i;
-
-                }
             }
             //{
             //    //draw bg
@@ -1363,16 +1331,21 @@ public:
                         const char* symb;
                     } directions[]=
                     {
-                        {{ 1, 0 },"<"}
-                        , {{ -1, 0 },">"},{ { 0, 1 },"^"}, {{ 0, -1 },"v"},{ { 0, 0 },"X"}
+                        { { 1, 0  }, "<" },
+                        { { -1, 0 }, ">" },
+                        { { 0, 1  }, "^" },
+                        { { 0, -1 }, "v" },
+                        { { 0, 0  }, "X" },
+
                     };
-                    for (auto & a : directions)
+                    /*   for (auto & a : directions)
+                       {
+                           if (a.dir == p.direction)*/
                     {
-                        if (a.dir == p.direction)
-                        {
-                            _access_count->setString (a.symb);
-                            _access_count->visit();
-                        }
+                        //     _access_count->setString (a.symb);
+                        _access_count->setString ("X");
+                        _access_count->visit();
+                        // }
 
 
 

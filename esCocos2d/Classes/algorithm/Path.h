@@ -321,21 +321,23 @@ public:
         return  Dijkstra (from_, to_ );
 
     }
+
+
     template<typename T>
-    struct node_greater
+    class Prioritize
     {
-        // functor for operator>
-        bool operator() (const pair< OrthoNode<T>*, float> _Left, const pair<OrthoNode<T>*, float> _Right) const
+    public:
+        int operator() (const pair<OrthoNode<T>*, float>& p1, const pair<OrthoNode<T>*, float>& p2)
         {
-            return _Left->second > _Right->second  ;
+            return p1.second > p2.second;
         }
     };
-
+    typedef  priority_queue<pair<OrthoNode<T>*, float>, vector<pair<OrthoNode<T>*, float>>, Prioritize<T>> PQ;
     void Dijkstra (OrthoNode<T>* from_, OrthoNode<T>*  to_ = NULL)
     {
         if (_OL->nodes.empty())return;
-        // priority_queue<OrthoNode<T>*, vector<pair<OrthoNode<T>*,float> >, node_greater<T>> Q;
-        list<OrthoNode<T>*> Q;
+        PQ Q;
+        //    list<OrthoNode<T>*> Q;
         for (auto v : _OL->nodes)
         {
             if (!v->_validate)continue;
@@ -346,22 +348,23 @@ public:
         }
 
         from_->iF = 0;
-        Q.push_back (from_);
+        Q.push ({ from_, from_->iF });
         while (!to_ && !Q.empty() || (!Q.empty() && !to_->_closed))
         {
-            OrthoNode<T>*  u = NULL;
-            list<OrthoNode<T>*>::iterator ite;
-            for (list<OrthoNode<T>*>::iterator a = Q.begin(); a != Q.end(); ++a)
-            {
-                if (!u || (*a)->iF<u->iF)
+            OrthoNode<T>*  u = Q.top().first;
+            Q.pop();
+            /*    list<OrthoNode<T>*>::iterator ite;
+                for (list<OrthoNode<T>*>::iterator a = Q.begin(); a != Q.end(); ++a)
                 {
-                    u = *a;
-                    ite=a;
+                    if (!u || (*a)->iF<u->iF)
+                    {
+                        u = *a;
+                        ite=a;
+                    }
                 }
-            }
 
 
-            Q.erase (ite);
+                Q.erase (ite);*/
             OrthoEdge<T>*  edge = u->get_nextOut();
 
             while (edge)
@@ -374,9 +377,9 @@ public:
                     toNode->iF = fromNode->iF + edge->weight;
                     toNode->p = fromNode;
 #ifdef MESSAGE_SUPPORT
-                    DD (Telegram_ACCESS_NODE, { (double) (int) (&u->data), (double) (int) (&toNode->data) });
+                    DD (Telegram_ACCESS_NODE, { (double) (int) (&u->data)  });
 #endif // MESSAGE_SUPPORT
-                    Q.push_back (toNode);
+                    Q.push ({ toNode, toNode->iF });
 
                 }
                 edge = edge->nextOutedge;
@@ -394,30 +397,20 @@ public:
     {
         if (! (start && to_)) return NODE_NOT_VALID;
         if (_OL->nodes.empty())return NO_MAP;
-        //priority_queue<OrthoNode<T>*, vector<OrthoNode<T>*>, node_greater<T>> frontier;
-        list<OrthoNode<T>*> frontier;
+        PQ frontier;
         unordered_map<OrthoNode<T>*, float> cost_so_far;
 
         start->p = NULL;
         cost_so_far[start] = 0;
-        frontier.push_back (start );
+        frontier.push ({start,0} );
 
 
         while   (!frontier.empty())
         {
-            OrthoNode<T>*  current = NULL;
-            list<OrthoNode<T>*>::iterator ite;
-            for (list<OrthoNode<T>*>::iterator a = frontier.begin(); a != frontier.end(); ++a)
-            {
-                if (!current || (*a)->iF < current->iF)
-                {
-                    current = *a;
-                    ite = a;
-                }
-            }
+            OrthoNode<T>*  current = frontier.top().first;
+            frontier.pop();
 
 
-            frontier.erase (ite);
             if (current==to_)return OK;
 
             OrthoEdge<T>*  next = current->get_nextOut();
@@ -429,11 +422,11 @@ public:
                 {
                     cost_so_far[next->toNode] = new_cost;
 #ifdef MESSAGE_SUPPORT
-                    DD (Telegram_ACCESS_NODE, { (double) (int) (&current ->data), (double) (int) (&next->toNode->data) });
+                    DD (Telegram_ACCESS_NODE, { (double) (int) (&current ->data)  });
 #endif // MESSAGE_SUPPORT
-                    next->toNode->iF = new_cost + heuristic (to_->data, next->toNode->data);
 
-                    frontier.push_back (next->toNode);
+
+                    frontier.push ({ next->toNode, new_cost + heuristic (to_->data, next->toNode->data)});
 
                     next->toNode->p = current;
                 }
