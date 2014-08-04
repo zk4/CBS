@@ -55,7 +55,8 @@ public:
     ~OrthoNode()
     {
         OrthoEdge<T>* now = _nextOut;
-        while (now) {
+        while (now)
+        {
             OrthoEdge<T>* next = now->nextOutedge;
             delete (now);
             now = next;
@@ -137,7 +138,8 @@ public:
 
 
 template<typename T>
-struct OrthoNodeComp {
+struct OrthoNodeComp
+{
     bool operator() (const OrthoNode<T>*  lhs, const OrthoNode<T>* rhs) const
     {
         return lhs->data < rhs->data;
@@ -155,19 +157,22 @@ public:
         //TODO: find duplicated
 
         OrthoNode<T> * f = findNode (from_data);
-        if (!f) {
+        if (!f)
+        {
             f = new OrthoNode<T> (from_data, 0, 0);
             nodes.insert (f);
         }
 
         OrthoNode<T> * t = findNode (to_data);
-        if (!t) {
+        if (!t)
+        {
             t = new OrthoNode<T> (to_data, 0, 0);
             nodes.insert (t);
         }
 
         OrthoEdge<T> * ef2t = findEdge (f, t);
-        if (!ef2t) {
+        if (!ef2t)
+        {
             ef2t = new OrthoEdge<T> (f, t, NULL, NULL);
             ef2t->weight = weight;
             f->AddNextOut (ef2t);
@@ -180,7 +185,7 @@ public:
         OrthoNode<T> n (node, NULL, NULL);
 
 
-        auto ret = nodes.find(&n);
+        auto ret = nodes.find (&n);
         if (ret != nodes.end())
             return *ret;
         return NULL;
@@ -190,7 +195,8 @@ public:
     {
         assert (from && to);
         OrthoEdge<T>* e = from->get_nextOut();
-        while (e) {
+        while (e)
+        {
             if (e->toNode == to)
                 return e;
             else
@@ -201,7 +207,8 @@ public:
 
     ~OrthoList()
     {
-        for (auto a : nodes) {
+        for (auto a : nodes)
+        {
             delete (a);
         }
         nodes.clear();
@@ -209,7 +216,8 @@ public:
 
     inline void  initNodes()
     {
-        for (auto a : nodes) {
+        for (auto a : nodes)
+        {
             a->init();
         }
     }
@@ -236,7 +244,8 @@ template<typename T>
 class Graph
 {
 public:
-    enum eConst {
+    enum eConst
+    {
         OK,
         NODE_NOT_EXSIT,
         NODE_NOT_VALID,
@@ -254,7 +263,8 @@ public:
     }
     void  clear()
     {
-        for (auto a : _OL->nodes) {
+        for (auto a : _OL->nodes)
+        {
             delete (a);
         }
         _OL->nodes.clear();
@@ -290,7 +300,8 @@ public:
     {
         //Dijkstra algorithm
 
-        if (!from_->_validate || !to_->_validate) {
+        if (!from_->_validate || !to_->_validate)
+        {
             return NODE_NOT_VALID;
         }
         return  Dijkstra (from_, to_ );
@@ -304,7 +315,8 @@ public:
         if (_OL->nodes.empty())return NO_MAP;
         PQ Q;
         //    list<OrthoNode<T>*> Q;
-        for (auto v : _OL->nodes) {
+        for (auto v : _OL->nodes)
+        {
             if (!v->_validate)continue;
             v->iF = INT_MAX;
             v->p = NULL;
@@ -314,21 +326,25 @@ public:
 
         from_->iF = 0;
         Q.push ({ from_, from_->iF });
-        while (!to_ && !Q.empty() || (!Q.empty() && !to_->_closed)) {
+        while (!to_ && !Q.empty() || (!Q.empty() && !to_->_closed))
+        {
             OrthoNode<T>*  u = Q.top().first;
             Q.pop();
 
             OrthoEdge<T>*  edge = u->get_nextOut();
 
-            while (edge) {
+            while (edge)
+            {
                 auto toNode = edge->toNode;
-                if (!toNode->_validate) {
+                if (!toNode->_validate)
+                {
                     edge = edge->nextOutedge;
                     continue;
                 }
                 auto fromNode = edge->fromNode;
 
-                if (toNode->iF > fromNode->iF + edge->weight) {
+                if (toNode->iF > fromNode->iF + edge->weight)
+                {
                     toNode->iF = fromNode->iF + edge->weight;
                     toNode->p = fromNode;
 #ifdef MESSAGE_SUPPORT
@@ -354,19 +370,24 @@ public:
         if (_OL->nodes.empty())return NO_MAP;
         PQ frontier;
         unordered_map<OrthoNode<T>*, float> cost_so_far;
+
+        to_->p=NULL;
         start->p = NULL;
         cost_so_far[start] = 0;
         frontier.push ({start,0} );
-        while   (!frontier.empty()) {
+        while   (!frontier.empty())
+        {
             OrthoNode<T>*  current = frontier.top().first;
             frontier.pop();
             if (current==to_)return OK;
 
-            for (OrthoEdge<T>* next = current->get_nextOut(); next!=NULL; next = next->nextOutedge ) {
+            for (OrthoEdge<T>* next = current->get_nextOut(); next!=NULL; next = next->nextOutedge )
+            {
                 if (!next->toNode->_validate) continue;
 
                 float new_cost = cost_so_far[current] + next->weight;
-                if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) ) {
+                if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) )
+                {
                     cost_so_far[next->toNode] = new_cost;
 #ifdef MESSAGE_SUPPORT
                     DD (Telegram_ACCESS_NODE, { (double) (int) (&current ->data)  });
@@ -385,8 +406,10 @@ public:
     eConst  findAround (OrthoNode<T>* n, bool check_chosen, set<OrthoNode<T>*>& around/*out*/)
     {
         OrthoEdge<T>*  edge = n->get_nextOut();
-        while (edge) {
-            if (edge->toNode->_closed) {
+        while (edge)
+        {
+            if (edge->toNode->_closed)
+            {
                 around.insert (edge->toNode);
             }
             edge = edge->nextOutedge;

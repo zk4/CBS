@@ -39,19 +39,7 @@
     <ClCompile Include="..\Classes\cocos\VisibleRect.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\CCHexagon\Hexagon.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CCHexagon\BeeHive.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CCHexagon\HexCoordinate.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\cocos\HelloWorldScene.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Tools.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,18 +87,6 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\algorithm\Path.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CCHexagon\Hexagon.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CCHexagon\HexCoordinate.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CCHexagon\BeeHive.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Tools.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
