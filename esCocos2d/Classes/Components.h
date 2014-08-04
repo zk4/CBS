@@ -1000,6 +1000,7 @@ public:
 #include <mutex>
 #include <condition_variable>
 #include <iterator>
+#include <unordered_map>
 bool operator== (const CCPoint& p1, const CCPoint& p2)
 {
     return p1.x == p2.x && p1.y == p2.y;
@@ -1030,14 +1031,14 @@ class WallComponents :public Component
     std::condition_variable		_cv;
     algorithm::Graph<CCPoint>	_graph;
     CCPoint						_ccp_RL;
-    set<CCPoint, SetComp>		 _nodes;
+    vector < CCPoint>		 _nodes;
     list<CCPoint>				_shorest;
     int							_width;
     std::thread					_thread;
     CCLabelTTF*					_access_count;
     CCPoint 					_start;
     CCPoint 					_end;
-
+    int							_last_ite;
     struct ccp_ext {
         CCPoint  p;
         int      iAccessTimes;
@@ -1056,36 +1057,15 @@ public:
     }
 
 
-    bool inMap (CCPoint& p)
-    {
 
-        return (p.x <= _ccp_RL.x &&
-                p.y <= _ccp_RL.y &&
-                p.x >= 0 &&
-                p.y >= 0
-               );
-    }
-
-    //bool isBock (CCPoint & p)
-    //{
-    //    int i = 0;
-    //    for (auto &a : _nodes)
-    //    {
-    //        if (i == 0 || i == 1)    //start & end
-    //        {
-    //            ++i;
-    //            continue;
-    //        }
-    //        if (a == p)
-    //            return true;
-
-    //    }
-    //    return false;
-    //}
     void setWall (CCPoint& p)
     {
         _graph.SetNodeValidate (p, false);
-        _nodes.insert (p);
+        auto ite = find_if(_nodes.begin(), _nodes.end(), [&p](CCPoint& pp) {
+            return p ==pp;
+        });
+        if (ite==_nodes.end())
+            _nodes.push_back(p);
     }
     WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
     {
@@ -1095,7 +1075,7 @@ public:
         _access_count->retain();
         _start = ccp (5,5);
         _end= CCPointZero;
-
+        _last_ite = -1;
 
     }
 
@@ -1185,7 +1165,34 @@ public:
             }
         }
         break;
+        case  Telegram_TOUCH_DOUBLE: {
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int)(msg.args[0]));
 
+            for (auto a =_nodes.begin(); a!=_nodes.end(); ++a) {
+                CCRect r = CCRectMake(a->x*_width, a->y*_width, _width, _width);
+                if (r.containsPoint(*world_pos)) {
+                    _nodes.erase(a);
+                    break;;
+                }
+            }
+
+        }
+        break;
+        case Telegram_TOUCH_MOVE: {
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int)(msg.args[0]));
+            int x = world_pos->x / _width;
+            int y = world_pos->y / _width;
+
+            if (_last_ite!=-1) {
+                _nodes[_last_ite] = ccp(x,y);
+
+            } else {
+                setWall(ccp(x, y));
+            }
+
+
+        }
+        break;
         case Telegram_TOUCH_BEGIN: {
 
             CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int)(msg.args[0]));
@@ -1193,10 +1200,17 @@ public:
             int x = world_pos->x / _width;
             int y = world_pos->y / _width;
 
-            if (_nodes.size() < 20) {
+            _last_ite =-1;
+            for (int i=0; i <_nodes.size(); ++i) {
+                if (ccp(x,y) == _nodes[i]) {
+                    _last_ite=i;
+                    break;
+                }
+            }
+            if (_last_ite ==-1)
                 setWall (ccp (x,y));
-            } else
-                _end = ccp (x, y);
+
+
 
             _cv.notify_all();
 

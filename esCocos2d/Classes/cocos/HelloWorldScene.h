@@ -27,12 +27,13 @@ public:
     virtual void ccTouchCancelled (CCTouch *pTouch, CCEvent *pEvent);
     Component*				man;
     Component  *			bg;
-	Component  *			ball;
-	Component  *			wall;
+    Component  *			ball;
+    Component  *			wall;
     vector< Component* >    bads;
     CCSpriteBatchNode* _batchNode ;
     CCSize				_winsize;
- 
+    double					_dTimeNow;
+
 };
 
 #endif // __HELLOWORLD_SCENE_H__

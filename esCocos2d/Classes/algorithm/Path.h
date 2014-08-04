@@ -178,9 +178,9 @@ public:
     inline OrthoNode<T>*  findNode (const T& node) const
     {
         OrthoNode<T> n (node, NULL, NULL);
-        auto ret = find_if(nodes.begin(), nodes.end(),[=](const OrthoNode<T>* t)  {
-            return t->data==node;
-        });
+
+
+        auto ret = nodes.find(&n);
         if (ret != nodes.end())
             return *ret;
         return NULL;

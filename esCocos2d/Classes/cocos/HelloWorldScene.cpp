@@ -47,7 +47,7 @@ bool HelloWorld::init()
     wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 300, 300, 100, 1));
     DD (wall->GetID(), Telegram_SET_POS, { 0,0 });
 
-
+    _dTimeNow=0;
     srand (time (NULL));
 
     auto _rt = CCRenderTexture::create (_winsize.width, _winsize.height, kCCTexture2DPixelFormat_RGBA8888);
@@ -113,6 +113,17 @@ bool HelloWorld::ccTouchBegan (CCTouch *pTouch, CCEvent *pEvent)
     // DD (a->GetID(), Telegram_ARRIVE, { target.x, target.y});
     DD(wall->GetID(), Telegram_TOUCH_BEGIN, { (double)(int)(&target) });
 
+
+    static double lastClicktime = 0;
+    static double nowClickTime = 0;
+
+    nowClickTime = _dTimeNow;
+    CCLOG("%f\n", nowClickTime - lastClicktime);
+    if ((nowClickTime - lastClicktime) < 0.3) { //double click
+        DD(wall->GetID(), Telegram_TOUCH_DOUBLE, { (double)(int)(&target) });
+    }
+    lastClicktime = _dTimeNow;
+
     return true;
 }
 
@@ -140,6 +151,7 @@ void HelloWorld::ccTouchCancelled (CCTouch *pTouch, CCEvent *pEvent)
 
 void HelloWorld::update (float delta)
 {
+    _dTimeNow+=delta;
     CCLayer::update (delta);
 
     static double thinginterval =0;

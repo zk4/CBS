@@ -38,7 +38,7 @@ enum eTelegram {
     Telegram_ADD_TARGET,
     Telegram_SEARCH,
     Telegram_SEARCH_RESULT,
-
+    Telegram_TOUCH_DOUBLE,
     Telegram_TOUCH_BEGIN,
     Telegram_TOUCH_MOVE,
     Telegram_TOUCH_END,
