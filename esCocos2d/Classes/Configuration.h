@@ -11,7 +11,8 @@ enum eComponent {
     Component_RADAR,
     Component_BOX2D,
     Component_WALLS,
-
+    Component_HexWALLS,
+    Component_Bezier,
     Entity_,
     Component_COUNT,
 
@@ -37,4 +38,9 @@ enum eTelegram {
     Telegram_ADD_TARGET,
     Telegram_SEARCH,
     Telegram_SEARCH_RESULT,
+
+    Telegram_TOUCH_BEGIN,
+    Telegram_TOUCH_MOVE,
+    Telegram_TOUCH_END,
+    Telegram_TOUCH_CANCEL,
 };

@@ -5,6 +5,7 @@
 #include "messaging/MessageDispatcher.h"
 #include "cocos2d.h"
 #include "es/ComponentMgr.h"
+#include "Tools.h"
 using namespace cocos2d;
 static bool ifOutWindow (Component* c);
 
@@ -35,26 +36,21 @@ public:
 
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg)
-        {
-        case Telegram_SET_POS:
-        {
+        switch (msg.Msg) {
+        case Telegram_SET_POS: {
             _sprite->setPosition (ccp (msg.args[0], msg.args[1]));
         }
         break;
-        case Telegram_SET_ROTATION:
-        {
+        case Telegram_SET_ROTATION: {
             _sprite->setRotation (CC_RADIANS_TO_DEGREES (ccpToAngle (ccp (msg.args[0], msg.args[1]))));
 
         }
         break;
-        case Telegram_SET_SCALE:
-        {
+        case Telegram_SET_SCALE: {
             _sprite->setScaleX (msg.args[0]);
         }
         break;
-        case  Telegram_SET_CONTENSIZE:
-        {
+        case  Telegram_SET_CONTENSIZE: {
             _sprite->setContentSize (CCSizeMake (msg.args[0], msg.args[1]));
         }
         break;
@@ -102,15 +98,12 @@ public:
     }
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg)
-        {
-        case Telegram_SET_POS:
-        {
+        switch (msg.Msg) {
+        case Telegram_SET_POS: {
             _delegate->setPosition (ccp (msg.args[0], msg.args[1]));
         }
         break;
-        case Telegram_SET_ROTATION:
-        {
+        case Telegram_SET_ROTATION: {
             _delegate->setRotation (acosf (ccp (0, 1).cross (ccp (msg.args[0], msg.args[1]).normalize())));
         }
 
@@ -201,8 +194,7 @@ public:
         _vVelocity = _vVelocity + acceleration * time_elapsed;
 
         //make sure vehicle does not exceed maximum velocity
-        if (ccpLength (_vVelocity) > _dMaxSpeed)
-        {
+        if (ccpLength (_vVelocity) > _dMaxSpeed) {
             _vVelocity = _vVelocity.normalize()*_dMaxSpeed;
         }
 
@@ -219,8 +211,7 @@ public:
 
 
         //update the heading if the vehicle has a non zero velocity
-        if (ccpLength (_vVelocity) > 0.00000001)
-        {
+        if (ccpLength (_vVelocity) > 0.00000001) {
             _vHeading = _vVelocity.normalize();
             _vSide = ccpPerp (_vHeading);
 
@@ -268,8 +259,7 @@ public:
         int NeighborCount = 0;
 
         //iterate through the neighbors and sum up all the position vectors
-        for (unsigned int a = 0; a < neighbors.size(); ++a)
-        {
+        for (unsigned int a = 0; a < neighbors.size(); ++a) {
             //make sure *this* agent isn't included in the calculations and that
             //the agent being examined is close enough ***also make sure it doesn't
             //include the evade target ***
@@ -281,8 +271,7 @@ public:
 
         }
 
-        if (NeighborCount > 0)
-        {
+        if (NeighborCount > 0) {
             //the center of mass is the average of the sum of positions
             CenterOfMass = CenterOfMass / (double)NeighborCount;
 
@@ -298,8 +287,7 @@ public:
     {
         CCPoint SteeringForce;
 
-        for (unsigned int i = 0; i < ids_insight.size(); ++i)
-        {
+        for (unsigned int i = 0; i < ids_insight.size(); ++i) {
             //make sure this agent isn't included in the calculations and that
             //the agent being examined is close enough. ***also make sure it doesn't
             //include the evade target ***
@@ -331,8 +319,7 @@ public:
         //calculate the distance to the target
         double dist = ccpLength (ToTarget);
 
-        if (dist > 0)
-        {
+        if (dist > 0) {
             //because Deceleration is enumerated as an int, this value is required
             //to provide fine tweaking of the deceleration..
             const double DecelerationTweaker = 0.3;
@@ -363,8 +350,7 @@ public:
         double RelativeHeading = ccpDot (_vHeading, evader->_vHeading);
 
         if (ccpDot (ToEvader, _vHeading) > 0 &&
-                (RelativeHeading < -0.95))   //acos(0.95)=18 degs
-        {
+                (RelativeHeading < -0.95)) { //acos(0.95)=18 degs
             return Seek (evader->_pos);
         }
 
@@ -487,8 +473,7 @@ public:
         std::vector<MoveComponent*>::const_iterator curOb = obstacles.begin();
         std::vector<MoveComponent*>::const_iterator closest;
 
-        while (curOb != obstacles.end())
-        {
+        while (curOb != obstacles.end()) {
             //calculate the position of the hiding spot for this obstacle
             CCPoint HidingSpot = GetHidingPosition ((*curOb)->_pos,
                                                     (*curOb)->_dBoundingRadius,
@@ -498,8 +483,7 @@ public:
             //spot to the agent
             double dist = ccpDistanceSQ (HidingSpot, _pos);
 
-            if (dist < DistToClosest)
-            {
+            if (dist < DistToClosest) {
                 DistToClosest = dist;
 
                 BestHidingSpot = HidingSpot;
@@ -512,8 +496,7 @@ public:
         }//end while
 
         //if no suitable obstacles found then Evade the hunter
-        if (DistToClosest == (std::numeric_limits<float>::max)())
-        {
+        if (DistToClosest == (std::numeric_limits<float>::max)()) {
             return Evade (hunter);
         }
 
@@ -552,8 +535,7 @@ public:
         int    NeighborCount = 0;
 
         //iterate through all the tagged vehicles and sum their heading vectors
-        for (unsigned int a = 0; a < neighbors.size(); ++a)
-        {
+        for (unsigned int a = 0; a < neighbors.size(); ++a) {
             //make sure *this* agent isn't included in the calculations and that
             //the agent being examined  is close enough ***also make sure it doesn't
             //include any evade target ***
@@ -567,8 +549,7 @@ public:
 
         //if the neighborhood contained one or more vehicles, average their
         //heading vectors.
-        if (NeighborCount > 0)
-        {
+        if (NeighborCount > 0) {
             AverageHeading = AverageHeading / (double)NeighborCount;
 
             AverageHeading = AverageHeading - _vHeading;
@@ -613,12 +594,9 @@ public:
     CCLabelTTF* ttf_head;
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg)
-        {
-        case Telegram_DRAW:
-        {
-            if (ccpLength (_vVelocity) > 0.5)
-            {
+        switch (msg.Msg) {
+        case Telegram_DRAW: {
+            if (ccpLength (_vVelocity) > 0.5) {
                 ccDrawColor4B (255, 255, 255, 255);
                 ccDrawLine (_pos, _pos + _vVelocity);
                 ttf_velocity->setPosition (_pos + _vVelocity / 2);
@@ -632,16 +610,14 @@ public:
 
         }
         break;
-        case Telegram_UPDATE:
-        {
+        case Telegram_UPDATE: {
             _vSteeringForce = Wander (msg.args[0]);
             update (_vSteeringForce, msg.args[0]);
             DD (GetParent()->GetID(), Telegram_SET_POS, { _pos.x, _pos.y });
             DD (GetParent()->GetID(), Telegram_SET_ROTATION, { _vVelocity.y, _vVelocity.x });
         }
         break;
-        case Telegram_ARRIVE:
-        {
+        case Telegram_ARRIVE: {
             DD (GetParent()->GetID(), Telegram_SEARCH, {});
             _vSteeringForce = Arrive (ccp (msg.args[0], msg.args[1]), fast);
             _vHeading = ccp (msg.args[0], msg.args[1]) - _pos;
@@ -650,8 +626,7 @@ public:
 
         }
         break;
-        case Telegram_AI:
-        {
+        case Telegram_AI: {
             DD (GetParent()->GetID(), Telegram_SEARCH, {});
 
 
@@ -661,18 +636,15 @@ public:
 
         }
         break;
-        case Telegram_SET_POS:
-        {
+        case Telegram_SET_POS: {
             _pos = ccp (msg.args[0], msg.args[1]);
 
         }
         break;
-        case  Telegram_SEARCH_RESULT:
-        {
+        case  Telegram_SEARCH_RESULT: {
             ids_insight.clear();
             vector<int>* lists = (vector<int>*) (size_t) (msg.args[0]);
-            for (int i = 0; i < lists->size(); ++i)
-            {
+            for (int i = 0; i < lists->size(); ++i) {
                 ids_insight.push_back ((*lists)[i]);
             }
         }
@@ -707,26 +679,21 @@ public:
     bool HandleMessage (const Telegram& msg)
     {
         if (ifOutWindow (GetParent()))return false;
-        switch (msg.Msg)
-        {
+        switch (msg.Msg) {
 
-        case Telegram_SEARCH:
-        {
+        case Telegram_SEARCH: {
 
             MoveComponent* self = dynamic_cast<MoveComponent*> (GetParent()->GetC (Component_MOVE));
             targets.clear();
-            for (int i = 0; i < CompMgr->_ComponentMap.size(); ++i)
-            {
+            for (int i = 0; i < CompMgr->_ComponentMap.size(); ++i) {
                 auto c = CompMgr->_ComponentMap[i];
                 if (!c)continue;
                 if (c->GetParent() && c->GetID() == c->GetParent()->GetID())continue;
                 MoveComponent* target = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
                 if (!target)continue;
-                if (target->GetParent() != GetParent())
-                {
+                if (target->GetParent() != GetParent()) {
 
-                    if (ccpLength (ccpSub (target->_pos, self->_pos)) < _range)
-                    {
+                    if (ccpLength (ccpSub (target->_pos, self->_pos)) < _range) {
                         targets.push_back (target->GetParent()->GetID());
                     }
                 }
@@ -734,16 +701,14 @@ public:
             DD (GetParent()->GetID(), Telegram_SEARCH_RESULT, { (double) (size_t)&targets });
         }
         break;
-        case Telegram_DRAW:
-        {
+        case Telegram_DRAW: {
             MoveComponent* self = dynamic_cast<MoveComponent*> (GetParent()->GetC (Component_MOVE));
 
             ccDrawColor4B (122, 255, 122, 255);
             ccDrawCircle (self->_pos, _range, 0, 40, false);
             ccDrawColor4B (255, rand() % 255, rand() % 255, 255);
 
-            for (auto a : targets)
-            {
+            for (auto a : targets) {
 
                 MoveComponent* target = dynamic_cast<MoveComponent*> (CompMgr->_ComponentMap[a]->GetC (Component_MOVE));
                 ccDrawLine (self->_pos, target->_pos);
@@ -776,20 +741,16 @@ public:
     bool  HandleMessage (const Telegram& msg)
     {
 
-        switch (msg.Msg)
-        {
-        case Telegram_HURT:
-        {
+        switch (msg.Msg) {
+        case Telegram_HURT: {
             HP -= (int)msg.args[0];
-            if (HP < 0)
-            {
+            if (HP < 0) {
                 HP = 0;
                 DD (Telegram_DEAD, { (double)GetParent()->GetID() });
             }
         }
         break;
-        case Telegram_DRAW:
-        {
+        case Telegram_DRAW: {
             auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
             ccDrawSolidRect (moveC->_pos + ccp (-HP / 2, 40), moveC->_pos + ccp (HP / 2, 45), { 255, 0, 0, 122 });
         }
@@ -829,10 +790,8 @@ public:
 
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg)
-        {
-        case Telegram_SET_POS:
-        {
+        switch (msg.Msg) {
+        case Telegram_SET_POS: {
 
             auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
             CCPoint start = ccp (msg.args[0], msg.args[1]);
@@ -852,8 +811,7 @@ public:
             _rt->end();
         }
         break;
-        case Telegram_DRAW:
-        {
+        case Telegram_DRAW: {
             _rt->visit();
         }
         break;
@@ -882,19 +840,14 @@ public:
 
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg)
-        {
-        case Telegram_AI:
-        {
-            if (ids_insight.size() > 0)
-            {
+        switch (msg.Msg) {
+        case Telegram_AI: {
+            if (ids_insight.size() > 0) {
                 Component* a = NULL;
-                for (auto c : ids_insight)
-                {
+                for (auto c : ids_insight) {
 
                     auto hpC = (HPComponent*)CompMgr->GetComponentFromID (c)->GetC (Component_HP);
-                    if (hpC && hpC->HP > 0)
-                    {
+                    if (hpC && hpC->HP > 0) {
                         a = CompMgr->GetComponentFromID (c);
                         break;
                     }
@@ -902,8 +855,7 @@ public:
                 if (!a)return false;
 
                 auto moveC = (MoveComponent*)a->GetC (Component_MOVE);
-                if (moveC)
-                {
+                if (moveC) {
                     _ccpTarget = moveC->_pos;
                     DD (a->GetID(), Telegram_ARRIVE, { moveC->_pos.x, moveC->_pos.y });
                     DD (a->GetID(), Telegram_HURT, { 1 });
@@ -912,8 +864,7 @@ public:
 
         }
         break;
-        case     Telegram_DRAW:
-        {
+        case     Telegram_DRAW: {
             /*    auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
 
               if (moveC)
@@ -923,13 +874,10 @@ public:
               }*/
         }
         break;
-        case  Telegram_SEARCH_RESULT:
-        {
-            if (ids_insight.empty())
-            {
+        case  Telegram_SEARCH_RESULT: {
+            if (ids_insight.empty()) {
                 vector<int>* lists = (vector<int>*) (size_t) (msg.args[0]);
-                for (int i = 0; i < lists->size(); ++i)
-                {
+                for (int i = 0; i < lists->size(); ++i) {
                     ids_insight.push_back ((*lists)[i]);
                 }
             }
@@ -1014,10 +962,8 @@ public:
     {
 
         _world->Step (dt, 10, 10);
-        for (b2Body *b = _world->GetBodyList(); b; b = b->GetNext())
-        {
-            if (b->GetUserData() != NULL)
-            {
+        for (b2Body *b = _world->GetBodyList(); b; b = b->GetNext()) {
+            if (b->GetUserData() != NULL) {
                 CCSprite *ballData = (CCSprite *)b->GetUserData();
                 ballData->setPosition (ccp (b->GetPosition().x * PTM_RATIO,
                                             b->GetPosition().y * PTM_RATIO));
@@ -1028,16 +974,13 @@ public:
     }
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg)
-        {
+        switch (msg.Msg) {
 
-        case    Telegram_UPDATE:
-        {
+        case    Telegram_UPDATE: {
             tick (msg.args[0]);
         }
         break;
-        case    Telegram_DRAW:
-        {
+        case    Telegram_DRAW: {
             _ball->visit();
         }
         break;
@@ -1071,16 +1014,18 @@ bool operator< (const CCPoint& p1, const CCPoint& p2)
     return p1.x<p2.x || (p1.x==p2.x && p1.y<p2.y);
 }
 
-class SetComp
-{
-public:
-    int operator() (const CCPoint& p1, const CCPoint& p2)
-    {
-        return p1.x<p2.x || (p1.x == p2.x && p1.y<p2.y);
-    }
-};
+
 class WallComponents :public Component
 {
+    class SetComp
+    {
+    public:
+        int operator() (const CCPoint& p1, const CCPoint& p2)
+        {
+            return p1.x < p2.x || (p1.x == p2.x && p1.y < p2.y);
+        }
+    };
+
     std::mutex					_cv_m;
     std::condition_variable		_cv;
     algorithm::Graph<CCPoint>	_graph;
@@ -1093,8 +1038,7 @@ class WallComponents :public Component
     CCPoint 					_start;
     CCPoint 					_end;
 
-    struct ccp_ext
-    {
+    struct ccp_ext {
         CCPoint  p;
         int      iAccessTimes;
         CCPoint  direction;
@@ -1145,7 +1089,7 @@ public:
     }
     WallComponents (int w) :Component (Component_BOX2D), _width (w), _thread (std::bind (&WallComponents::construct, this))
     {
-        _ccp_RL = ccp (200, 200);
+        _ccp_RL = ccp (50, 50);
         MakeGraph (_ccp_RL);
         _access_count = CCLabelTTF::create ("", "Helvetica", 16);
         _access_count->retain();
@@ -1160,16 +1104,13 @@ public:
         _graph.clear();
 
 
-        for (int x = 0; x <= right_left.x; ++x)
-        {
+        for (int x = 0; x <= right_left.x; ++x) {
 
-            for (int y = 0; y <= right_left.y; ++y)
-            {
+            for (int y = 0; y <= right_left.y; ++y) {
 
                 CCPoint p = ccp (x, y);
                 CCPoint p4[] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }  , { 1,1 }, { -1, 1 }, { -1, -1 }, { 1, -1 }   };
-                for (auto& go : p4)
-                {
+                for (auto& go : p4) {
 
                     CCPoint possibale = p + go;
 
@@ -1187,8 +1128,7 @@ public:
     void construct()
     {
 
-        while (true)
-        {
+        while (true) {
             std::unique_lock<std::mutex> lk (_cv_m);
             CCPoint oldend = _end;
 
@@ -1203,16 +1143,14 @@ public:
 
 
             {
-                _graph.AStar (from ,current   , [] (CCPoint& a, CCPoint& b  )
-                {
-                    return  a.getDistance (b);
-                }     );
+                _graph.Dijkstra(from, current/*, [](const CCPoint& a, const CCPoint& b) {
+                    return  a.getDistance (b)*1.2;
+                }    */ );
             }
 
 
 
-            while (current && current != from)
-            {
+            while (current && current != from) {
                 _shorest.push_back (current->data);
                 current = current->p;
             }
@@ -1224,50 +1162,40 @@ public:
 
     bool HandleMessage (const Telegram& msg)
     {
-        switch (msg.Msg)
-        {
+        switch (msg.Msg) {
 
-        case    Telegram_UPDATE:
-        {
+        case    Telegram_UPDATE: {
 
         }
         break;
-        case Telegram_ACCESS_NODE:
-        {
+        case Telegram_ACCESS_NODE: {
 
             CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[0]));
             //  CCPoint * world_parent_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[1]));
             CCPoint  direction = *world_pos;// ccpSub(*world_parent_pos, *world_pos).normalize();
-            auto  ite = find_if (_access_nodes.begin(), _access_nodes.end(), [=] (const  ccp_ext & ce)
-            {
+            auto  ite = find_if (_access_nodes.begin(), _access_nodes.end(), [=] (const  ccp_ext & ce) {
                 return ce.p == *world_pos;
             });
-            if (ite != _access_nodes.end())
-            {
+            if (ite != _access_nodes.end()) {
                 ite->iAccessTimes++;
                 ite->direction=direction;
-            }
-            else
-            {
+            } else {
                 _access_nodes.push_back ({ *world_pos, 1 });
                 _access_nodes.rbegin()->direction = direction;
             }
         }
         break;
 
-        case Telegram_CLIK_ON_WALL:
-        {
+        case Telegram_TOUCH_BEGIN: {
 
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int)(msg.args[0]));
 
-            CCPoint  world_pos = ccp (msg.args[0], msg.args[1]);
-            int x = world_pos.x / _width;
-            int y = world_pos.y / _width;
+            int x = world_pos->x / _width;
+            int y = world_pos->y / _width;
 
-            if (_nodes.size() < 20)
-            {
+            if (_nodes.size() < 20) {
                 setWall (ccp (x,y));
-            }
-            else
+            } else
                 _end = ccp (x, y);
 
             _cv.notify_all();
@@ -1276,16 +1204,13 @@ public:
 
         }
         break;
-        case    Telegram_DRAW:
-        {
+        case    Telegram_DRAW: {
             {
 
                 int i = 0;
 
-                for (auto a : _shorest)
-                {
-                    if (i == 0)
-                    {
+                for (auto a : _shorest) {
+                    if (i == 0) {
                         ++i;
                         continue;;
                     }
@@ -1333,8 +1258,7 @@ public:
 //draw access
 
                 int size = _access_nodes.size();
-                for (int i =0; i < size; ++i)
-                {
+                for (int i =0; i < size; ++i) {
 
                     ccp_ext p = _access_nodes[i];
                     float ff = p.iAccessTimes / 4000.0f + 0.5f;
@@ -1344,12 +1268,10 @@ public:
                     //  _access_count->setString (buffer);
                     _access_count->setPosition (ccp (p.p.x*_width+_width/2, p.p.y*_width+_width/2));
                     // _access_count->visit();
-                    static struct
-                    {
+                    static struct {
                         CCPoint dir;
                         const char* symb;
-                    } directions[]=
-                    {
+                    } directions[]= {
                         { { 1, 0  }, "<" },
                         { { -1, 0 }, ">" },
                         { { 0, 1  }, "^" },
@@ -1387,14 +1309,352 @@ public:
 
 };
 
+
+#include "CCHexagon/Hexagon.h"
+#include "CCHexagon/HexCoordinate.h"
+class HexWallComponents :public Component
+{
+
+    std::mutex					_cv_m;
+    std::condition_variable		_cv;
+    algorithm::Graph<Hexagon>	_graph;
+    CCPoint						_ccp_RL;
+    set<Hexagon>			_nodes;
+    list<Hexagon>				_shorest;
+    int							_width;
+    HexCoordinate				_coordinate;
+    std::thread					_thread;
+    CCLabelTTF*					_access_count;
+    Hexagon 					_start;
+    Hexagon 					_end;
+
+    struct ccp_ext {
+        Hexagon  p;
+        int      iAccessTimes;
+        Hexagon  direction;
+    };
+    vector<ccp_ext>			    _access_nodes;
+
+public:
+
+
+    void setWall(Hexagon& p)
+    {
+        p.Integerlize();
+        _graph.SetNodeValidate (p, false);
+        _coordinate.RemoteHex(p);
+        _nodes.insert (p);
+    }
+    static  HexWallComponents* Create(int width)
+    {
+        return new HexWallComponents(width);
+    }
+    ~HexWallComponents()
+    {
+
+    }
+
+    HexWallComponents(int w) :Component(Component_HexWALLS), _width(w), _thread(std::bind(&HexWallComponents::construct, this))
+        , _coordinate(w)
+    {
+
+
+        _access_count = CCLabelTTF::create ("", "Helvetica", 16);
+        _access_count->retain();
+        _start = HexZero;
+        _end = HexZero;
+        MakeGraph();
+
+    }
+
+    void  MakeGraph ( )
+    {
+        _graph.clear();
+        _coordinate.MakeRect2(9, 7, Hexagon(0, 0), ccc4f(1, 0, 0.5, 1));
+        HexCoordinate      _intersection;
+        _intersection.setMask(&_coordinate.hexagones);
+
+        for (auto& a : _coordinate.hexagones) {
+            _intersection.hexagones.clear();
+            _intersection.MakeRingHex(1, a);
+
+            for (auto b : _intersection.hexagones) {
+                _graph._OL->addNEdge(a, b, 1);
+            }
+        }
+
+    }
+
+    void construct()
+    {
+
+        while (true) {
+            std::unique_lock<std::mutex> lk (_cv_m);
+            Hexagon oldend = _end;
+
+            _cv.wait (lk, [=] {return  oldend!=_end; });
+
+
+
+            _shorest.clear();
+
+            auto from = _graph.findNode (_start);
+            auto  current = _graph.findNode (_end);
+
+
+            {
+                _graph.Dijkstra(from, current/*, [](const CCPoint& a, const CCPoint& b) {
+                    return  a.getDistance (b)*1.2;
+                }    */ );
+            }
+
+
+
+            while (current && current != from) {
+                _shorest.push_back (current->data);
+                current = current->p;
+            }
+
+            _cv.notify_all();
+        }
+
+    }
+
+    bool HandleMessage (const Telegram& msg)
+    {
+        switch (msg.Msg) {
+
+        case    Telegram_UPDATE: {
+
+        }
+        break;
+        case Telegram_ACCESS_NODE: {
+
+            Hexagon * world_pos = reinterpret_cast<Hexagon*> ((int)(msg.args[0]));
+            //  CCPoint * world_parent_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[1]));
+            Hexagon  direction = *world_pos;// ccpSub(*world_parent_pos, *world_pos).normalize();
+            auto  ite = find_if (_access_nodes.begin(), _access_nodes.end(), [=] (const  ccp_ext & ce) {
+                return ce.p == *world_pos;
+            });
+            if (ite != _access_nodes.end()) {
+                ite->iAccessTimes++;
+                ite->direction=direction;
+            } else {
+                _access_nodes.push_back ({ *world_pos, 1 });
+                _access_nodes.rbegin()->direction = direction;
+            }
+        }
+        break;
+
+        case Telegram_CLIK_ON_WALL: {
+
+            CCPoint  world_pos = ccp(msg.args[0], msg.args[1]);
+            Hexagon  world_hex = _coordinate.CCP2Hex(world_pos);
+            int x = world_pos.x / _width;
+            int y = world_pos.y / _width;
+
+            // if (_nodes.size() < 20) {
+            setWall(world_hex);
+            // } else
+            //      _end = world_hex;
+
+            _cv.notify_all();
+
+
+
+        }
+        break;
+        case    Telegram_DRAW: {
+
+            int i = 0;
+
+            for (auto a : _shorest) {
+                if (i == 0) {
+                    ++i;
+                    continue;;
+                }
+                if (i == _shorest.size())break;
+
+                ccColor4F c = { 1, 1, 1, 1 };
+                a.Draw(&_coordinate);
+                ++i;
+                if (i>=_shorest.size())break;
+            }
+
+            _coordinate.draw();
+
+
+
+        }
+        break;
+
+        default:
+            break;
+        }
+        return false;
+
+    }
+
+
+
+};
+class BezierCompont :public Component
+{
+public:
+
+    enum  eConst {
+        none=-1,
+        from1,
+        to1,
+        from2,
+        to2,
+        count,
+    };
+    struct bezierNode {
+        CCPoint		node;
+        CCPoint		handle;
+    };
+    vector<bezierNode> p;
+    /*CCPoint p[count];*/
+
+    CCDrawNode* drawNode;
+    float   radius;
+    CCPoint* selected_node;
+
+    static  BezierCompont* Create( )
+    {
+        return new BezierCompont( );
+    }
+    ~BezierCompont()
+    {
+        drawNode->release();
+    }
+    BezierCompont( ) :Component(Component_Bezier)
+    {
+        p.resize(2);
+        p[0].node = ccp(100,100);
+        p[0].handle = ccp(100,300 );
+
+        p[1].node = ccp(300, 100);
+        p[1].handle = ccp(300, 300);
+        selected_node=NULL;
+        radius=15;
+        drawNode=CCDrawNode::create();
+        drawNode->retain();
+    }
+    bool inCircile(CCPoint& center, float radius,CCPoint& click)
+    {
+        return ccpSub(center,click).getLength()<=radius;
+    }
+    void drawSolidCircle(CCPoint& center,float radius)
+    {
+        for (int i = 0; i < radius; i++) {
+            ccDrawCircle(center, i, 0, 50, false);
+        }
+    }
+    void drawBezier(bezierNode& l1,bezierNode &l2)
+    {
+
+        static int persision = 100;
+
+
+        //draw bezier
+        CCPoint l1_seg = (l1.handle-l1.node) / persision;
+        CCPoint l2_seg = (l2.node - l2.handle) / persision;
+
+        ccDrawColor4B(255, 122, 122, 255);
+        CCPoint from = l1.node;
+        for (int i = 0; i <= persision; ++i) {
+            CCPoint f = l1.node + l1_seg*i;
+            CCPoint t = l2.handle + l2_seg*i;
+            ccDrawLine(from, (t - f) / persision*i + f);
+            from = (t - f) / persision*i + f;
+        }
+
+    }
+    bool HandleMessage(const Telegram& msg)
+    {
+        switch (msg.Msg) {
+
+
+        case Telegram_TOUCH_BEGIN: {
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int)(msg.args[0]));
+            selected_node=NULL;
+            int i=none+1;
+            for (auto& a: p) {
+                if (inCircile(a.node, radius, *world_pos)) {
+                    selected_node=&a.node;
+                    return true;
+                }
+                if (inCircile(  a.handle, radius, *world_pos)) {
+                    selected_node = &a.handle;
+                    return true;
+                }
+                ++i;
+            }
+            p.push_back({ *world_pos, *world_pos  });
+            selected_node= &(p.rbegin()->handle);
+            return true;
+        }
+        break;
+        case Telegram_TOUCH_MOVE: {
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int)(msg.args[0]));
+            if (selected_node != NULL) {
+                *selected_node = *world_pos;
+            }
+        }
+        break;
+        case Telegram_TOUCH_CANCEL:
+        case Telegram_TOUCH_END: {
+            selected_node = NULL;
+        }
+        break;
+        case    Telegram_DRAW: {
+
+            drawNode->clear();
+
+            for (auto& a:p) {
+
+                drawNode->drawDot(a.node, radius,  { 122, 255, 122, 255 });
+                drawNode->drawDot(a.handle, radius, { 122, 255, 255, 255 });
+            }
+
+
+            for (auto& a : p) {
+                ccDrawColor4B(255, 255, 255, 255);
+
+                ccDrawLine(a.node,  a.handle);
+
+            }
+
+
+
+            for (int i=0; i<p.size()-1; ++i) {
+                ccDrawColor4B(255, 255, 255, 255);
+                drawBezier(p[i],p[i+1]);
+            }
+
+
+            drawNode->visit();
+
+
+        }
+        break;
+
+        default:
+            break;
+        }
+        return false;
+
+    }
+};
 bool ifOutWindow (Component* c)
 {
     return false;
     MoveComponent* m = dynamic_cast<MoveComponent*> (c->GetC (Component_MOVE));
     //MoveComponent* m2 = dynamic_cast<MoveComponent*> (c->GetC(Component_MOVE));
     auto  _winsize = CCDirector::sharedDirector()->getWinSize();
-    if (_winsize.width < (m->_pos.x) || _winsize.height < (m->_pos.y) || (m->_pos.x) < 0 || (m->_pos.y < 0))
-    {
+    if (_winsize.width < (m->_pos.x) || _winsize.height < (m->_pos.y) || (m->_pos.x) < 0 || (m->_pos.y < 0)) {
         return true;
     }
     return false;

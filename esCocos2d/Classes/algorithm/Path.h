@@ -55,8 +55,7 @@ public:
     ~OrthoNode()
     {
         OrthoEdge<T>* now = _nextOut;
-        while (now)
-        {
+        while (now) {
             OrthoEdge<T>* next = now->nextOutedge;
             delete (now);
             now = next;
@@ -138,8 +137,7 @@ public:
 
 
 template<typename T>
-struct OrthoNodeComp
-{
+struct OrthoNodeComp {
     bool operator() (const OrthoNode<T>*  lhs, const OrthoNode<T>* rhs) const
     {
         return lhs->data < rhs->data;
@@ -157,22 +155,19 @@ public:
         //TODO: find duplicated
 
         OrthoNode<T> * f = findNode (from_data);
-        if (!f)
-        {
+        if (!f) {
             f = new OrthoNode<T> (from_data, 0, 0);
             nodes.insert (f);
         }
 
         OrthoNode<T> * t = findNode (to_data);
-        if (!t)
-        {
+        if (!t) {
             t = new OrthoNode<T> (to_data, 0, 0);
             nodes.insert (t);
         }
 
         OrthoEdge<T> * ef2t = findEdge (f, t);
-        if (!ef2t)
-        {
+        if (!ef2t) {
             ef2t = new OrthoEdge<T> (f, t, NULL, NULL);
             ef2t->weight = weight;
             f->AddNextOut (ef2t);
@@ -180,21 +175,22 @@ public:
         }
     }
 
-    inline OrthoNode<T>*  findNode (T node)
+    inline OrthoNode<T>*  findNode (const T& node) const
     {
         OrthoNode<T> n (node, NULL, NULL);
-        auto ret = nodes.find (&n);
+        auto ret = find_if(nodes.begin(), nodes.end(),[=](const OrthoNode<T>* t)  {
+            return t->data==node;
+        });
         if (ret != nodes.end())
             return *ret;
         return NULL;
     }
 
-    inline OrthoEdge<T>*  findEdge (OrthoNode<T>* from, OrthoNode<T>* to)
+    inline OrthoEdge<T>*  findEdge (const OrthoNode<T>*  const from,const  OrthoNode<T>*  const to) const
     {
         assert (from && to);
         OrthoEdge<T>* e = from->get_nextOut();
-        while (e)
-        {
+        while (e) {
             if (e->toNode == to)
                 return e;
             else
@@ -205,8 +201,7 @@ public:
 
     ~OrthoList()
     {
-        for (auto a : nodes)
-        {
+        for (auto a : nodes) {
             delete (a);
         }
         nodes.clear();
@@ -214,8 +209,7 @@ public:
 
     inline void  initNodes()
     {
-        for (auto a : nodes)
-        {
+        for (auto a : nodes) {
             a->init();
         }
     }
@@ -229,11 +223,20 @@ public:
 };
 
 template<typename T>
+class Prioritize
+{
+public:
+    int operator() (const pair<OrthoNode<T>*, float>& p1, const pair<OrthoNode<T>*, float>& p2)
+    {
+        return p1.second > p2.second;
+    }
+};
+
+template<typename T>
 class Graph
 {
 public:
-    enum eConst
-    {
+    enum eConst {
         OK,
         NODE_NOT_EXSIT,
         NODE_NOT_VALID,
@@ -241,7 +244,7 @@ public:
         NO_MAP,
         INVALID_VALUE = INT_MAX
     };
-    Graph::Graph()
+    Graph()
     {
         _OL = new OrthoList<T>;
     }
@@ -251,8 +254,7 @@ public:
     }
     void  clear()
     {
-        for (auto a : _OL->nodes)
-        {
+        for (auto a : _OL->nodes) {
             delete (a);
         }
         _OL->nodes.clear();
@@ -267,7 +269,7 @@ public:
     }
 
 
-    bool  SetNodeValidate (T& nodename, bool validate)
+    bool  SetNodeValidate (const T& nodename, bool validate)
     {
         OrthoNode<T>* a = _OL->findNode (nodename);
         if (!a)return false;
@@ -279,7 +281,7 @@ public:
     OrthoList<T>*		_OL;
 
 
-    OrthoNode<T>*  findNode (T nodename)
+    OrthoNode<T>*  findNode (const T& nodename) const
     {
         return _OL->findNode (nodename);
     }
@@ -287,12 +289,8 @@ public:
     eConst  _findShortestPath (OrthoNode<T>* from_, OrthoNode<T>* to_ )
     {
         //Dijkstra algorithm
-        if (! (from_ &&  to_))
-        {
-            return NODE_NOT_EXSIT;
-        }
-        if (!from_->_validate || !to_->_validate)
-        {
+
+        if (!from_->_validate || !to_->_validate) {
             return NODE_NOT_VALID;
         }
         return  Dijkstra (from_, to_ );
@@ -300,23 +298,13 @@ public:
     }
 
 
-    template<typename T>
-    class Prioritize
-    {
-    public:
-        int operator() (const pair<OrthoNode<T>*, float>& p1, const pair<OrthoNode<T>*, float>& p2)
-        {
-            return p1.second > p2.second;
-        }
-    };
     typedef  priority_queue<pair<OrthoNode<T>*, float>, vector<pair<OrthoNode<T>*, float>>, Prioritize<T>> PQ;
-    void Dijkstra (OrthoNode<T>* from_, OrthoNode<T>*  to_ = NULL)
+    eConst Dijkstra (OrthoNode<T>* from_, OrthoNode<T>*  to_ = NULL)
     {
-        if (_OL->nodes.empty())return;
+        if (_OL->nodes.empty())return NO_MAP;
         PQ Q;
         //    list<OrthoNode<T>*> Q;
-        for (auto v : _OL->nodes)
-        {
+        for (auto v : _OL->nodes) {
             if (!v->_validate)continue;
             v->iF = INT_MAX;
             v->p = NULL;
@@ -326,20 +314,21 @@ public:
 
         from_->iF = 0;
         Q.push ({ from_, from_->iF });
-        while (!to_ && !Q.empty() || (!Q.empty() && !to_->_closed))
-        {
+        while (!to_ && !Q.empty() || (!Q.empty() && !to_->_closed)) {
             OrthoNode<T>*  u = Q.top().first;
             Q.pop();
 
             OrthoEdge<T>*  edge = u->get_nextOut();
 
-            while (edge)
-            {
+            while (edge) {
                 auto toNode = edge->toNode;
+                if (!toNode->_validate) {
+                    edge = edge->nextOutedge;
+                    continue;
+                }
                 auto fromNode = edge->fromNode;
 
-                if (toNode->iF > fromNode->iF + edge->weight)
-                {
+                if (toNode->iF > fromNode->iF + edge->weight) {
                     toNode->iF = fromNode->iF + edge->weight;
                     toNode->p = fromNode;
 #ifdef MESSAGE_SUPPORT
@@ -353,13 +342,13 @@ public:
             u->_closed = true;
 
         }
-
+        return OK;
     }
 
 
 
 
-    eConst AStar (OrthoNode<T>* start, OrthoNode<T>*  to_, std::function<float (T& t1, T& t2)> heuristic)
+    eConst AStar (OrthoNode<T>* start, OrthoNode<T>*  to_, std::function<float (const T& t1,const T& t2)> heuristic)
     {
         if (! (start && to_)) return NODE_NOT_VALID;
         if (_OL->nodes.empty())return NO_MAP;
@@ -368,19 +357,16 @@ public:
         start->p = NULL;
         cost_so_far[start] = 0;
         frontier.push ({start,0} );
-        while   (!frontier.empty())
-        {
+        while   (!frontier.empty()) {
             OrthoNode<T>*  current = frontier.top().first;
             frontier.pop();
             if (current==to_)return OK;
 
-            for (OrthoEdge<T>* next = current->get_nextOut(); next!=NULL; next = next->nextOutedge )
-            {
+            for (OrthoEdge<T>* next = current->get_nextOut(); next!=NULL; next = next->nextOutedge ) {
                 if (!next->toNode->_validate) continue;
 
                 float new_cost = cost_so_far[current] + next->weight;
-                if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) )
-                {
+                if (cost_so_far.find (next->toNode) == cost_so_far.end()  || (new_cost < cost_so_far[next->toNode]) ) {
                     cost_so_far[next->toNode] = new_cost;
 #ifdef MESSAGE_SUPPORT
                     DD (Telegram_ACCESS_NODE, { (double) (int) (&current ->data)  });
@@ -399,10 +385,8 @@ public:
     eConst  findAround (OrthoNode<T>* n, bool check_chosen, set<OrthoNode<T>*>& around/*out*/)
     {
         OrthoEdge<T>*  edge = n->get_nextOut();
-        while (edge)
-        {
-            if (edge->toNode->_closed)
-            {
+        while (edge) {
+            if (edge->toNode->_closed) {
                 around.insert (edge->toNode);
             }
             edge = edge->nextOutedge;
