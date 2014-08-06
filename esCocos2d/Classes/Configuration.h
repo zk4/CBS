@@ -13,6 +13,8 @@ enum eComponent {
     Component_WALLS,
     Component_HexWALLS,
     Component_Bezier,
+    Component_SmoothLine,
+    Component_Raytrace,
     Entity_,
     Component_COUNT,
 

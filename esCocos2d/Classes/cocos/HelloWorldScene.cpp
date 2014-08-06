@@ -43,7 +43,7 @@ bool HelloWorld::init()
 
 
     wall = Component::Create (Entity_);
-    wall->AddC(WallComponents::Create(50));
+    wall->AddC(RayTraceComponents::Create(  ));
     wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 300, 300, 100, 1));
     DD (wall->GetID(), Telegram_SET_POS, { 0,0 });
 
@@ -66,13 +66,13 @@ bool HelloWorld::init()
         sprite->setPosition (CCPointZero);
         cc->setPosition (CCPointZero);
         c->setPosition (CCPointZero);
-        planes->AddC (TrailComponent::Create (_rt));
+        //  planes->AddC (TrailComponent::Create (_rt));
         planes->AddC (RadarComponent::Create (50));
         planes->AddC (MoveComponent::Create ({ 100, 100 }, 1,100, 1000, 100,1));
         planes->AddC (SpriteComponent::Create (sprite));
 
-        planes->AddC (HPComponent::Create (100));
-        planes->AddC (WeaponComponent::Create());
+        //planes->AddC (HPComponent::Create (100));
+        // planes->AddC (WeaponComponent::Create());
         bads.push_back (planes);
 
         DD (planes->GetID(), Telegram_SET_POS, { double (200 + rand() % 30), double (200 + rand() % 30) });
