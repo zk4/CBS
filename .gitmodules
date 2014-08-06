@@ -1,0 +1,6 @@
+[submodule "esCocos2d/Classes/cppdelaunay"]
+	path = esCocos2d/Classes/cppdelaunay
+	url = https://github.com/cubase01/cppdelaunay.git
+[submodule "esCocos2d/Classes/Perlin_Noise"]
+	path = esCocos2d/Classes/Perlin_Noise
+	url = https://github.com/sol-prog/Perlin_Noise.git
