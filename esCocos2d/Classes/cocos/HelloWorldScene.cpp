@@ -24,7 +24,8 @@ bool HelloWorld::init()
 {
     //////////////////////////////
     // 1. super init first
-    if ( !CCLayer::init() ) {
+    if ( !CCLayer::init() )
+    {
         return false;
     }
 
@@ -43,10 +44,12 @@ bool HelloWorld::init()
 
 
     wall = Component::Create (Entity_);
-    wall->AddC(RayTraceComponents::Create(  ));
-    wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 300, 300, 100, 1));
-    DD (wall->GetID(), Telegram_SET_POS, { 0,0 });
+    wall->AddC (RayTraceComponents::Create(  ));
+    //  wall->AddC (RadarComponent::Create (50));
+    // wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 100, 1000, 100, 1));
+    //  DD (wall->GetID(), Telegram_SET_POS, { 0,0 });
 
+    // DD (wall->GetID(), Telegram_SET_POS, { double (200 + rand() % 30), double (200 + rand() % 30) });
     _dTimeNow=0;
     srand (time (NULL));
 
@@ -54,7 +57,8 @@ bool HelloWorld::init()
     _rt->setPosition (_winsize/2 );
     _rt->retain();
 
-    for (int i=0; i<0; ++i) {
+    for (int i=0; i<0; ++i)
+    {
 
         auto   planes = Component::Create (Entity_);
         auto sprite = CCSprite::create ("airplane.png");
@@ -77,9 +81,11 @@ bool HelloWorld::init()
 
         DD (planes->GetID(), Telegram_SET_POS, { double (200 + rand() % 30), double (200 + rand() % 30) });
     }
-    for (auto a:bads) {
+    for (auto a:bads)
+    {
         DD (a->GetID(), Telegram_SEARCH, {});
     }
+
 
     setTouchEnabled (true);
     setTouchMode (kCCTouchesOneByOne);
@@ -111,16 +117,17 @@ bool HelloWorld::ccTouchBegan (CCTouch *pTouch, CCEvent *pEvent)
           m->_pos = target;
       }*/
     // DD (a->GetID(), Telegram_ARRIVE, { target.x, target.y});
-    DD(wall->GetID(), Telegram_TOUCH_BEGIN, { (double)(int)(&target) });
+    DD (wall->GetID(), Telegram_TOUCH_BEGIN, { (double) (int) (&target) });
 
 
     static double lastClicktime = 0;
     static double nowClickTime = 0;
 
     nowClickTime = _dTimeNow;
-    CCLOG("%f\n", nowClickTime - lastClicktime);
-    if ((nowClickTime - lastClicktime) < 0.3) { //double click
-        DD(wall->GetID(), Telegram_TOUCH_DOUBLE, { (double)(int)(&target) });
+    CCLOG ("%f\n", nowClickTime - lastClicktime);
+    if ((nowClickTime - lastClicktime) < 0.3)   //double click
+    {
+        DD (wall->GetID(), Telegram_TOUCH_DOUBLE, { (double) (int) (&target) });
     }
     lastClicktime = _dTimeNow;
 
@@ -130,7 +137,7 @@ bool HelloWorld::ccTouchBegan (CCTouch *pTouch, CCEvent *pEvent)
 void HelloWorld::ccTouchMoved (CCTouch *pTouch, CCEvent *pEvent)
 {
     auto  target = pTouch->getLocation();
-    DD(wall->GetID(), Telegram_TOUCH_MOVE, { (double)(int)(&target) });
+    DD (wall->GetID(), Telegram_TOUCH_MOVE, { (double) (int) (&target) });
 
 }
 
@@ -138,14 +145,14 @@ void HelloWorld::ccTouchMoved (CCTouch *pTouch, CCEvent *pEvent)
 void HelloWorld::ccTouchEnded (CCTouch *pTouch, CCEvent *pEvent)
 {
     auto  target = pTouch->getLocation();
-    DD(wall->GetID(), Telegram_TOUCH_END, { (double)(int)(&target) });
+    DD (wall->GetID(), Telegram_TOUCH_END, { (double) (int) (&target) });
 
 }
 
 void HelloWorld::ccTouchCancelled (CCTouch *pTouch, CCEvent *pEvent)
 {
     auto  target = pTouch->getLocation();
-    DD(wall->GetID(), Telegram_TOUCH_CANCEL, { (double)(int)(&target) });
+    DD (wall->GetID(), Telegram_TOUCH_CANCEL, { (double) (int) (&target) });
 
 }
 
@@ -157,11 +164,13 @@ void HelloWorld::update (float delta)
     static double thinginterval =0;
     thinginterval+= delta;
 
-    for (int i=0; i < bads.size(); ++i) {
+    for (int i=0; i < bads.size(); ++i)
+    {
         DD (bads[i]->GetID(), Telegram_AI, {delta});
         DD (bads[i]->GetID(), Telegram_UPDATE, { delta });
     }
     thinginterval=0;
+    DD (wall->GetID(), Telegram_AI, { delta });
     DD (wall->GetID(), Telegram_UPDATE, { delta });
 
 }
@@ -171,7 +180,8 @@ void HelloWorld::draw()
     CCLayer::draw();
 
 //    DD (bg->GetID(), Telegram_DRAW, {});
-    for (int i = 0; i < bads.size(); ++i) {
+    for (int i = 0; i < bads.size(); ++i)
+    {
 
         DD (bads[i]->GetID(), Telegram_DRAW, {});
     }

@@ -1990,7 +1990,7 @@ class RayTraceComponents :public Component
         CCPoint rayStart;
         CCPoint rayDir;
 
-        //ax+by+c=0;
+        //ax+by+c=0; regular line function
         void SolveLine (Segment&s, float&a, float& b, float& c)
         {
             if (s.segStart.x == s.segEnd.x && s.segStart.y != s.segEnd.y)   //parallel with y
@@ -2013,19 +2013,19 @@ class RayTraceComponents :public Component
             }
         }
 
-        eConst intersect (Segment& w, CCPoint& intersection,float & T)
+        eConst intersect (Segment& w, CCPoint& intersection )
         {
 
             float A,B,C;
             SolveLine (w,A,B,C);
 
             if (A*rayDir.x + B*rayDir.y == 0)return NOT_INTERSECTION;
-            T = (-A*rayStart.x - C - B*rayStart.y) / (A*rayDir.x + B*rayDir.y);
+            float  T = (-A*rayStart.x - C - B*rayStart.y) / (A*rayDir.x + B*rayDir.y);
             if (T<0)return NOT_INTERSECTION;
 
             float ix = rayStart.x + rayDir.x*T;
             float iy = rayStart.y + rayDir.y*T;
-            float yy = A*ix+B*iy+C;
+
             intersection = ccp (ix,iy);
             CCPoint d1 = intersection - w.segStart;
             CCPoint d2 = intersection - w.segEnd;
@@ -2034,25 +2034,24 @@ class RayTraceComponents :public Component
             if (f<d1.getLength() || f<d2.getLength())
                 return OK;
 
-
         }
 
     };
 
 
 
-    CCPoint				_light;
-    bool				b_move_light;
-    vector<Segment>    walls;
-    vector<CCPoint> edge_nodes;
-
-
+    CCPoint					_light;
+    bool					b_move_light;
+    vector<Segment>			walls;
+    vector<CCPoint>			edge_nodes;
+    CCDrawNode*				_draw_node;
+    CCLabelTTF*				ttf_index;
 public:
     void reOrderScanNodes()
     {
-        std::sort (edge_nodes.begin(), edge_nodes.end(), [=] (CCPoint& a,CCPoint& b)
+        std::sort (edge_nodes.begin(), edge_nodes.end(), [=] (CCPoint& a, CCPoint& b)
         {
-            return ccpAngle (_light, b)<ccpAngle (_light, a);
+            return ccpAngle (_light, b) < ccpAngle (_light, a);
         });
     }
     void reConstructScanNodes()
@@ -2064,11 +2063,15 @@ public:
             edge_nodes.push_back (a.segEnd);
         }
     }
+
     static  RayTraceComponents* Create( )
     {
         return new RayTraceComponents( );
     }
-    ~RayTraceComponents() {}
+    ~RayTraceComponents()
+    {
+        _draw_node->release();
+    }
     RayTraceComponents () :Component (Component_Raytrace)
     {
         CCSize s=CCDirector::sharedDirector()->getWinSize();
@@ -2092,12 +2095,25 @@ public:
             {
                 { 700, 200 }, { 300, 500 }
             }
+            ,
+            {
+                { 100, 200 }, { 600, 500 }
+            }
         };
         _light = ccp (200,200);
+
         b_move_light=false;
+
         reConstructScanNodes();
         reOrderScanNodes();
 
+        _draw_node=CCDrawNode::create();
+        _draw_node->retain();
+
+        ttf_index = CCLabelTTF::create();
+        ttf_index->setFontSize (64);
+        ttf_index->setColor ({0,255,0});
+        ttf_index->retain();
 
     }
 
@@ -2112,6 +2128,13 @@ public:
         case    Telegram_UPDATE:
         {
 
+        }
+        break;
+
+        case Telegram_SET_POS:
+        {
+            CCPoint start = ccp (msg.args[0], msg.args[1]);
+            _light = start;
         }
         break;
         case Telegram_ACCESS_NODE:
@@ -2136,6 +2159,8 @@ public:
         break;
         case Telegram_TOUCH_BEGIN:
         {
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[0]));
+            _light = *world_pos;
             b_move_light=true;
         }
         break;
@@ -2178,10 +2203,12 @@ public:
                 lightWallSegments[edge_node];
                 for (auto & wall: walls)
                 {
+                    //do not check the  wall  where edge node  comes from
+                    if (wall.segStart == edge_node || wall.segEnd == edge_node)continue;
 
                     CCPoint intersection;
-                    float T;
-                    auto ret = beam.intersect (wall, intersection, T);
+
+                    auto ret = beam.intersect (wall, intersection );
 
                     if (ret == OK )
                     {
@@ -2202,7 +2229,8 @@ public:
                 }
 
             }
-
+            _draw_node->clear();
+            int i=0;
             for (auto & l: lightWallSegments)
             {
                 CCPoint p;
@@ -2211,11 +2239,20 @@ public:
                 else
                     p= l.first ;
 
-                ccDrawLine (_light, p);
-                ccPointSize (5);
-                ccDrawPoint (p);
+                ttf_index->setPosition (p);
+                char buf[10];
+                sprintf (buf, "%d",i);
+                ttf_index->setString (buf);
+                _draw_node->drawSegment (_light, p,1, ccc4f (1, 1,1, 1));
+                _draw_node->drawDot (l.first, 5, ccc4f (1, 1, 1, 1));
+                _draw_node->drawDot (p, 5, ccc4f (1, 1, 1, 1));
+                ttf_index->visit();
+                ++i;
             }
 
+
+
+            _draw_node->visit();
         }
         break;
 
