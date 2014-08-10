@@ -59,25 +59,25 @@ struct Line           // 直线的解析方程 a*x+b*y+c=0  为统一表示，�
     }
 };
 
-//bool intersects (Ray& r,Segment& w, CCPoint& intersection)
-//{
-//    float A, B, C;
-//    SolveLine (w, A, B, C);
-//
-//    if (A * r.rayDir.x + B * r.rayDir.y == 0) return false;
-//    float  T = (-A * r.rayStart.x - C - B * r.rayStart.y) / (A * r.rayDir.x + B * r.rayDir.y);
-//    if (T < 0) return false;
-//
-//    intersection.x = r.rayStart.x + r.rayDir.x * T;
-//    intersection.y = r.rayStart.y + r.rayDir.y * T;
-//
-//    CCPoint d1 = intersection - w.s;
-//    CCPoint d2 = intersection - w.e;
-//    //in segment
-//    float f = (d1 + d2).getLength();
-//    return (f <= d1.getLength() || f <= d2.getLength());
-//
-//}
+bool intersects (Ray& r,Segment& w, CCPoint& intersection)
+{
+    float A, B, C;
+    SolveLine (w, A, B, C);
+
+    if (A * r.d.x + B * r.d.y == 0) return false;
+    float  T = (-A * r.s.x - C - B * r.s.y) / (A * r.d.x + B * r.d.y);
+    if (T < 0) return false;
+
+    intersection.x = r.s.x + r.d.x * T;
+    intersection.y = r.s.y + r.d.y * T;
+
+    CCPoint d1 = intersection - w.s;
+    CCPoint d2 = intersection - w.e;
+    //in segment
+    float f = (d1 + d2).getLength();
+    return (f <= d1.getLength() || f <= d2.getLength());
+
+}
 /********************
 *                    *
 *   点的基本运算     *
@@ -423,7 +423,10 @@ bool intersects (CCPoint& p1, CCPoint& p2, CCPoint& p3, CCPoint& p4, CCPoint & i
     intersection.y = y;
     return true;
 }
-//
+bool intersects (Segment& s1,Segment&s2, CCPoint & intersection)
+{
+    return intersects (s1.s,s1.e,s2.s,s2.e,intersection);
+}
 
 // 根据已知两点坐标，求过这两点的直线解析方程： a*x+b*y+c = 0  (a >= 0)
 Line makeline (CCPoint p1, CCPoint p2)

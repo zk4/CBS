@@ -2022,47 +2022,50 @@ public:
         _walls =
         {
             {
-                { 300, 100 }, { 600, 100 }
+                { 100, 100 }, { 700, 100 }
             },
             {
-                { 200, 200 }, { 400, 200 }
+                { 400, 50 }, { 300, 50 }
             },
-            //{
-            //    { 50, 50 }, { 50, s.height - 50 }
-            //},
-            //{
-            //    { 50, 50 }, { s.width - 50, 50 }
-            //},
-            //{
-            //    { 50, s.height - 50 }, { s.width - 50, s.height - 50 }
-            //},
-            //{
-            //    { s.width - 50, 50 }, { s.width - 50, s.height - 50 }
-            //},
-            //{
-            //    { 700, 200 }, { 300, 500 }
-            //}
-            //,
-            //{
-            //    { 100, 200 }, { 600, 500 }
-            //},
+            {
+                { 300, 200 }, { 500, 200 }
+            },
+            {
+                { 50, 50 }, { 50, s.height - 50 }
+            },
+            {
+                { 50, 50 }, { s.width - 50, 50 }
+            },
+            {
+                { 50, s.height - 50 }, { s.width - 50, s.height - 50 }
+            },
+            {
+                { s.width - 50, 50 }, { s.width - 50, s.height - 50 }
+            },
+            {
+                { 700, 200 }, { 300, 500 }
+            }
+            ,
+            {
+                { 100, 200 }, { 600, 500 }
+            },
 
 
-            ////cube
-            //{
-            //    { 200, 200 }, { 200, s.height - 200 }
-            //},
-            //{
-            //    { 200, 200 }, { s.width - 200, 200 }
-            //},
-            //{
-            //    { 200, s.height - 200 }, { s.width - 200, s.height - 200 }
-            //},
-            //{
-            //    { s.width - 200, 200 }, { s.width - 200, s.height - 200 }
-            //},
+            //cube
+            {
+                { 200, 200 }, { 200, s.height - 200 }
+            },
+            {
+                { 200, 200 }, { s.width - 200, 200 }
+            },
+            {
+                { 200, s.height - 200 }, { s.width - 200, s.height - 200 }
+            },
+            {
+                { s.width - 200, 200 }, { s.width - 200, s.height - 200 }
+            },
         };
-        _ccp_light = ccp ( 200, 200 );
+        _ccp_light = ccp ( 400, 300 );
 
         _b_move_light = false;
 
@@ -2157,32 +2160,41 @@ public:
 
             for ( auto & edge_node : _edge_nodes )
             {
-                Ray beam = {_ccp_light, edge_node - _ccp_light};
-                // lightWallSegments[edge_node];
+                Ray beam = {_ccp_light, (edge_node - _ccp_light).normalize()*99999};
+                // lightWallSegments[edge_node] ;
                 for ( auto & wall : _walls )
                 {
                     //do not check the  wall  where edge node  comes from
-                    if ( wall.s == edge_node || wall.e == edge_node ) continue;
+                    if ((wall.s - edge_node).getLength()<EP || (wall.e - edge_node).getLength()<EP) continue;
 
                     //
-
+                    //    beam.d=beam.d.normalize();
                     kmRay2 r = { beam.s.x, beam.s.y, beam.d.x, beam.d.y };
                     kmVec2 s = {wall.s.x,wall.s.y};
                     kmVec2 e = {wall.e.x,wall.e.y};
                     kmVec2 v;
-                    if (kmRay2IntersectLineSegment (&r, &s, &e, &v))
+
+                    if (kmRay2IntersectLineSegment (&r, &s,&e, &v))
                     {
-                        CCPoint intersection = {v.x,v.y};
-                        if ( lightWallSegments[edge_node].size() == 0 )
+                        CCPoint intersection= {v.x,v.y};
+                        //  lightWallSegments[edge_node].push_back (intersection);
+                        if (  lightWallSegments[edge_node].size() == 0)
                             lightWallSegments[edge_node].push_back ( intersection );
                         else
                         {
                             auto a = lightWallSegments[edge_node][0];
+                            //已存点距离大于当前找到点
                             if ( ( a - _ccp_light ).getLength() > ( intersection - _ccp_light ).getLength() )
                             {
                                 lightWallSegments[edge_node].clear();
                                 lightWallSegments[edge_node].push_back ( intersection );
                             }
+                            /*   else
+                               {
+                                   if (lightWallSegments[edge_node][0].getLength() < EP) continue;
+
+                                   lightWallSegments.erase (edge_node);
+                               }*/
 
                         }
                     }
@@ -2194,14 +2206,20 @@ public:
             for ( auto & l : lightWallSegments )
             {
                 CCPoint p;
-                if ( l.second.size() > 0 )
-                    p = l.second[0] ;
+                if (l.second.size() == 0)
+                {
+                    //   drawElement (_ccp_light, l.first);
+                }
                 else
-                    p = l.first ;
+                {
+                    //  drawElement (_ccp_light, l.first);
+                    for (int i = 0; i < l.second.size(); ++i)
+                    {
+                        drawElement (_ccp_light, l.second[i]);
+                    }
+                }
+                //   drawElement (_ccp_light, l.first);
 
-                _p_draw_node->drawSegment ( _ccp_light, p, 1, ccc4f ( 1, 1, 1, 1 ) );
-                _p_draw_node->drawDot ( l.first, 15, ccc4f ( 1, 1, 1, 1 ) );
-                _p_draw_node->drawDot ( p, 15, ccc4f ( 1, 1, 1, 1 ) );
 
 
             }
@@ -2228,6 +2246,13 @@ public:
         }
         return false;
 
+    }
+
+    void drawElement (CCPoint& p, CCPoint  p2 )
+    {
+        _p_draw_node->drawSegment (p, p2, 1, ccc4f (1, 1, 1, 1));
+        _p_draw_node->drawDot (p , 15, ccc4f (1, 1, 1, 1));
+        _p_draw_node->drawDot (p2, 15, ccc4f (1, 1, 1, 1));
     }
 
 };
