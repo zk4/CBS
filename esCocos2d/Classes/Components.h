@@ -12,6 +12,7 @@
 #include <condition_variable>
 #include <iterator>
 #include <unordered_map>
+#include "zkMath.h"
 using namespace cocos2d;
 static bool ifOutWindow ( Component* c );
 
@@ -1971,72 +1972,6 @@ public:
 
 class RayTraceComponents : public Component
 {
-    enum eConst
-    {
-        OK,
-        OVERLAP,
-        PARALLEL,
-        NOT_INTERSECTION,
-    };
-
-    struct Segment
-    {
-        CCPoint segStart;
-        CCPoint segEnd;
-    };
-
-    struct Ray
-    {
-        CCPoint rayStart;
-        CCPoint rayDir;
-
-        //ax+by+c=0; regular line function
-        void SolveLine ( Segment&s, float&a, float& b, float& c )
-        {
-            if ( s.segStart.x == s.segEnd.x && s.segStart.y != s.segEnd.y )   //parallel with y
-            {
-                a = 1;
-                b = 0;
-                c = -s.segStart.x;
-            }
-            else if ( s.segStart.x != s.segEnd.x && s.segStart.y == s.segEnd.y )     //parallel with x
-            {
-                a = 0;
-                b = 1;
-                c = -s.segStart.y;
-            }
-            else
-            {
-                a = - ( s.segStart.y - s.segEnd.y ) / ( s.segStart.x - s.segEnd.x );
-                b = 1;
-                c = - ( s.segStart.y * s.segEnd.x - s.segEnd.y * s.segStart.x ) / ( s.segEnd.x - s.segStart.x );
-            }
-        }
-
-        eConst intersect ( Segment& w, CCPoint& intersection )
-        {
-
-            float A, B, C;
-            SolveLine ( w, A, B, C );
-
-            if ( A * rayDir.x + B * rayDir.y == 0 ) return NOT_INTERSECTION;
-            float  T = ( -A * rayStart.x - C - B * rayStart.y ) / ( A * rayDir.x + B * rayDir.y );
-            if ( T < 0 ) return NOT_INTERSECTION;
-
-            float ix = rayStart.x + rayDir.x * T;
-            float iy = rayStart.y + rayDir.y * T;
-
-            intersection = ccp ( ix, iy );
-            CCPoint d1 = intersection - w.segStart;
-            CCPoint d2 = intersection - w.segEnd;
-            //in segment
-            float f = ( d1 + d2 ).getLength();
-            if ( f < d1.getLength() || f < d2.getLength() )
-                return OK;
-
-        }
-
-    };
 
     CCPoint					_ccp_light;
     bool					_b_move_light;
@@ -2057,8 +1992,8 @@ public:
         _edge_nodes.clear();
         for ( auto &a : _walls )
         {
-            _edge_nodes.push_back ( a.segStart );
-            _edge_nodes.push_back ( a.segEnd );
+            _edge_nodes.push_back ( a.s );
+            _edge_nodes.push_back ( a.e );
         }
     }
 
@@ -2169,7 +2104,7 @@ public:
             ccDrawColor4B ( 255, 0, 0, 255 );
             for ( auto& a : _walls )
             {
-                ccDrawLine ( a.segStart, a.segEnd );
+                ccDrawLine ( a.s, a.e );
             }
             ccPointSize ( 10 );
             ccDrawPoint ( _ccp_light );
@@ -2198,13 +2133,13 @@ public:
                 for ( auto & wall : _walls )
                 {
                     //do not check the  wall  where edge node  comes from
-                    if ( wall.segStart == edge_node || wall.segEnd == edge_node ) continue;
+                    if ( wall.s == edge_node || wall.e == edge_node ) continue;
 
                     CCPoint intersection;
 
                     auto ret = beam.intersect ( wall, intersection );
 
-                    if ( ret == OK )
+                    if ( ret == Ray::OK )
                     {
                         if ( lightWallSegments[edge_node].size() == 0 )
                             lightWallSegments[edge_node].push_back ( intersection );
@@ -2264,30 +2199,8 @@ public:
     }
 
 };
-struct Segment
-{
-    CCPoint segStart;
-    CCPoint segEnd;
-    ccColor4F color;
-    vector<float> breaks;
-    CCPoint getCenter()const
-    {
-        return segStart + (segEnd - segStart) / 2;
-    }
-};
 
-static bool isSegmentIntersect (Segment& s1, Segment& s2)
-{
-    CCPoint P1 = s1.segStart;
-    CCPoint P2 = s1.segEnd;
-    CCPoint Q1 = s2.segStart;
-    CCPoint Q2 = s2.segEnd;
-    float a = (((P1 - Q1).cross (Q2 - Q1)) * ((Q2 - Q1).cross (P2 - Q1)));
-    return a>= 0;
 
-    CCPoint i;
-    (i - s1.segEnd) + (s1.segEnd-s2.segEnd)=i-s2.segEnd;
-}
 ///------------alg 3------------
 double determinant (double v1, double v2, double v3, double v4) // 行列式
 {
@@ -2298,63 +2211,26 @@ double determinant (double v1, double v2, double v3, double v4) // 行列式
 //ax+by+c=0; regular line function
 static void SolveLine (Segment&s, float&a, float& b, float& c)
 {
-    if (s.segStart.x == s.segEnd.x && s.segStart.y != s.segEnd.y)   //parallel with y
+    if (s.s.x == s.e.x && s.s.y != s.e.y)   //parallel with y
     {
         a = 1;
         b = 0;
-        c = -s.segStart.x;
+        c = -s.s.x;
     }
-    else if (s.segStart.x != s.segEnd.x && s.segStart.y == s.segEnd.y)     //parallel with x
+    else if (s.s.x != s.e.x && s.s.y == s.e.y)     //parallel with x
     {
         a = 0;
         b = 1;
-        c = -s.segStart.y;
+        c = -s.s.y;
     }
     else
     {
-        a = - (s.segStart.y - s.segEnd.y) / (s.segStart.x - s.segEnd.x);
+        a = - (s.s.y - s.e.y) / (s.s.x - s.e.x);
         b = 1;
-        c = - (s.segStart.y * s.segEnd.x - s.segEnd.y * s.segStart.x) / (s.segEnd.x - s.segStart.x);
+        c = - (s.s.y * s.e.x - s.e.y * s.s.x) / (s.e.x - s.s.x);
     }
 }
-enum eConst
-{
-    OK,
-    OVERLAP,
-    PARALLEL,
-    NOT_INTERSECTION,
-};
-struct Ray
-{
-    CCPoint rayStart;
-    CCPoint rayDir;
 
-
-
-    eConst intersect (Segment& w, CCPoint& intersection)
-    {
-
-        float A, B, C;
-        SolveLine (w, A, B, C);
-
-        if (A * rayDir.x + B * rayDir.y == 0) return NOT_INTERSECTION;
-        float  T = (-A * rayStart.x - C - B * rayStart.y) / (A * rayDir.x + B * rayDir.y);
-        if (T < 0) return NOT_INTERSECTION;
-
-        float ix = rayStart.x + rayDir.x * T;
-        float iy = rayStart.y + rayDir.y * T;
-
-        intersection = ccp (ix, iy);
-        CCPoint d1 = intersection - w.segStart;
-        CCPoint d2 = intersection - w.segEnd;
-        //in segment
-        float f = (d1 + d2).getLength();
-        if (f < d1.getLength() || f < d2.getLength())
-            return OK;
-
-    }
-
-};
 
 class RayComponents : public Component
 {
@@ -2380,8 +2256,8 @@ public:
         _edge_nodes.clear();
         for (auto &a : _walls)
         {
-            _edge_nodes.push_back (a.segStart);
-            _edge_nodes.push_back (a.segEnd);
+            _edge_nodes.push_back (a.s);
+            _edge_nodes.push_back (a.e);
         }
     }
 
@@ -2492,7 +2368,7 @@ public:
             ccDrawColor4B (255, 0, 0, 255);
             for (auto& a : _walls)
             {
-                ccDrawLine (a.segStart, a.segEnd);
+                ccDrawLine (a.s, a.e);
             }
             ccPointSize (10);
             ccDrawPoint (_ccp_light);
@@ -2521,13 +2397,14 @@ public:
                 for (auto & wall : _walls)
                 {
                     //do not check the  wall  where edge node  comes from
-                    if (wall.segStart == edge_node || wall.segEnd == edge_node) continue;
+                    if (wall.s == edge_node || wall.e == edge_node) continue;
 
                     CCPoint intersection;
 
+
                     auto ret = beam.intersect (wall, intersection);
 
-                    if (ret == OK)
+                    if (ret == Ray::OK)
                     {
                         if (lightWallSegments[edge_node].size() == 0)
                             lightWallSegments[edge_node].push_back (intersection);
@@ -2639,7 +2516,7 @@ public:
             if (_b_move_light)
             {
                 CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[0]));
-                segs.rbegin()->segEnd = *world_pos;
+                segs.rbegin()->e = *world_pos;
             }
 
         }
@@ -2659,10 +2536,13 @@ public:
             float r = CCRANDOM_0_1();
             float g = CCRANDOM_0_1();
             float b = CCRANDOM_0_1();
+            CCPoint p;
             for (int i = 0; i < segs.size()-1; ++i)
             {
 
-                if (isSegmentIntersect (segs[i], *segs.rbegin()))
+
+                //    if (isSegmentIntersect (segs[i], *segs.rbegin()))
+                if (intersects (segs[i].s, segs[i].e, segs.rbegin()->s, segs.rbegin()->e, p))
                 {
 
 
@@ -2682,7 +2562,7 @@ public:
             _p_draw_node->clear();
             for (auto& seg:segs)
             {
-                _p_draw_node->drawSegment (seg.segStart, seg.segEnd, 1, seg.color);
+                _p_draw_node->drawSegment (seg.s, seg.e, 1, seg.color);
             }
             _p_draw_node->visit();
         }
@@ -2700,7 +2580,7 @@ bool ifOutWindow ( Component* c )
 {
     return false;
     MoveComponent* m = dynamic_cast<MoveComponent*> ( c->GetC ( Component_MOVE ) );
-    //MoveComponent* m2 = dynamic_cast<MoveComponent*> (c->GetC(Component_MOVE));
+
     auto  _winsize = CCDirector::sharedDirector()->getWinSize();
     if ( _winsize.width < ( m->_pos.x ) || _winsize.height < ( m->_pos.y ) || ( m->_pos.x ) < 0 || ( m->_pos.y < 0 ) )
     {

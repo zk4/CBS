@@ -44,7 +44,7 @@ bool HelloWorld::init()
 
 
     wall = Component::Create (Entity_);
-    wall->AddC (SegComponent::Create());
+    wall->AddC (RayTraceComponents::Create());
     //  wall->AddC (RadarComponent::Create (50));
     // wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 100, 1000, 100, 1));
     //  DD (wall->GetID(), Telegram_SET_POS, { 0,0 });
