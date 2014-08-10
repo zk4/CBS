@@ -1994,7 +1994,18 @@ public:
         {
             _edge_nodes.push_back ( a.s );
             _edge_nodes.push_back ( a.e );
+            //add intersection
+            for (auto &b : _walls)
+            {
+                CCPoint i;
+                if (intersects (a.s, a.e, b.s, b.e, i))
+                {
+                    _edge_nodes.push_back (i);
+                }
+            }
         }
+
+
     }
 
     static  RayTraceComponents* Create( )
@@ -2011,27 +2022,45 @@ public:
         _walls =
         {
             {
-                { 100, 100 }, { 400, 100 }
+                { 300, 100 }, { 600, 100 }
             },
             {
-                { 50, 50 }, { 50, s.height - 50 }
+                { 200, 200 }, { 400, 200 }
             },
-            {
-                { 50, 50 }, { s.width - 50, 50 }
-            },
-            {
-                { 50, s.height - 50 }, { s.width - 50, s.height - 50 }
-            },
-            {
-                { s.width - 50, 50 }, { s.width - 50, s.height - 50 }
-            },
-            {
-                { 700, 200 }, { 300, 500 }
-            }
-            ,
-            {
-                { 100, 200 }, { 600, 500 }
-            }
+            //{
+            //    { 50, 50 }, { 50, s.height - 50 }
+            //},
+            //{
+            //    { 50, 50 }, { s.width - 50, 50 }
+            //},
+            //{
+            //    { 50, s.height - 50 }, { s.width - 50, s.height - 50 }
+            //},
+            //{
+            //    { s.width - 50, 50 }, { s.width - 50, s.height - 50 }
+            //},
+            //{
+            //    { 700, 200 }, { 300, 500 }
+            //}
+            //,
+            //{
+            //    { 100, 200 }, { 600, 500 }
+            //},
+
+
+            ////cube
+            //{
+            //    { 200, 200 }, { 200, s.height - 200 }
+            //},
+            //{
+            //    { 200, 200 }, { s.width - 200, 200 }
+            //},
+            //{
+            //    { 200, s.height - 200 }, { s.width - 200, s.height - 200 }
+            //},
+            //{
+            //    { s.width - 200, 200 }, { s.width - 200, s.height - 200 }
+            //},
         };
         _ccp_light = ccp ( 200, 200 );
 
@@ -2129,18 +2158,21 @@ public:
             for ( auto & edge_node : _edge_nodes )
             {
                 Ray beam = {_ccp_light, edge_node - _ccp_light};
-                lightWallSegments[edge_node];
+                // lightWallSegments[edge_node];
                 for ( auto & wall : _walls )
                 {
                     //do not check the  wall  where edge node  comes from
                     if ( wall.s == edge_node || wall.e == edge_node ) continue;
 
-                    CCPoint intersection;
+                    //
 
-                    auto ret = beam.intersect ( wall, intersection );
-
-                    if ( ret == Ray::OK )
+                    kmRay2 r = { beam.s.x, beam.s.y, beam.d.x, beam.d.y };
+                    kmVec2 s = {wall.s.x,wall.s.y};
+                    kmVec2 e = {wall.e.x,wall.e.y};
+                    kmVec2 v;
+                    if (kmRay2IntersectLineSegment (&r, &s, &e, &v))
                     {
+                        CCPoint intersection = {v.x,v.y};
                         if ( lightWallSegments[edge_node].size() == 0 )
                             lightWallSegments[edge_node].push_back ( intersection );
                         else
@@ -2199,38 +2231,6 @@ public:
     }
 
 };
-
-
-///------------alg 3------------
-double determinant (double v1, double v2, double v3, double v4) // 行列式
-{
-    return (v1*v3 - v2*v4);
-}
-
-///------------alg 3------------
-//ax+by+c=0; regular line function
-static void SolveLine (Segment&s, float&a, float& b, float& c)
-{
-    if (s.s.x == s.e.x && s.s.y != s.e.y)   //parallel with y
-    {
-        a = 1;
-        b = 0;
-        c = -s.s.x;
-    }
-    else if (s.s.x != s.e.x && s.s.y == s.e.y)     //parallel with x
-    {
-        a = 0;
-        b = 1;
-        c = -s.s.y;
-    }
-    else
-    {
-        a = - (s.s.y - s.e.y) / (s.s.x - s.e.x);
-        b = 1;
-        c = - (s.s.y * s.e.x - s.e.y * s.s.x) / (s.e.x - s.s.x);
-    }
-}
-
 
 class RayComponents : public Component
 {
@@ -2399,13 +2399,15 @@ public:
                     //do not check the  wall  where edge node  comes from
                     if (wall.s == edge_node || wall.e == edge_node) continue;
 
-                    CCPoint intersection;
 
 
-                    auto ret = beam.intersect (wall, intersection);
-
-                    if (ret == Ray::OK)
+                    kmRay2 r = { beam.s.x, beam.s.y, beam.d.x, beam.d.y };
+                    kmVec2 s = { wall.s.x, wall.s.y };
+                    kmVec2 e = { wall.e.x, wall.e.y };
+                    kmVec2 v;
+                    if (kmRay2IntersectLineSegment (&r, &s, &e, &v))
                     {
+                        CCPoint intersection = { v.x, v.y };
                         if (lightWallSegments[edge_node].size() == 0)
                             lightWallSegments[edge_node].push_back (intersection);
                         else

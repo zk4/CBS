@@ -18,66 +18,32 @@ struct Segment
     ccColor4F color;
 
 };
-
+//ax+by+c=0; regular line function
+void SolveLine (Segment&s, float&a, float& b, float& c)
+{
+    if (s.s.x == s.e.x && s.s.y != s.e.y)   //parallel with y
+    {
+        a = 1;
+        b = 0;
+        c = -s.s.x;
+    }
+    else if (s.s.x != s.e.x && s.s.y == s.e.y)     //parallel with x
+    {
+        a = 0;
+        b = 1;
+        c = -s.s.y;
+    }
+    else
+    {
+        a = - (s.s.y - s.e.y) / (s.s.x - s.e.x);
+        b = 1;
+        c = - (s.s.y * s.e.x - s.e.y * s.s.x) / (s.e.x - s.s.x);
+    }
+}
 struct Ray
 {
-    enum eConst
-    {
-        OK,
-        OVERLAP,
-        PARALLEL,
-        NOT_INTERSECTION,
-    };
-
-    CCPoint rayStart;
-    CCPoint rayDir;
-
-    //ax+by+c=0; regular line function
-    void SolveLine (Segment&s, float&a, float& b, float& c)
-    {
-        if (s.s.x == s.e.x && s.s.y != s.e.y)   //parallel with y
-        {
-            a = 1;
-            b = 0;
-            c = -s.s.x;
-        }
-        else if (s.s.x != s.e.x && s.s.y == s.e.y)     //parallel with x
-        {
-            a = 0;
-            b = 1;
-            c = -s.s.y;
-        }
-        else
-        {
-            a = - (s.s.y - s.e.y) / (s.s.x - s.e.x);
-            b = 1;
-            c = - (s.s.y * s.e.x - s.e.y * s.s.x) / (s.e.x - s.s.x);
-        }
-    }
-
-    eConst intersect (Segment& w, CCPoint& intersection)
-    {
-
-        float A, B, C;
-        SolveLine (w, A, B, C);
-
-        if (A * rayDir.x + B * rayDir.y == 0) return NOT_INTERSECTION;
-        float  T = (-A * rayStart.x - C - B * rayStart.y) / (A * rayDir.x + B * rayDir.y);
-        if (T < 0) return NOT_INTERSECTION;
-
-        float ix = rayStart.x + rayDir.x * T;
-        float iy = rayStart.y + rayDir.y * T;
-
-        intersection = ccp (ix, iy);
-        CCPoint d1 = intersection - w.s;
-        CCPoint d2 = intersection - w.e;
-        //in segment
-        float f = (d1 + d2).getLength();
-        if (f < d1.getLength() || f < d2.getLength())
-            return OK;
-
-    }
-
+    CCPoint s;
+    CCPoint d;
 };
 
 struct Line           // 直线的解析方程 a*x+b*y+c=0  为统一表示，约定 a >= 0
@@ -92,44 +58,26 @@ struct Line           // 直线的解析方程 a*x+b*y+c=0  为统一表示，�
         c = d3;
     }
 };
-//
-//struct Ray
+
+//bool intersects (Ray& r,Segment& w, CCPoint& intersection)
 //{
-//    CCPoint rayStart;
-//    CCPoint rayDir;
+//    float A, B, C;
+//    SolveLine (w, A, B, C);
 //
-//    enum eConst
-//    {
-//        OK,
-//        OVERLAP,
-//        PARALLEL,
-//        NOT_INTERSECTION,
-//    };
+//    if (A * r.rayDir.x + B * r.rayDir.y == 0) return false;
+//    float  T = (-A * r.rayStart.x - C - B * r.rayStart.y) / (A * r.rayDir.x + B * r.rayDir.y);
+//    if (T < 0) return false;
 //
-//    Ray::eConst intersect (Segment& w, CCPoint& intersection)
-//    {
+//    intersection.x = r.rayStart.x + r.rayDir.x * T;
+//    intersection.y = r.rayStart.y + r.rayDir.y * T;
 //
-//        float A, B, C;
-//        SolveLine (w, A, B, C);
+//    CCPoint d1 = intersection - w.s;
+//    CCPoint d2 = intersection - w.e;
+//    //in segment
+//    float f = (d1 + d2).getLength();
+//    return (f <= d1.getLength() || f <= d2.getLength());
 //
-//        if (A * rayDir.x + B * rayDir.y == 0) return NOT_INTERSECTION;
-//        float  T = (-A * rayStart.x - C - B * rayStart.y) / (A * rayDir.x + B * rayDir.y);
-//        if (T < 0) return NOT_INTERSECTION;
-//
-//        float ix = rayStart.x + rayDir.x * T;
-//        float iy = rayStart.y + rayDir.y * T;
-//
-//        intersection = ccp (ix, iy);
-//        CCPoint d1 = intersection - w.s;
-//        CCPoint d2 = intersection - w.e;
-//        //in segment
-//        float f = (d1 + d2).getLength();
-//        if (f < d1.getLength() || f < d2.getLength())
-//            return OK;
-//
-//    }
-//
-//};
+//}
 /********************
 *                    *
 *   点的基本运算     *
@@ -1644,27 +1592,3 @@ int rotat (Segment l1, Segment l2)
     else
         return 1;
 }
-
-
-//公式：
-//
-//球坐标公式：
-//直角坐标为 P (x, y, z) 时，对应的球坐标是 (rsinφcosθ, rsinφsinθ, rcosφ), 其中φ是向量OP与Z轴的夹角，范围[0，π]；是OP在XOY面上的投影到X轴的旋角，范围[0，2π]
-//
-//直线的一般方程转化成向量方程：
-//ax + by + c = 0
-//              x - x0     y - y0
-//              ------ = ------ - // (x0,y0)为直线上一点，m,n为向量
-//                       m        n
-//                       转换关系：
-//                       a = n；b = -m；c = m•y0 - n•x0；
-//                                   m = -b;
-//n = a;
-//
-//三点平面方程：
-//三点为P1，P2，P3
-//设向量  M1 = P2 - P1;
-//M2 = P3 - P1;
-//平面法向量：  M = M1 x M2 （）
-//                        平面方程：    M.i (x - P1.x) + M.j (y - P1.y) + M.k (z - P1.z) = 0
-//
