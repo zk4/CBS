@@ -110,6 +110,20 @@ public:
             {
                 { s.width - 200, 200 }, { s.width - 200, s.height - 200 }
             },
+
+            //world
+            {
+                { -300, -300 }, { -300, s.height - -300 }
+            },
+            {
+                { -300, -300 }, { s.width - -300, -300 }
+            },
+            {
+                { -300, s.height - -300 }, { s.width - -300, s.height - -300 }
+            },
+            {
+                { s.width - -300, -300 }, { s.width - -300, s.height - -300 }
+            },
         };
         _ccp_light = ccp (400, 300);
 
@@ -185,40 +199,40 @@ public:
             ccDrawPoint (_ccp_light);
 
             ccDrawColor4B (255, 255, 255, 255);
-            vector<CCPoint>   lightWallSegments;
-
+            static vector<CCPoint>   lightEnds;
+            lightEnds.clear();
             for (auto&  n : _edge_nodes)
             {
                 CCPoint p;
 
 
                 if (getNearest ( n,    p))
-                    lightWallSegments.push_back (p);
+                    lightEnds.push_back (p);
 
                 if (getNearest (rotate (_ccp_light, 0.001,  n),p))
-                    lightWallSegments.push_back (p);
+                    lightEnds.push_back (p);
 
                 if (getNearest (rotate (_ccp_light, -0.001,  n),p))
-                    lightWallSegments.push_back (p);
+                    lightEnds.push_back (p);
 
 
 
 
             }
             _p_draw_node->clear();
-            sort (lightWallSegments.begin(), lightWallSegments.end(), [=] (CCPoint& c,CCPoint& b)
+            sort (lightEnds.begin(), lightEnds.end(), [=] (CCPoint& c,CCPoint& b)
             {
 
                 return     (c - _ccp_light).getAngle() <   (b - _ccp_light).getAngle();
             });
 
-            for (int i=0; i<lightWallSegments.size()-1; ++i)
+            for (int i=0; i<lightEnds.size()-1; ++i)
             {
-                CCPoint triangle[3] = { _ccp_light, lightWallSegments[i], lightWallSegments [i+1]};
+                CCPoint triangle[3] = { _ccp_light, lightEnds[i], lightEnds [i+1]};
                 _p_draw_node->drawPolygon (triangle, 3, { 1, 1, 1, 0.5 }, 1, { 1, 1, 1, 0 });
 
             }
-            CCPoint triangle[3] = { *lightWallSegments.rbegin(), _ccp_light, lightWallSegments[0]  };
+            CCPoint triangle[3] = { *lightEnds.rbegin(), _ccp_light, lightEnds[0]  };
             _p_draw_node->drawPolygon (triangle, 3, { 1, 1, 1, 0.5 }, 1, { 1, 1, 1, 0 });
             int i=0;
             /*  for (auto p : lightWallSegments)
