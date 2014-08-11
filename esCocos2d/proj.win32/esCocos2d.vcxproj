@@ -153,6 +153,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\es\ComponentMgr.h" />
     <ClInclude Include="..\Classes\messaging\MessageDispatcher.h" />
     <ClInclude Include="..\Classes\messaging\Telegram.h" />
+    <ClInclude Include="..\Classes\RayComponent2.h" />
     <ClInclude Include="..\Classes\Singleton.h" />
     <ClInclude Include="..\Classes\Time\CrudeTimer.h" />
     <ClInclude Include="..\Classes\Time\PrecisionTimer.h" />

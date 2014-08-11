@@ -1,4 +1,5 @@
-﻿/* 需要包含的头文件 */
+﻿#pragma  once
+/* 需要包含的头文件 */
 #include <cmath>
 #include <algorithm>
 #include "cocos2d.h"

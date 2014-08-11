@@ -1,7 +1,8 @@
 #include "HelloWorldScene.h"
-
+#include "RayComponent2.h"
 
 #include "Components.h"
+
 USING_NS_CC;
 
 CCScene* HelloWorld::scene()
@@ -44,7 +45,7 @@ bool HelloWorld::init()
 
 
     wall = Component::Create (Entity_);
-    wall->AddC (RayTraceComponents::Create());
+    wall->AddC (RayTraceComponents2 ::Create());
     //  wall->AddC (RadarComponent::Create (50));
     // wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 100, 1000, 100, 1));
     //  DD (wall->GetID(), Telegram_SET_POS, { 0,0 });

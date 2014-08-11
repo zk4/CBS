@@ -1976,32 +1976,38 @@ class RayTraceComponents : public Component
     CCPoint					_ccp_light;
     bool					_b_move_light;
     vector<Segment>			_walls;
-    vector<CCPoint>			_edge_nodes;
+    vector<CCPoint*>			_edge_nodes;
     CCDrawNode*				_p_draw_node;
     CCLabelTTF*				_p_ttf_index;
+    vector<CCPoint*>		_garbege_node;
+
 public:
     void reOrderScanNodes()
     {
-        std::sort ( _edge_nodes.begin(), _edge_nodes.end(), [ = ] ( CCPoint & a, CCPoint & b )
+        std::sort ( _edge_nodes.begin(), _edge_nodes.end(), [ = ] ( CCPoint  * a, CCPoint * b )
         {
-            return ccpAngle ( a - _ccp_light , {1, 0} ) < ccpAngle ( b - _ccp_light, {1, 0} );
+            return ccpAngle ( *a - _ccp_light , {1, 0} ) < ccpAngle ( *b - _ccp_light, {1, 0} );
         } );
     }
+
     void reConstructScanNodes()
     {
         _edge_nodes.clear();
         for ( auto &a : _walls )
         {
-            _edge_nodes.push_back ( a.s );
-            _edge_nodes.push_back ( a.e );
+            _edge_nodes.push_back ( &a.s );
+            _edge_nodes.push_back ( &a.e );
             //add intersection
             for (auto &b : _walls)
             {
-                CCPoint i;
-                if (intersects (a.s, a.e, b.s, b.e, i))
+                CCPoint *i=new CCPoint;
+                if (intersects (a.s, a.e, b.s, b.e, *i))
                 {
+                    _garbege_node.push_back (i);
                     _edge_nodes.push_back (i);
                 }
+                else
+                    delete i;
             }
         }
 
@@ -2015,6 +2021,10 @@ public:
     ~RayTraceComponents()
     {
         _p_draw_node->release();
+        for (auto a : _garbege_node)
+        {
+            delete a;
+        }
     }
     RayTraceComponents () : Component ( Component_Raytrace )
     {
@@ -2145,28 +2155,28 @@ public:
             // TEMPLATE STRUCT less
 
             struct less
-                    : public binary_function<CCPoint, CCPoint, bool>
+                    : public binary_function<CCPoint*, CCPoint*, bool>
             {
                 // functor for operator<
-                bool operator() ( const CCPoint& _Left, const CCPoint& _Right ) const
+                bool operator() ( const CCPoint* _Left, const CCPoint* _Right ) const
                 {
 
-                    return ( _Left.x < _Right.x || ( _Left.x == _Right.x && _Left.y < _Right.y ) );
+                    return (_Left->x <  _Right->x || (_Left->x == _Right->x &&  _Left->y <  _Right->y));
                 }
             };
 
             ccDrawColor4B ( 255, 255, 255, 255 );
-            map<CCPoint, vector<CCPoint>, less>   lightWallSegments;
+            map<CCPoint*, vector<CCPoint >, less>   lightWallSegments;
 
-            for ( auto & edge_node : _edge_nodes )
+            for ( auto  edge_node : _edge_nodes )
             {
-                Ray beam = {_ccp_light, (edge_node - _ccp_light).normalize()*99999};
+                Ray beam = {_ccp_light, (*edge_node - _ccp_light).normalize()*99999};
                 // lightWallSegments[edge_node] ;
                 for ( auto & wall : _walls )
                 {
                     //do not check the  wall  where edge node  comes from
-                    if ((wall.s - edge_node).getLength()<EP || (wall.e - edge_node).getLength()<EP) continue;
-
+                    //if ((wall.s - *edge_node).getLength()<EP || (wall.e - *edge_node).getLength()<EP) continue;
+                    // if (&wall.s == edge_node || & wall.e ==edge_node)continue;
                     //
                     //    beam.d=beam.d.normalize();
                     kmRay2 r = { beam.s.x, beam.s.y, beam.d.x, beam.d.y };
@@ -2177,7 +2187,7 @@ public:
                     if (kmRay2IntersectLineSegment (&r, &s,&e, &v))
                     {
                         CCPoint intersection= {v.x,v.y};
-                        //  lightWallSegments[edge_node].push_back (intersection);
+
                         if (  lightWallSegments[edge_node].size() == 0)
                             lightWallSegments[edge_node].push_back ( intersection );
                         else
@@ -2189,12 +2199,7 @@ public:
                                 lightWallSegments[edge_node].clear();
                                 lightWallSegments[edge_node].push_back ( intersection );
                             }
-                            /*   else
-                               {
-                                   if (lightWallSegments[edge_node][0].getLength() < EP) continue;
 
-                                   lightWallSegments.erase (edge_node);
-                               }*/
 
                         }
                     }
@@ -2205,36 +2210,26 @@ public:
 
             for ( auto & l : lightWallSegments )
             {
-                CCPoint p;
-                if (l.second.size() == 0)
-                {
-                    //   drawElement (_ccp_light, l.first);
-                }
-                else
-                {
-                    //  drawElement (_ccp_light, l.first);
-                    for (int i = 0; i < l.second.size(); ++i)
-                    {
-                        drawElement (_ccp_light, l.second[i]);
-                    }
-                }
-                //   drawElement (_ccp_light, l.first);
 
 
+                for (int i = 0; i < l.second.size(); ++i)
+                {
+                    drawElement (_ccp_light, l.second[i]);
+                }
 
             }
-            int i = 0;
-            for ( auto & p : _edge_nodes )
-            {
+            /*   int i = 0;
+               for ( auto   p : _edge_nodes )
+               {
 
-                _p_ttf_index->setPosition ( p );
-                char buf[10];
-                sprintf ( buf, "%d", i );
-                _p_ttf_index->setString ( buf );
+                   _p_ttf_index->setPosition ( *p );
+                   char buf[10];
+                   sprintf ( buf, "%d", i );
+                   _p_ttf_index->setString ( buf );
 
-                _p_ttf_index->visit();
-                ++i;
-            }
+                   _p_ttf_index->visit();
+                   ++i;
+               }*/
 
 
             _p_draw_node->visit();
@@ -2268,6 +2263,7 @@ class RayComponents : public Component
     vector<CCPoint>			_edge_nodes;
     CCDrawNode*				_p_draw_node;
     CCLabelTTF*				_p_ttf_index;
+
 public:
     void reOrderScanNodes()
     {
