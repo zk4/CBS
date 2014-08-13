@@ -32,83 +32,68 @@ public:
     }
 
 
-    FluidComponent() : Component (Component_Fluid)
+    FluidComponent() : Component ( Component_Fluid )
     {
-        CCSize winsize=CCDirector::sharedDirector()->getWinSize();
+        CCSize winsize = CCDirector::sharedDirector()->getWinSize();
 
         _p_draw_node = CCDrawNode::create();
 
         _p_draw_node->retain();
-        fluid = new fluid::FluidModel (winsize.width / 4, winsize.height / 4, 50, 50);
+        fluid = new fluid::FluidModel ( winsize.width / 4, winsize.height / 4, 50, 50 );
     };
 
 
 
 
-    bool HandleMessage (const Telegram& msg)
+    bool HandleMessage ( const Telegram& msg )
     {
-        switch (msg.Msg)
-        {
-        case    Telegram_UPDATE:
-        {
+        switch ( msg.Msg ) {
+        case    Telegram_UPDATE: {
         }
         break;
-        case Telegram_SET_POS:
-        {
-            CCPoint start = ccp (msg.args[0], msg.args[1]);
+        case Telegram_SET_POS: {
+            CCPoint start = ccp ( msg.args[0], msg.args[1] );
 
         }
         break;
-        case Telegram_ACCESS_NODE:
-        {
+        case Telegram_ACCESS_NODE: {
         }
         break;
-        case  Telegram_TOUCH_DOUBLE:
-        {
+        case  Telegram_TOUCH_DOUBLE: {
         }
         break;
-        case Telegram_TOUCH_MOVE:
-        {
+        case Telegram_TOUCH_MOVE: {
 
-            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[0]));
-
-            fluid->setMovePos (world_pos->x, world_pos->y );
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ( ( int ) ( msg.args[0] ) );
+            CCSize winsize = CCDirector::sharedDirector()->getWinSize();
+            fluid->setMovePos ( world_pos->x, winsize.height - world_pos->y );
 
         }
         break;
-        case Telegram_TOUCH_BEGIN:
-        {
-            CCPoint * world_pos = reinterpret_cast<CCPoint*> ((int) (msg.args[0]));
-            fluid->setMovePos (world_pos->x, world_pos->y);
-            fluid->setPressed (true);
+        case Telegram_TOUCH_BEGIN: {
+            CCSize winsize = CCDirector::sharedDirector()->getWinSize();
+            CCPoint * world_pos = reinterpret_cast<CCPoint*> ( ( int ) ( msg.args[0] ) );
+            fluid->setMovePos ( world_pos->x, winsize.height - world_pos->y );
+            fluid->setPressed ( true );
 
 
         }
         break;
         case    Telegram_TOUCH_CANCEL:
-        case  Telegram_TOUCH_END:
-        {
-            fluid->setPressed (false);
+        case  Telegram_TOUCH_END: {
+            fluid->setPressed ( false );
 
         }
         break;
-        case    Telegram_DRAW:
-        {
+        case    Telegram_DRAW: {
             CCSize winsize = CCDirector::sharedDirector()->getWinSize();
             fluid->step();
             const fluid::Line *lines = fluid->getLines();
 
-            /*    glClear (GL_COLOR_BUFFER_BIT);
-
-                glColor3f (0.3, 0.3, 1.0);*/
             _p_draw_node->clear();
-            for (unsigned i = 0; i < 50 * 50; ++i)
-            {
-                _p_draw_node->drawSegment (ccp ( lines[i].x1 * 4, winsize.height - lines[i].y1 * 4 ), ccp ( lines[i].x2 * 4 + 2, winsize.height - lines[i].y2 * 4 + 2), 1, { 1, 1, 1, 1 });
-                /*  glBegin (GL_LINES);
-                  glVertex2d (lines[i].x1 * 4, winsize.height - lines[i].y1 * 4);
-                  glVertex2d (lines[i].x2 * 4 + 2, winsize.height - lines[i].y2 * 4 + 2);
-                  glEnd();*/
+            for ( unsigned i = 0; i < 50 * 50; ++i ) {
+                _p_draw_node->drawSegment ( ccp ( lines[i].x1 * 4, winsize.height - lines[i].y1 * 4 ), ccp ( lines[i].x2 * 4 + 2, winsize.height - lines[i].y2 * 4 + 2 ), 1, { 0, 1, 0, 1 } );
+
             }
             _p_draw_node->visit();
         }

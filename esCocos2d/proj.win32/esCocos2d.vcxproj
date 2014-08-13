@@ -135,6 +135,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\cocos\VisibleRect.cpp" />
     <ClCompile Include="..\Classes\es\Component.cpp" />
     <ClCompile Include="..\Classes\es\ComponentMgr.cpp" />
+    <ClCompile Include="..\Classes\fluid\fluidmodel.cpp" />
     <ClCompile Include="..\Classes\messaging\MessageDispatcher.cpp" />
     <ClCompile Include="..\Classes\Singleton.cpp" />
     <ClCompile Include="..\Classes\Time\CrudeTimer.cpp" />
@@ -151,6 +152,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\Configuration.h" />
     <ClInclude Include="..\Classes\es\Component.h" />
     <ClInclude Include="..\Classes\es\ComponentMgr.h" />
+    <ClInclude Include="..\Classes\FluidComponent.h" />
+    <ClInclude Include="..\Classes\fluid\fluidmodel.h" />
     <ClInclude Include="..\Classes\messaging\MessageDispatcher.h" />
     <ClInclude Include="..\Classes\messaging\Telegram.h" />
     <ClInclude Include="..\Classes\RayComponent2.h" />
