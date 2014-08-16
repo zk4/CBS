@@ -20,7 +20,7 @@ class RayTraceComponents2 : public Component
 
     CCPoint					_ccp_light;
     bool					_b_move_light;
-    vector<Segment>			_walls;
+    vector<zkMath::Segment>			_walls;
     vector<CCPoint >			_edge_nodes;
     CCDrawNode*				_p_draw_node;
     CCLabelTTF*				_p_ttf_index;
@@ -51,7 +51,7 @@ public:
             for (auto &b : _walls)
             {
                 CCPoint  i ;
-                if (intersects (a.s, a.e, b.s, b.e, i))
+                if (zkMath::intersects (a.s, a.e, b.s, b.e, i))
                 {
 
                     _edge_nodes.push_back (i);
@@ -208,11 +208,11 @@ public:
 
                 if (getNearest ( n,    p))
                     lightEnds.push_back (p);
-
-                if (getNearest (rotate (_ccp_light, 0.001,  n),p))
+                CCPoint pp1=zkMath::rotate (_ccp_light, 0.001,  n);
+                if (getNearest (pp1,p))
                     lightEnds.push_back (p);
-
-                if (getNearest (rotate (_ccp_light, -0.001,  n),p))
+                CCPoint pp2=zkMath::rotate (_ccp_light, -0.001,  n);
+                if (getNearest (pp2,p))
                     lightEnds.push_back (p);
 
 
@@ -261,7 +261,7 @@ public:
 
     bool getNearest (CCPoint& p,   CCPoint& out)
     {
-        Ray beam = { _ccp_light, (p - _ccp_light).normalize() * 99999 };
+        zkMath::Ray beam = { _ccp_light, (p - _ccp_light).normalize() * 99999 };
         CCPoint nearest = beam.d;
         bool in=false;
         for (auto & wall : _walls)

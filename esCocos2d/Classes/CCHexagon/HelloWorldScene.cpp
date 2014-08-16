@@ -36,10 +36,7 @@ bool HelloWorld::init()
     HexCoordinate h;
     BeeHive::MakeRingHex (1, HexZero, h.hexagones, ccc4f (0, 1, 1, 1));
     //test direction
-    for (auto&a : h.hexagones )
-    {
-        CCLOG("0,0 ->%f,%f direction is %d\n", a.q, a.r, HexZero.Towards(a));
-    }
+  
 
     //  field.MakeLine(Hexagon(-15, 10), Hexagon(8, -15), ccc4f(1, 0, 0, 1));
     //  field.MakeCross(3, Hexagon(10, 10), ccc4f(1, 1, 0, 1));

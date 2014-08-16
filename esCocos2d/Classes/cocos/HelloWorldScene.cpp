@@ -25,17 +25,20 @@ bool HelloWorld::init()
 {
     //////////////////////////////
     // 1. super init first
-    if ( !CCLayer::init() ) {
+    if ( !CCLayer::init() )
+    {
         return false;
     }
 
     CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
     _winsize = CCDirector::sharedDirector()->getWinSize();
+    _drawNode=CCDrawNode::create();
+    _drawNode->retain();
     // Create batch node
-    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile ( "Sprites.plist" );
-    _batchNode = CCSpriteBatchNode::create ( "Sprites.pvr.ccz" );
-    addChild ( _batchNode );
+//    CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile ( "Sprites.plist" );
+//    _batchNode = CCSpriteBatchNode::create ( "Sprites.pvr.ccz" );
+//    addChild ( _batchNode );
 
     // bg = Component::Create (Entity_);
     // bg->AddC(SpriteComponent::Create(CCSprite::create("worldmap.png")));
@@ -43,8 +46,8 @@ bool HelloWorld::init()
     // DD(bg->GetID(), Telegram_SET_POS, { visibleSize.width / 2, visibleSize.height / 2 });
 
 
-    wall = Component::Create ( Entity_ );
-    wall->AddC ( FluidComponent::Create() );
+    //wall = Component::Create ( Entity_ );
+    //wall->AddC ( FluidComponent::Create() );
     //  wall->AddC (RadarComponent::Create (50));
     // wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 100, 1000, 100, 1));
     //  DD (wall->GetID(), Telegram_SET_POS, { 0,0 });
@@ -57,7 +60,8 @@ bool HelloWorld::init()
     _rt->setPosition ( _winsize / 2 );
     _rt->retain();
 
-    for ( int i = 0; i < 0; ++i ) {
+    for ( int i = 0; i < 5000; ++i )
+    {
 
         auto   planes = Component::Create ( Entity_ );
         auto sprite = CCSprite::create ( "airplane.png" );
@@ -72,16 +76,13 @@ bool HelloWorld::init()
         //  planes->AddC (TrailComponent::Create (_rt));
         planes->AddC ( RadarComponent::Create ( 50 ) );
         planes->AddC ( MoveComponent::Create ( { 100, 100 }, 1, 100, 1000, 100, 1 ) );
-        planes->AddC ( SpriteComponent::Create ( sprite ) );
+        //  planes->AddC ( SpriteComponent::Create ( sprite ) );
 
         //planes->AddC (HPComponent::Create (100));
         // planes->AddC (WeaponComponent::Create());
         bads.push_back ( planes );
 
         DD ( planes->GetID(), Telegram_SET_POS, { double ( 200 + rand() % 30 ), double ( 200 + rand() % 30 ) } );
-    }
-    for ( auto a : bads ) {
-        DD ( a->GetID(), Telegram_SEARCH, {} );
     }
 
 
@@ -115,7 +116,7 @@ bool HelloWorld::ccTouchBegan ( CCTouch *pTouch, CCEvent *pEvent )
           m->_pos = target;
       }*/
     // DD (a->GetID(), Telegram_ARRIVE, { target.x, target.y});
-    DD ( wall->GetID(), Telegram_TOUCH_BEGIN, { ( double ) ( int ) ( &target ) } );
+    DD (  Telegram_TOUCH_BEGIN, { ( double ) ( int ) ( &target ) } );
 
 
     static double lastClicktime = 0;
@@ -123,8 +124,9 @@ bool HelloWorld::ccTouchBegan ( CCTouch *pTouch, CCEvent *pEvent )
 
     nowClickTime = _dTimeNow;
     CCLOG ( "%f\n", nowClickTime - lastClicktime );
-    if ( ( nowClickTime - lastClicktime ) < 0.3 ) { //double click
-        DD ( wall->GetID(), Telegram_TOUCH_DOUBLE, { ( double ) ( int ) ( &target ) } );
+    if ( ( nowClickTime - lastClicktime ) < 0.3 )   //double click
+    {
+        DD (   Telegram_TOUCH_DOUBLE, { ( double ) ( int ) ( &target ) } );
     }
     lastClicktime = _dTimeNow;
 
@@ -134,7 +136,7 @@ bool HelloWorld::ccTouchBegan ( CCTouch *pTouch, CCEvent *pEvent )
 void HelloWorld::ccTouchMoved ( CCTouch *pTouch, CCEvent *pEvent )
 {
     auto  target = pTouch->getLocation();
-    DD ( wall->GetID(), Telegram_TOUCH_MOVE, { ( double ) ( int ) ( &target ) } );
+    DD (  Telegram_TOUCH_MOVE, { ( double ) ( int ) ( &target ) } );
 
 }
 
@@ -142,14 +144,14 @@ void HelloWorld::ccTouchMoved ( CCTouch *pTouch, CCEvent *pEvent )
 void HelloWorld::ccTouchEnded ( CCTouch *pTouch, CCEvent *pEvent )
 {
     auto  target = pTouch->getLocation();
-    DD ( wall->GetID(), Telegram_TOUCH_END, { ( double ) ( int ) ( &target ) } );
+    DD (  Telegram_TOUCH_END, { ( double ) ( int ) ( &target ) } );
 
 }
 
 void HelloWorld::ccTouchCancelled ( CCTouch *pTouch, CCEvent *pEvent )
 {
     auto  target = pTouch->getLocation();
-    DD ( wall->GetID(), Telegram_TOUCH_CANCEL, { ( double ) ( int ) ( &target ) } );
+    DD (  Telegram_TOUCH_CANCEL, { ( double ) ( int ) ( &target ) } );
 
 }
 
@@ -161,26 +163,22 @@ void HelloWorld::update ( float delta )
     static double thinginterval = 0;
     thinginterval += delta;
 
-    for ( int i = 0; i < bads.size(); ++i ) {
-        DD ( bads[i]->GetID(), Telegram_AI, {delta} );
-        DD ( bads[i]->GetID(), Telegram_UPDATE, { delta } );
-    }
+
     thinginterval = 0;
-    DD ( wall->GetID(), Telegram_AI, { delta } );
-    DD ( wall->GetID(), Telegram_UPDATE, { delta } );
+    // DD (Telegram_AI, { delta });
+    //  DD (Telegram_UPDATE, { delta });
 
 }
 
-void HelloWorld::draw()
+void HelloWorld::draw (   )
 {
     CCLayer::draw();
 
-//    DD (bg->GetID(), Telegram_DRAW, {});
-    for ( int i = 0; i < bads.size(); ++i ) {
+    _drawNode->clear();
 
-        DD ( bads[i]->GetID(), Telegram_DRAW, {} );
-    }
-    DD ( wall->GetID(), Telegram_DRAW, {} );
+    DD (Telegram_NONE, { (double) (int)_drawNode });
+
+    _drawNode->visit();
 
 }
 

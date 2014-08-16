@@ -13,6 +13,15 @@
 #include <iterator>
 #include <unordered_map>
 #include "zkMath.h"
+template<typename T>
+struct OrthoNodeComp
+{
+    bool operator() (const algorithm::OrthoNode<T>*  lhs, const algorithm::OrthoNode<T>* rhs) const
+    {
+        return lhs->data < rhs->data;
+    }
+};
+
 using namespace cocos2d;
 static bool ifOutWindow ( Component* c );
 
@@ -164,10 +173,11 @@ public:
     double			_dWanderJitter;
     CCPoint			_vWanderTarget;
     double			_dWanderDistance;
-    double			_dFrictionMu;
+    double			_dFriction ;
     double			_dWanderRadius;
     double			 _dBoundingRadius;
     CCPoint		_vSteeringForce;
+
     static MoveComponent* Create (
 
 
@@ -177,7 +187,7 @@ public:
         double			 dMaxSpeed,
         double			 dMaxForce,
         double			 dMaxTurnRate,
-        double			 dFriction��
+        double			 dFriction
     )
     {
         return new MoveComponent (
@@ -186,7 +196,7 @@ public:
                    dMaxSpeed,
                    dMaxForce,
                    dMaxTurnRate,
-                   dFriction��
+                   dFriction
                );
     }
 
@@ -196,7 +206,7 @@ public:
 
 
         //Acceleration = Force/Mass
-        CCPoint friction = ( ccpLength ( _vVelocity ) > 0 ) ? -_vVelocity.normalize() * _dFrictionMu * _dMass : CCPointZero;
+        CCPoint friction = (ccpLength (_vVelocity) > 0) ? -_vVelocity.normalize() * _dFriction * _dMass : CCPointZero;
 
 
         SteeringForce = friction + SteeringForce;
@@ -601,7 +611,7 @@ public:
         _dMaxForce = dMaxForce;
         _dMaxTurnRate = dMaxTurnRate;
         _vHeading = _vVelocity = ccp ( 0, 0 );
-        _dFrictionMu = dFrictionMu;
+        _dFriction = dFrictionMu;
         _dWanderJitter = 1;
         _dWanderRadius = 10;
         _dWanderDistance = 10;
@@ -616,6 +626,11 @@ public:
         ttf_head->retain();
         ttf_head->setColor ( ccc3 ( 255, 0, 255 ) );
 
+
+    }
+    ~MoveComponent()
+    {
+
     }
     CCLabelTTF* ttf_velocity;
     CCLabelTTF* ttf_head;
@@ -625,17 +640,17 @@ public:
         {
         case Telegram_DRAW:
         {
+
+            CCDrawNode* node = (CCDrawNode*) (int)msg.args[0];
             if ( ccpLength ( _vVelocity ) > 0.5 )
             {
-                ccDrawColor4B ( 255, 255, 255, 255 );
-                ccDrawLine ( _pos, _pos + _vVelocity );
-                ttf_velocity->setPosition ( _pos + _vVelocity / 2 );
-                ttf_velocity->visit();
 
-                ccDrawColor4B ( 255, 0, 255, 255 );
-                ccDrawLine ( _pos, _pos + _vHeading.normalize() * 50 );
-                ttf_head->setPosition ( _pos + _vHeading.normalize() * 50 / 2 );
-                ttf_head->visit();
+                node->drawSegment (_pos, _pos + _vVelocity, 1, { 1, 1, 1, 1 });
+                // ttf_velocity->setPosition ( _pos + _vVelocity / 2 );
+                // ttf_velocity->visit();
+                node->drawSegment (_pos, _pos + _vHeading.normalize() * 50, 1, { 1, 0, 1, 1 });
+                // ttf_head->setPosition ( _pos + _vHeading.normalize() * 50 / 2 );
+                // ttf_head->visit();
             }
 
         }
@@ -744,17 +759,16 @@ public:
         break;
         case Telegram_DRAW:
         {
+            CCDrawNode* node = (CCDrawNode*) (int)msg.args[0];
             MoveComponent* self = dynamic_cast<MoveComponent*> ( GetParent()->GetC ( Component_MOVE ) );
 
-            ccDrawColor4B ( 122, 255, 122, 255 );
-            ccDrawCircle ( self->_pos, _range, 0, 40, false );
-            ccDrawColor4B ( 255, rand() % 255, rand() % 255, 255 );
-
+            node->drawDot (self->_pos, _range, {.5f,1,.5f,1});
             for ( auto a : targets )
             {
 
                 MoveComponent* target = dynamic_cast<MoveComponent*> ( CompMgr->_ComponentMap[a]->GetC ( Component_MOVE ) );
-                ccDrawLine ( self->_pos, target->_pos );
+
+                node->drawSegment (self->_pos, target->_pos, 1, { 255, rand() % 255 / 255.0f, rand() % 255 / 255.0f, 255 });
             }
 
         }
@@ -799,7 +813,7 @@ public:
         case Telegram_DRAW:
         {
             auto moveC = ( MoveComponent* ) GetParent()->GetC ( Component_MOVE );
-            ccDrawSolidRect ( moveC->_pos + ccp ( -HP / 2, 40 ), moveC->_pos + ccp ( HP / 2, 45 ), { 255, 0, 0, 122 } );
+            //  ccDrawSolidRect ( moveC->_pos + ccp ( -HP / 2, 40 ), moveC->_pos + ccp ( HP / 2, 45 ), { 255, 0, 0, 122 } );
         }
         break;
 
@@ -956,6 +970,7 @@ public:
         DD ( 0,  GetID(), id, Telegram_HURT, { hp } );
     }
 };
+/*
 #define PTM_RATIO 32.0
 #include "Box2D/Box2D.h"
 
@@ -1057,7 +1072,7 @@ public:
 
     }
 };
-
+*/
 
 bool operator== ( const CCPoint& p1, const CCPoint& p2 )
 {
@@ -1121,7 +1136,7 @@ public:
 
 
 
-    void setWall ( CCPoint& p )
+    void setWall ( CCPoint p )
     {
         _graph.SetNodeValidate ( p, false );
         auto ite = find_if ( _nodes.begin(), _nodes.end(), [&p] ( CCPoint & pp )
@@ -1676,7 +1691,7 @@ public:
     vector<bezierNode> p;
     /*CCPoint p[count];*/
 
-    CCDrawNode* drawNode;
+
     float   radius;
     CCPoint* selected_node;
 
@@ -1686,7 +1701,7 @@ public:
     }
     ~BezierCompont()
     {
-        drawNode->release();
+
     }
     BezierCompont( ) : Component ( Component_Bezier )
     {
@@ -1698,22 +1713,14 @@ public:
         p[1].handle = ccp ( 300, 300 );
         selected_node = NULL;
         radius = 15;
-        drawNode = CCDrawNode::create();
-        drawNode->retain();
+
     }
     bool inCircile ( CCPoint& center, float radius, CCPoint& click )
     {
         return ccpSub ( center, click ).getLength() <= radius;
     }
-    void drawSolidCircle ( CCPoint& center, float radius, ccColor4B  color )
-    {
-        ccDrawColor4B ( color.r, color.g, color.b, color.a );
-        for ( int i = 0; i < radius; i++ )
-        {
-            ccDrawCircle ( center, i, 0, 50, false );
-        }
-    }
-    void drawBezier ( bezierNode& l1, bezierNode &l2 )
+
+    void drawBezier ( bezierNode& l1, bezierNode &l2,CCDrawNode *node )
     {
 
         static int persision = 100;
@@ -1723,13 +1730,14 @@ public:
         CCPoint l1_seg = ( l1.handle - l1.node ) / persision;
         CCPoint l2_seg = ( l2.node - l2.handle ) / persision;
 
-        ccDrawColor4B ( 255, 122, 122, 255 );
+
         CCPoint from = l1.node;
         for ( int i = 0; i <= persision; ++i )
         {
             CCPoint f = l1.node + l1_seg * i;
             CCPoint t = l2.handle + l2_seg * i;
-            ccDrawLine ( from, ( t - f ) / persision * i + f );
+
+            node->drawSegment (from, (t - f) / persision * i + f,1, {1,.5f,.5f,1});
             from = ( t - f ) / persision * i + f;
         }
 
@@ -1781,36 +1789,30 @@ public:
         break;
         case    Telegram_DRAW:
         {
+            CCDrawNode* node = (CCDrawNode*) (int)msg.args[0];
 
-            drawNode->clear();
 
             for ( auto& a : p )
             {
+                node->drawDot (a.node, radius, { .5f, 1, .5f, 1 });
+                node->drawDot (a.handle, radius, { .5f, 1, 1, 1 });
 
-                drawSolidCircle ( a.node, radius, { 122, 255, 122, 255 } );
-                drawSolidCircle ( a.handle, radius, { 122, 255, 255, 255 } );
             }
 
 
             for ( auto& a : p )
             {
-                ccDrawColor4B ( 255, 255, 255, 255 );
 
-                ccDrawLine ( a.node,  a.handle );
-
+                node->drawSegment (a.node, a.handle,1, {1,1,1,1});
             }
 
 
 
             for ( int i = 0; i < p.size() - 1; ++i )
             {
-                ccDrawColor4B ( 255, 255, 255, 255 );
-                drawBezier ( p[i], p[i + 1] );
+
+                drawBezier ( p[i], p[i + 1],node );
             }
-
-
-            drawNode->visit();
-
 
         }
         break;
@@ -1975,7 +1977,7 @@ class RayTraceComponents : public Component
 
     CCPoint					_ccp_light;
     bool					_b_move_light;
-    vector<Segment>			_walls;
+    vector<zkMath::Segment>			_walls;
     vector<CCPoint*>			_edge_nodes;
     CCDrawNode*				_p_draw_node;
     CCLabelTTF*				_p_ttf_index;
@@ -2001,7 +2003,7 @@ public:
             for (auto &b : _walls)
             {
                 CCPoint *i=new CCPoint;
-                if (intersects (a.s, a.e, b.s, b.e, *i))
+                if (zkMath::intersects (a.s, a.e, b.s, b.e, *i))
                 {
                     _garbege_node.push_back (i);
                     _edge_nodes.push_back (i);
@@ -2170,7 +2172,7 @@ public:
 
             for ( auto  edge_node : _edge_nodes )
             {
-                Ray beam = {_ccp_light, (*edge_node - _ccp_light).normalize()*99999};
+                zkMath::Ray beam = {_ccp_light, (*edge_node - _ccp_light).normalize()*99999};
                 // lightWallSegments[edge_node] ;
                 for ( auto & wall : _walls )
                 {
@@ -2259,7 +2261,7 @@ class RayComponents : public Component
 
     CCPoint					_ccp_light;
     bool					_b_move_light;
-    vector<Segment>			_walls;
+    vector<zkMath::Segment>			_walls;
     vector<CCPoint>			_edge_nodes;
     CCDrawNode*				_p_draw_node;
     CCLabelTTF*				_p_ttf_index;
@@ -2413,7 +2415,7 @@ public:
 
             for (auto & edge_node : _edge_nodes)
             {
-                Ray beam = { _ccp_light, edge_node - _ccp_light };
+                zkMath::Ray beam = { _ccp_light, edge_node - _ccp_light };
                 lightWallSegments[edge_node];
                 for (auto & wall : _walls)
                 {
@@ -2491,7 +2493,7 @@ class SegComponent :public Component
 {
 public:
     bool _b_move_light;
-    vector<Segment>  segs;
+    vector<zkMath::Segment>  segs;
     CCPoint*  p_move_point;
     CCDrawNode*  _p_draw_node;
 
@@ -2565,7 +2567,7 @@ public:
 
 
                 //    if (isSegmentIntersect (segs[i], *segs.rbegin()))
-                if (intersects (segs[i].s, segs[i].e, segs.rbegin()->s, segs.rbegin()->e, p))
+                if (zkMath::intersects (segs[i].s, segs[i].e, segs.rbegin()->s, segs.rbegin()->e, p))
                 {
 
 

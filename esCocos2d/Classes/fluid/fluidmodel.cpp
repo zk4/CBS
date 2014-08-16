@@ -1,6 +1,6 @@
 #include <cmath>
 #include <algorithm>
-
+#include <stdlib.h>
 #include "fluidmodel.h"
 namespace fluid
 {
@@ -72,7 +72,7 @@ void Node::clear()
     m = d = gx = gy = u = v = ax = ay = 0.0;
     active = false;
 }
-
+static float aaa = 1;
 
 FluidModel::FluidModel (unsigned gsizeX_,
                         unsigned gsizeY_,
@@ -85,7 +85,8 @@ FluidModel::FluidModel (unsigned gsizeX_,
      particlesY (particlesY_),
      active (NULL),
      activeCount (0),
-     water (1.0, 1.0, 1.0, 1.0, 1.0, 1.0),
+
+     water (aaa, aaa, aaa, aaa, aaa, aaa),
      pressed (false),
      pressedprev (false),
      mx (0.0),

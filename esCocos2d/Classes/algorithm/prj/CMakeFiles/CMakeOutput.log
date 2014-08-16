@@ -1,0 +1,249 @@
+The system is: Windows - 6.1 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler:  
+Build flags: 
+Id flags: 
+
+The output was:
+0
+Microsoft(R) 生成引擎版本 12.0.21005.1
+[Microsoft .NET Framework 版本 4.0.30319.18444]
+版权所有 (C) Microsoft Corporation。保留所有权利。
+
+生成启动时间为 2014/8/1 20:42:20。
+节点 1 上的项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\2.8.12.2\CompilerIdC\CompilerIdC.vcxproj”(默认目标)。
+PrepareForBuild:
+  正在创建目录“Debug\”。
+  正在创建目录“Debug\CompilerIdC.tlog\”。
+InitializeBuildStatus:
+  正在创建“Debug\CompilerIdC.tlog\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+ClCompile:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /nologo /W0 /WX- /Od /Oy- /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:queue CMakeCCompilerId.c
+  CMakeCCompilerId.c
+Link:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:QUEUE /OUT:".\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\CompilerIdC.lib" /MACHINE:X86 /SAFESEH Debug\CMakeCCompilerId.obj
+  CompilerIdC.vcxproj -> D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\2.8.12.2\CompilerIdC\.\CompilerIdC.exe
+PostBuildEvent:
+  for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+  :VCEnd
+  CMAKE_C_COMPILER=D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\cl.exe
+FinalizeBuildStatus:
+  正在删除文件“Debug\CompilerIdC.tlog\unsuccessfulbuild”。
+  正在对“Debug\CompilerIdC.tlog\CompilerIdC.lastbuildstate”执行 Touch 任务。
+已完成生成项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\2.8.12.2\CompilerIdC\CompilerIdC.vcxproj”(默认目标)的操作。
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:00.57
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+
+The C compiler identification is MSVC, found in "D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/2.8.12.2/CompilerIdC/CompilerIdC.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler:  
+Build flags: 
+Id flags: 
+
+The output was:
+0
+Microsoft(R) 生成引擎版本 12.0.21005.1
+[Microsoft .NET Framework 版本 4.0.30319.18444]
+版权所有 (C) Microsoft Corporation。保留所有权利。
+
+生成启动时间为 2014/8/1 20:42:21。
+节点 1 上的项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\2.8.12.2\CompilerIdCXX\CompilerIdCXX.vcxproj”(默认目标)。
+PrepareForBuild:
+  正在创建目录“Debug\”。
+  正在创建目录“Debug\CompilerIdCXX.tlog\”。
+InitializeBuildStatus:
+  正在创建“Debug\CompilerIdCXX.tlog\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+ClCompile:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /nologo /W0 /WX- /Od /Oy- /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:queue CMakeCXXCompilerId.cpp
+  CMakeCXXCompilerId.cpp
+Link:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:QUEUE /OUT:".\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\CompilerIdCXX.lib" /MACHINE:X86 /SAFESEH Debug\CMakeCXXCompilerId.obj
+  CompilerIdCXX.vcxproj -> D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\2.8.12.2\CompilerIdCXX\.\CompilerIdCXX.exe
+PostBuildEvent:
+  for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+  :VCEnd
+  CMAKE_CXX_COMPILER=D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\cl.exe
+FinalizeBuildStatus:
+  正在删除文件“Debug\CompilerIdCXX.tlog\unsuccessfulbuild”。
+  正在对“Debug\CompilerIdCXX.tlog\CompilerIdCXX.lastbuildstate”执行 Touch 任务。
+已完成生成项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\2.8.12.2\CompilerIdCXX\CompilerIdCXX.vcxproj”(默认目标)的操作。
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:00.31
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+
+The CXX compiler identification is MSVC, found in "D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/2.8.12.2/CompilerIdCXX/CompilerIdCXX.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp
+
+Run Build Command:C:\PROGRA~2\MSBuild\12.0\Bin\MSBuild.exe cmTryCompileExec3370264818.vcxproj /p:Configuration=Debug /p:VisualStudioVersion=12.0
+Microsoft(R) 生成引擎版本 12.0.21005.1
+[Microsoft .NET Framework 版本 4.0.30319.18444]
+版权所有 (C) Microsoft Corporation。保留所有权利。
+
+生成启动时间为 2014/8/1 20:42:21。
+节点 1 上的项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\cmTryCompileExec3370264818.vcxproj”(默认目标)。
+PrepareForBuild:
+  正在创建目录“cmTryCompileExec3370264818.dir\Debug\”。
+  正在创建目录“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\”。
+  正在创建目录“cmTryCompileExec3370264818.dir\Debug\cmTryCom.05DDD01A.tlog\”。
+InitializeBuildStatus:
+  正在创建“cmTryCompileExec3370264818.dir\Debug\cmTryCom.05DDD01A.tlog\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+ClCompile:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\GitHub\ogldev\Include\ /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTryCompileExec3370264818.dir\Debug\\" /Fd"cmTryCompileExec3370264818.dir\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:queue testCCompiler.c
+  Microsoft (R) C/C++ Optimizing Compiler Version 18.00.21005.1 for x86
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  cl /c /ID:\GitHub\ogldev\Include\ /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTryCompileExec3370264818.dir\Debug\\" /Fd"cmTryCompileExec3370264818.dir\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:queue testCCompiler.c
+  
+  testCCompiler.c
+Link:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:QUEUE /OUT:"D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec3370264818.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec3370264818.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec3370264818.lib" /MACHINE:X86 /SAFESEH:NO  /machine:X86 /debug cmTryCompileExec3370264818.dir\Debug\testCCompiler.obj
+  cmTryCompileExec3370264818.vcxproj -> D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec3370264818.exe
+FinalizeBuildStatus:
+  正在删除文件“cmTryCompileExec3370264818.dir\Debug\cmTryCom.05DDD01A.tlog\unsuccessfulbuild”。
+  正在对“cmTryCompileExec3370264818.dir\Debug\cmTryCom.05DDD01A.tlog\cmTryCompileExec3370264818.lastbuildstate”执行 Touch 任务。
+已完成生成项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\cmTryCompileExec3370264818.vcxproj”(默认目标)的操作。
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:00.37
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp
+
+Run Build Command:C:\PROGRA~2\MSBuild\12.0\Bin\MSBuild.exe cmTryCompileExec3322432606.vcxproj /p:Configuration=Debug /p:VisualStudioVersion=12.0
+Microsoft(R) 生成引擎版本 12.0.21005.1
+[Microsoft .NET Framework 版本 4.0.30319.18444]
+版权所有 (C) Microsoft Corporation。保留所有权利。
+
+生成启动时间为 2014/8/1 20:42:22。
+节点 1 上的项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\cmTryCompileExec3322432606.vcxproj”(默认目标)。
+PrepareForBuild:
+  正在创建目录“cmTryCompileExec3322432606.dir\Debug\”。
+  正在创建目录“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\”。
+  正在创建目录“cmTryCompileExec3322432606.dir\Debug\cmTryCom.1837B095.tlog\”。
+InitializeBuildStatus:
+  正在创建“cmTryCompileExec3322432606.dir\Debug\cmTryCom.1837B095.tlog\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+ClCompile:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\GitHub\ogldev\Include\ /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTryCompileExec3322432606.dir\Debug\\" /Fd"cmTryCompileExec3322432606.dir\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:queue "D:\Program Files (x86)\cmake-2.8.10.2-win32-x86\share\cmake-2.8\Modules\CMakeCCompilerABI.c"
+  Microsoft (R) C/C++ Optimizing Compiler Version 18.00.21005.1 for x86
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  cl /c /ID:\GitHub\ogldev\Include\ /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTryCompileExec3322432606.dir\Debug\\" /Fd"cmTryCompileExec3322432606.dir\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:queue "D:\Program Files (x86)\cmake-2.8.10.2-win32-x86\share\cmake-2.8\Modules\CMakeCCompilerABI.c"
+  
+  CMakeCCompilerABI.c
+Link:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:QUEUE /OUT:"D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec3322432606.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec3322432606.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec3322432606.lib" /MACHINE:X86 /SAFESEH:NO  /machine:X86 /debug cmTryCompileExec3322432606.dir\Debug\CMakeCCompilerABI.obj
+  cmTryCompileExec3322432606.vcxproj -> D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec3322432606.exe
+FinalizeBuildStatus:
+  正在删除文件“cmTryCompileExec3322432606.dir\Debug\cmTryCom.1837B095.tlog\unsuccessfulbuild”。
+  正在对“cmTryCompileExec3322432606.dir\Debug\cmTryCom.1837B095.tlog\cmTryCompileExec3322432606.lastbuildstate”执行 Touch 任务。
+已完成生成项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\cmTryCompileExec3322432606.vcxproj”(默认目标)的操作。
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:00.42
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp
+
+Run Build Command:C:\PROGRA~2\MSBuild\12.0\Bin\MSBuild.exe cmTryCompileExec1243143287.vcxproj /p:Configuration=Debug /p:VisualStudioVersion=12.0
+Microsoft(R) 生成引擎版本 12.0.21005.1
+[Microsoft .NET Framework 版本 4.0.30319.18444]
+版权所有 (C) Microsoft Corporation。保留所有权利。
+
+生成启动时间为 2014/8/1 20:42:22。
+节点 1 上的项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\cmTryCompileExec1243143287.vcxproj”(默认目标)。
+PrepareForBuild:
+  正在创建目录“cmTryCompileExec1243143287.dir\Debug\”。
+  正在创建目录“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\”。
+  正在创建目录“cmTryCompileExec1243143287.dir\Debug\cmTryCom.CACD7EED.tlog\”。
+InitializeBuildStatus:
+  正在创建“cmTryCompileExec1243143287.dir\Debug\cmTryCom.CACD7EED.tlog\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+ClCompile:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\GitHub\ogldev\Include\ /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTryCompileExec1243143287.dir\Debug\\" /Fd"cmTryCompileExec1243143287.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:queue testCXXCompiler.cxx
+  Microsoft (R) C/C++ Optimizing Compiler Version 18.00.21005.1 for x86
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  cl /c /ID:\GitHub\ogldev\Include\ /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTryCompileExec1243143287.dir\Debug\\" /Fd"cmTryCompileExec1243143287.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:queue testCXXCompiler.cxx
+  
+  testCXXCompiler.cxx
+Link:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:QUEUE /OUT:"D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec1243143287.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec1243143287.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec1243143287.lib" /MACHINE:X86 /SAFESEH:NO  /machine:X86 /debug cmTryCompileExec1243143287.dir\Debug\testCXXCompiler.obj
+  cmTryCompileExec1243143287.vcxproj -> D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec1243143287.exe
+FinalizeBuildStatus:
+  正在删除文件“cmTryCompileExec1243143287.dir\Debug\cmTryCom.CACD7EED.tlog\unsuccessfulbuild”。
+  正在对“cmTryCompileExec1243143287.dir\Debug\cmTryCom.CACD7EED.tlog\cmTryCompileExec1243143287.lastbuildstate”执行 Touch 任务。
+已完成生成项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\cmTryCompileExec1243143287.vcxproj”(默认目标)的操作。
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:00.37
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp
+
+Run Build Command:C:\PROGRA~2\MSBuild\12.0\Bin\MSBuild.exe cmTryCompileExec3652754446.vcxproj /p:Configuration=Debug /p:VisualStudioVersion=12.0
+Microsoft(R) 生成引擎版本 12.0.21005.1
+[Microsoft .NET Framework 版本 4.0.30319.18444]
+版权所有 (C) Microsoft Corporation。保留所有权利。
+
+生成启动时间为 2014/8/1 20:42:23。
+节点 1 上的项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\cmTryCompileExec3652754446.vcxproj”(默认目标)。
+PrepareForBuild:
+  正在创建目录“cmTryCompileExec3652754446.dir\Debug\”。
+  正在创建目录“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\”。
+  正在创建目录“cmTryCompileExec3652754446.dir\Debug\cmTryCom.93A44035.tlog\”。
+InitializeBuildStatus:
+  正在创建“cmTryCompileExec3652754446.dir\Debug\cmTryCom.93A44035.tlog\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+ClCompile:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\GitHub\ogldev\Include\ /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTryCompileExec3652754446.dir\Debug\\" /Fd"cmTryCompileExec3652754446.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:queue "D:\Program Files (x86)\cmake-2.8.10.2-win32-x86\share\cmake-2.8\Modules\CMakeCXXCompilerABI.cpp"
+  Microsoft (R) C/C++ Optimizing Compiler Version 18.00.21005.1 for x86
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  cl /c /ID:\GitHub\ogldev\Include\ /Zi /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"cmTryCompileExec3652754446.dir\Debug\\" /Fd"cmTryCompileExec3652754446.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:queue "D:\Program Files (x86)\cmake-2.8.10.2-win32-x86\share\cmake-2.8\Modules\CMakeCXXCompilerABI.cpp"
+  
+  CMakeCXXCompilerABI.cpp
+Link:
+  D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:QUEUE /OUT:"D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec3652754446.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec3652754446.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/GitHub/es/entitySystem/esCocos2d/Classes/algorithm/prj/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec3652754446.lib" /MACHINE:X86 /SAFESEH:NO  /machine:X86 /debug cmTryCompileExec3652754446.dir\Debug\CMakeCXXCompilerABI.obj
+  cmTryCompileExec3652754446.vcxproj -> D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\Debug\cmTryCompileExec3652754446.exe
+FinalizeBuildStatus:
+  正在删除文件“cmTryCompileExec3652754446.dir\Debug\cmTryCom.93A44035.tlog\unsuccessfulbuild”。
+  正在对“cmTryCompileExec3652754446.dir\Debug\cmTryCom.93A44035.tlog\cmTryCompileExec3652754446.lastbuildstate”执行 Touch 任务。
+已完成生成项目“D:\GitHub\es\entitySystem\esCocos2d\Classes\algorithm\prj\CMakeFiles\CMakeTmp\cmTryCompileExec3652754446.vcxproj”(默认目标)的操作。
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:00.36
+
+

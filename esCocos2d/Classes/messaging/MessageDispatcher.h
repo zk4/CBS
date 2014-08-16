@@ -25,12 +25,12 @@ class MessageDispatcher
 public:
 
     static std::set<Telegram> _PriorityQ;
-    static void _Discharge(Component* pReceiver, const Telegram& msg);
+    static void _Discharge (Component* pReceiver, const Telegram& msg);
 
     static   MessageDispatcher* getMessageDispatcher();
     static void DispatchDelayedMessages();
-    static void DispatchMessageZZ(double delay_micro_sec, int sender, int receiver, int msg, std::initializer_list<double > list = {});
-    static void DispatchMessageZZ(int receiver, int msg, std::initializer_list<double > list = {});
+    static void DispatchMessageZZ (double delay_micro_sec, int sender, int receiver, int msg, std::vector<double > list );
+    static void DispatchMessageZZ (int receiver, int msg, std::vector<double > list );
     //dispatch to all component
-    static void DispatchMessageZZ(int msg, std::initializer_list<double > list = {});
+    static void DispatchMessageZZ (int msg, std::vector<double > list );
 };

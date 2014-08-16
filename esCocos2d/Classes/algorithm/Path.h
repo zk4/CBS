@@ -135,20 +135,16 @@ public:
     }
 };
 
+   
 
-template<typename T>
-struct OrthoNodeComp {
-    bool operator() (const OrthoNode<T>*  lhs, const OrthoNode<T>* rhs) const
-    {
-        return lhs->data < rhs->data;
-    }
-};
+
+    
 template<typename T>
 class OrthoList
 {
 public:
 
-    std::set<OrthoNode<T> *, OrthoNodeComp<T> > nodes;
+    std::set<OrthoNode<T> *  > nodes;
 
     inline void  addEdge (T from_data, T to_data, float weight)
     {
@@ -315,7 +311,7 @@ public:
 
         from_->iF = 0;
         Q.push ({ from_, from_->iF });
-        while (!to_ && !Q.empty() || (!Q.empty() && !to_->_closed)) {
+        while ((!to_ && !Q.empty()) || (!Q.empty() && !to_->_closed)) {
             OrthoNode<T>*  u = Q.top().first;
             Q.pop();
 

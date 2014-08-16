@@ -96,7 +96,7 @@ void BeeHive::MakeRect (int width, int height, const Hexagon& lb, vector<Hexagon
     {
         for (int w = 0; w < width; ++w)
         {
-            rect.push_back ({ lb.q + ((h+1) / 2) + w, lb.r - h, color });
+         //   rect.push_back ({ lb.q + ((h+1) / 2) + w, lb.r - h, color });
         }
     }
 }
@@ -107,7 +107,7 @@ void BeeHive::MakeRect2 (int width, int height, const Hexagon& lb, vector<Hexago
     {
         for (int w = 0; w < width - ( h & 1); ++w)
         {
-            rect.push_back ({ lb.q + ((h + 1) / 2) + w, lb.r - h, color });
+         //   rect.push_back ({ lb.q + ((h + 1) / 2) + w, lb.r - h, color });
         }
     }
 }

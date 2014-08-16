@@ -50,9 +50,6 @@
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Components.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Configuration.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -90,12 +87,6 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\algorithm\Path.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\zkMath.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\RayComponent2.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\fluid\fluidmodel.h">

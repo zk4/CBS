@@ -33,6 +33,7 @@ public:
     CCSpriteBatchNode* _batchNode ;
     CCSize				_winsize;
     double					_dTimeNow;
+    CCDrawNode*				_drawNode;
 
 };
 

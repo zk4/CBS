@@ -14,9 +14,8 @@ class ComponentMgr : public Singleton<ComponentMgr>
 {
 
 public:
-    vector<  Component*>  _ComponentMap;
+    vector<Component*>  _ComponentMap;
     void            RegisterComponent (Component* NewComponent);
     Component*		GetComponentFromID (int id) const;
-
     void            RemoveComponent (int id);
 };

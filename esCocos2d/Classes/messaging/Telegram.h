@@ -31,7 +31,7 @@ public:
               int    sender,
               int    receiver,
               int    msg,
-              std::initializer_list<double>& args_
+              std::vector<double>& args_
              ) : DispatchTime (time),
         Sender (sender),
         Receiver (receiver),

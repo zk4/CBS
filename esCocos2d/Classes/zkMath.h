@@ -10,7 +10,8 @@ const double INF = std::numeric_limits<double>::infinity();
 const double EP = std::numeric_limits<double>::epsilon();
 const int MAXV = 300;
 const double PI = M_PI;
-
+namespace zkMath
+{
 
 struct Segment
 {
@@ -383,10 +384,10 @@ bool intersects (CCPoint& a0, CCPoint& a1, CCPoint& b0, CCPoint& b1)
     // nMitc[1] = numerator_of_M_inverse_times_c1
     int nMitc[2] =
     {
-        (b0.x - a0.x) * (b1.y - b0.y) +
-        (b0.y - a0.y) * (b0.x - b1.x),
-        (b0.x - a0.x) * (a0.y - a1.y) +
-        (b0.y - a0.y) * (a1.x - a0.x)
+        static_cast<int>((b0.x - a0.x) * (b1.y - b0.y) +
+        (b0.y - a0.y) * (b0.x - b1.x)),
+        static_cast<int>((b0.x - a0.x) * (a0.y - a1.y) +
+        (b0.y - a0.y) * (a1.x - a0.x))
     };
 
     // true if an intersection between two non-parallel lines
@@ -1595,4 +1596,5 @@ int rotat (Segment l1, Segment l2)
         return -1;
     else
         return 1;
+}
 }
