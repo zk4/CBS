@@ -657,7 +657,8 @@ public:
         break;
         case Telegram_UPDATE:
         {
-            _vSteeringForce = Wander ( msg.args[0] );
+
+            _vSteeringForce = Separation();// Wander(msg.args[0]);
             update ( _vSteeringForce, msg.args[0] );
             DD ( GetParent()->GetID(), Telegram_SET_POS, { _pos.x, _pos.y } );
             DD ( GetParent()->GetID(), Telegram_SET_ROTATION, { _vVelocity.y, _vVelocity.x } );
@@ -768,7 +769,7 @@ public:
 
                 MoveComponent* target = dynamic_cast<MoveComponent*> ( CompMgr->_ComponentMap[a]->GetC ( Component_MOVE ) );
 
-                node->drawSegment (self->_pos, target->_pos, 1, { 255, rand() % 255 / 255.0f, rand() % 255 / 255.0f, 255 });
+                node->drawSegment (self->_pos, target->_pos, 1, { 1, 1, 1, 1 });
             }
 
         }

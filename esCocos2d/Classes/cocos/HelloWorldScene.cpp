@@ -46,8 +46,8 @@ bool HelloWorld::init()
     // DD(bg->GetID(), Telegram_SET_POS, { visibleSize.width / 2, visibleSize.height / 2 });
 
 
-    //wall = Component::Create ( Entity_ );
-    //wall->AddC ( FluidComponent::Create() );
+    wall = Component::Create ( Entity_ );
+    wall->AddC ( FluidComponent::Create() );
     //  wall->AddC (RadarComponent::Create (50));
     // wall->AddC (MoveComponent::Create ({ 100, 100 }, 1, 100, 1000, 100, 1));
     //  DD (wall->GetID(), Telegram_SET_POS, { 0,0 });
@@ -60,7 +60,7 @@ bool HelloWorld::init()
     _rt->setPosition ( _winsize / 2 );
     _rt->retain();
 
-    for ( int i = 0; i < 5000; ++i )
+    for ( int i = 0; i <  5; ++i )
     {
 
         auto   planes = Component::Create ( Entity_ );
@@ -73,9 +73,9 @@ bool HelloWorld::init()
         sprite->setPosition ( CCPointZero );
         cc->setPosition ( CCPointZero );
         c->setPosition ( CCPointZero );
-        //  planes->AddC (TrailComponent::Create (_rt));
-        planes->AddC ( RadarComponent::Create ( 50 ) );
-        planes->AddC ( MoveComponent::Create ( { 100, 100 }, 1, 100, 1000, 100, 1 ) );
+        planes->AddC (TrailComponent::Create (_rt));
+        planes->AddC ( RadarComponent::Create ( 150 ) );
+        planes->AddC ( MoveComponent::Create ( { 100, 100 }, 1, 100, 1000, 100, 0.01  ) );
         //  planes->AddC ( SpriteComponent::Create ( sprite ) );
 
         //planes->AddC (HPComponent::Create (100));
@@ -163,10 +163,11 @@ void HelloWorld::update ( float delta )
     static double thinginterval = 0;
     thinginterval += delta;
 
-
+    DD (Telegram_AI, { delta });
     thinginterval = 0;
-    // DD (Telegram_AI, { delta });
-    //  DD (Telegram_UPDATE, { delta });
+
+
+    DD (Telegram_UPDATE, { delta });
 
 }
 
@@ -176,7 +177,7 @@ void HelloWorld::draw (   )
 
     _drawNode->clear();
 
-    DD (Telegram_NONE, { (double) (int)_drawNode });
+    DD (Telegram_DRAW, { (double) (int)_drawNode });
 
     _drawNode->visit();
 
