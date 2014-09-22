@@ -4,3 +4,6 @@
 [submodule "esCocos2d/Classes/Perlin_Noise"]
 	path = esCocos2d/Classes/Perlin_Noise
 	url = https://github.com/sol-prog/Perlin_Noise.git
+[submodule "esCocos2d/Classes/spine-runtimes"]
+	path = esCocos2d/Classes/spine-runtimes
+	url = https://github.com/EsotericSoftware/spine-runtimes/

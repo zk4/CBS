@@ -7,6 +7,15 @@
     <Filter Include="Classes">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\components">
+      <UniqueIdentifier>{cbb7bf28-76b2-437d-abec-0a40b4447e77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\spine_cocos2dx">
+      <UniqueIdentifier>{9919a967-c5d6-4824-8614-e75334305824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\spine_runtime">
+      <UniqueIdentifier>{d4d10b29-8ff0-47f9-918a-4f65c98944fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -44,6 +53,90 @@
     </ClCompile>
     <ClCompile Include="..\Classes\fluid\fluidmodel.cpp">
       <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\components\WallComponent.cpp">
+      <Filter>Classes\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\components\RayComponent.cpp">
+      <Filter>Classes\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeleton.cpp">
+      <Filter>Classes\spine_cocos2dx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeletonAnimation.cpp">
+      <Filter>Classes\spine_cocos2dx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\spine-cocos2dx.cpp">
+      <Filter>Classes\spine_cocos2dx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\components\SpineComp.cpp">
+      <Filter>Classes\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Animation.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\AnimationState.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\AnimationStateData.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Atlas.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\AtlasAttachmentLoader.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Attachment.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\AttachmentLoader.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Bone.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\BoneData.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\BoundingBoxAttachment.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Event.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\EventData.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\extension.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Json.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\RegionAttachment.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Skeleton.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SkeletonBounds.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SkeletonData.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SkeletonJson.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Skin.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Slot.c">
+      <Filter>Classes\spine_runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SlotData.c">
+      <Filter>Classes\spine_runtime</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +185,32 @@
     <ClInclude Include="..\Classes\fluid\fluidmodel.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\FluidComponent.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="..\Classes\components\Components.h">
+      <Filter>Classes\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\components\FluidComponent.h">
+      <Filter>Classes\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\components\WallComponent.h">
+      <Filter>Classes\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\components\RayComponent.h">
+      <Filter>Classes\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeleton.h">
+      <Filter>Classes\spine_cocos2dx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeletonAnimation.h">
+      <Filter>Classes\spine_cocos2dx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\spine-cocos2dx.h">
+      <Filter>Classes\spine_cocos2dx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\components\SpineComp.h">
+      <Filter>Classes\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\spine-runtimes\spine-c\src\spine\Json.h">
+      <Filter>Classes\spine_runtime</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

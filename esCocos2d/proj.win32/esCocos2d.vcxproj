@@ -67,7 +67,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\cocos2dx;$(ProjectDir)..\..\..\cocos2dx\include;$(ProjectDir)..\..\..\cocos2dx\kazmath\include;$(ProjectDir)..\..\..\cocos2dx\platform\win32;$(ProjectDir)..\..\..\cocos2dx\platform\third_party\win32;$(ProjectDir)..\..\..\cocos2dx\platform\third_party\win32\OGLES;$(ProjectDir)..\..\..\external;$(ProjectDir)..\..\..\external\chipmunk\include\chipmunk;$(ProjectDir)..\..\..\CocosDenshion\include;$(ProjectDir)..\..\..\extensions;..\Classes;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\cocos2dx;$(ProjectDir)..\..\..\cocos2dx\include;$(ProjectDir)..\..\..\cocos2dx\kazmath\include;$(ProjectDir)..\..\..\cocos2dx\platform\win32;$(ProjectDir)..\..\..\cocos2dx\platform\third_party\win32;$(ProjectDir)..\..\..\cocos2dx\platform\third_party\win32\OGLES;$(ProjectDir)..\..\..\external;$(ProjectDir)..\..\..\external\chipmunk\include\chipmunk;$(ProjectDir)..\..\..\CocosDenshion\include;..\Classes\spine-runtimes\spine-cocos2dx\src\;..\Classes\spine-runtimes\spine-c\include\;$(ProjectDir)..\..\..\extensions;..\Classes;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;MESSAGE_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -133,11 +133,39 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\cocos\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\cocos\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\cocos\VisibleRect.cpp" />
+    <ClCompile Include="..\Classes\components\RayComponent.cpp" />
+    <ClCompile Include="..\Classes\components\SpineComp.cpp" />
+    <ClCompile Include="..\Classes\components\WallComponent.cpp" />
     <ClCompile Include="..\Classes\es\Component.cpp" />
     <ClCompile Include="..\Classes\es\ComponentMgr.cpp" />
     <ClCompile Include="..\Classes\fluid\fluidmodel.cpp" />
     <ClCompile Include="..\Classes\messaging\MessageDispatcher.cpp" />
     <ClCompile Include="..\Classes\Singleton.cpp" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeleton.cpp" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeletonAnimation.cpp" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\spine-cocos2dx.cpp" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Animation.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\AnimationState.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\AnimationStateData.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Atlas.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\AtlasAttachmentLoader.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Attachment.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\AttachmentLoader.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Bone.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\BoneData.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\BoundingBoxAttachment.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Event.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\EventData.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\extension.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Json.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\RegionAttachment.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Skeleton.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SkeletonBounds.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SkeletonData.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SkeletonJson.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Skin.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Slot.c" />
+    <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SlotData.c" />
     <ClCompile Include="..\Classes\Time\CrudeTimer.cpp" />
     <ClCompile Include="..\Classes\Time\PrecisionTimer.cpp" />
     <ClCompile Include="main.cpp" />
@@ -148,14 +176,22 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\cocos\AppDelegate.h" />
     <ClInclude Include="..\Classes\cocos\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\cocos\VisibleRect.h" />
+    <ClInclude Include="..\Classes\components\Components.h" />
+    <ClInclude Include="..\Classes\components\FluidComponent.h" />
+    <ClInclude Include="..\Classes\components\RayComponent.h" />
+    <ClInclude Include="..\Classes\components\SpineComp.h" />
+    <ClInclude Include="..\Classes\components\WallComponent.h" />
     <ClInclude Include="..\Classes\Configuration.h" />
     <ClInclude Include="..\Classes\es\Component.h" />
     <ClInclude Include="..\Classes\es\ComponentMgr.h" />
-    <ClInclude Include="..\Classes\FluidComponent.h" />
     <ClInclude Include="..\Classes\fluid\fluidmodel.h" />
     <ClInclude Include="..\Classes\messaging\MessageDispatcher.h" />
     <ClInclude Include="..\Classes\messaging\Telegram.h" />
     <ClInclude Include="..\Classes\Singleton.h" />
+    <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeleton.h" />
+    <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeletonAnimation.h" />
+    <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\spine-cocos2dx.h" />
+    <ClInclude Include="..\Classes\spine-runtimes\spine-c\src\spine\Json.h" />
     <ClInclude Include="..\Classes\Time\CrudeTimer.h" />
     <ClInclude Include="..\Classes\Time\PrecisionTimer.h" />
     <ClInclude Include="main.h" />
