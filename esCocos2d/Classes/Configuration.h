@@ -37,7 +37,7 @@ enum eTelegram {
     Telegram_ARRIVE,
     Telegram_UPDATE,
     Telegram_AI,
-    Telegram_DRAW,
+    Telegram_VISIT,
 
     Telegram_ACCESS_NODE,
     Telegram_MOVE_ON_WALL,

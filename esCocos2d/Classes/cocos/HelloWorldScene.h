@@ -15,7 +15,7 @@ class HelloWorld : public cocos2d::CCLayer {
 
     // implement the "static node()" method manually
     CREATE_FUNC ( HelloWorld );
-    // void onEnter();
+    void onEnter();
     void draw();
     void update ( float delta );
     virtual bool ccTouchBegan ( CCTouch *pTouch, CCEvent *pEvent );

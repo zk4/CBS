@@ -194,7 +194,7 @@ bool WallComponent::HandleMessage ( const Telegram& msg ) {
         _last_ite = WallComponents_none;
     }
     break;
-    case    Telegram_DRAW: {
+    case    Telegram_VISIT: {
         {
 
             int i = 0;

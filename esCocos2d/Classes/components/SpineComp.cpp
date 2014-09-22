@@ -14,26 +14,26 @@ SpineComp::~SpineComp() {
 
 SpineComp::SpineComp() : Component ( Component_Spine ) {
     CCSize s = CCDirector::sharedDirector()->getWinSize();
-    skeletonNode = CCSkeletonAnimation::createWithFile ( "spineboy.json", "spineboy.atlas" );
-    skeletonNode->setMix ( "walk", "jump", 0.2f );
-    skeletonNode->setMix ( "jump", "walk", 0.4f );
+    _skeletonNode = CCSkeletonAnimation::createWithFile ( "spineboy.json", "spineboy.atlas" );
+    _skeletonNode->setMix ( "walk", "jump", 0.2f );
+    _skeletonNode->setMix ( "jump", "walk", 0.4f );
 
-    skeletonNode->setAnimationListener ( this, animationStateEvent_selector ( SpineComp::animationStateEvent ) );
-    skeletonNode->setAnimation ( 0, "walk", false );
-    skeletonNode->addAnimation ( 0, "jump", false );
-    skeletonNode->addAnimation ( 0, "walk", true );
-    skeletonNode->addAnimation ( 0, "jump", true, 3 );
+    _skeletonNode->setAnimationListener ( this, animationStateEvent_selector ( SpineComp::animationStateEvent ) );
+    _skeletonNode->setAnimation ( 0, "walk", false );
+    _skeletonNode->addAnimation ( 0, "jump", false );
+    _skeletonNode->addAnimation ( 0, "walk", true );
+    _skeletonNode->addAnimation ( 0, "jump", true, 3 );
 
-    skeletonNode->debugBones = true;
-    skeletonNode->update ( 0 );
+    _skeletonNode->debugBones = true;
+    _skeletonNode->update ( 0 );
+    _skeletonNode->onEnter();
+    _skeletonNode->runAction ( CCRepeatForever::create ( CCSequence::create ( CCFadeOut::create ( 1 ),
+                               CCFadeIn::create ( 1 ),
+                               CCDelayTime::create ( 5 ),
+                               NULL ) ) );
 
-    skeletonNode->runAction ( CCRepeatForever::create ( CCSequence::create ( CCFadeOut::create ( 1 ),
-                              CCFadeIn::create ( 1 ),
-                              CCDelayTime::create ( 5 ),
-                              NULL ) ) );
-
-
-    skeletonNode->retain();
+//   CCDirector::sharedDirector()->getRunningScene()->addChild ( _skeletonNode );
+    _skeletonNode->retain();
 }
 void SpineComp::animationStateEvent ( CCSkeletonAnimation* node, int trackIndex, spEventType type, spEvent* event, int loopCount ) {
     spTrackEntry* entry = spAnimationState_getCurrent ( node->state, trackIndex );
@@ -60,11 +60,10 @@ bool SpineComp::HandleMessage ( const Telegram& msg ) {
     switch ( msg.Msg ) {
     case    Telegram_UPDATE: {
         float delta = msg.args[0];
-        skeletonNode->update ( delta );
+        // _skeletonNode->update ( delta );
     }
     break;
     case Telegram_SET_POS: {
-        CCPoint start = ccp ( msg.args[0], msg.args[1] );
 
     }
     break;
@@ -79,7 +78,8 @@ bool SpineComp::HandleMessage ( const Telegram& msg ) {
     }
     break;
     case Telegram_TOUCH_BEGIN: {
-
+        CCPoint * world_pos = reinterpret_cast<CCPoint*> ( ( int ) ( msg.args[0] ) );
+        _skeletonNode->setPosition ( *world_pos );
     }
     break;
     case    Telegram_TOUCH_CANCEL:
@@ -87,8 +87,8 @@ bool SpineComp::HandleMessage ( const Telegram& msg ) {
 
     }
     break;
-    case    Telegram_DRAW: {
-        skeletonNode->draw();
+    case    Telegram_VISIT: {
+        _skeletonNode->visit();
     }
     break;
 

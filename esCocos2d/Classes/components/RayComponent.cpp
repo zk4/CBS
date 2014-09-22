@@ -137,7 +137,7 @@ bool RayComponent::HandleMessage ( const Telegram& msg ) {
         _b_move_light = false;
     }
     break;
-    case    Telegram_DRAW: {
+    case    Telegram_VISIT: {
         ccDrawColor4B ( 255, 0, 0, 255 );
         for ( auto& a : _walls ) {
             ccDrawLine ( a.s, a.e );

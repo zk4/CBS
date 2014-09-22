@@ -62,9 +62,7 @@ class SpriteComponent : public Component {
             _sprite->setContentSize ( CCSizeMake ( msg.args[0], msg.args[1] ) );
         }
         break;
-        case Telegram_DRAW:
-
-        {
+        case Telegram_VISIT: {
             _sprite->visit();
         }
         break;
@@ -109,7 +107,7 @@ class  CocosComponent : public Component {
         }
 
 
-        case Telegram_DRAW:
+        case Telegram_VISIT:
 
         {
             _delegate->visit();
@@ -583,7 +581,7 @@ class  MoveComponent : public Component {
     CCLabelTTF* ttf_head;
     bool HandleMessage ( const Telegram& msg ) {
         switch ( msg.Msg ) {
-        case Telegram_DRAW: {
+        case Telegram_VISIT: {
 
             CCDrawNode* node = ( CCDrawNode* ) ( int ) msg.args[0];
             if ( ccpLength ( _vVelocity ) > 0.5 ) {
@@ -696,7 +694,7 @@ class  RadarComponent : public Component {
             DD ( GetParent()->GetID(), Telegram_SEARCH_RESULT, { ( double ) ( size_t ) &targets } );
         }
         break;
-        case Telegram_DRAW: {
+        case Telegram_VISIT: {
             CCDrawNode* node = ( CCDrawNode* ) ( int ) msg.args[0];
             MoveComponent* self = dynamic_cast<MoveComponent*> ( GetParent()->GetC ( Component_MOVE ) );
 
@@ -740,7 +738,7 @@ class HPComponent : public Component {
             }
         }
         break;
-        case Telegram_DRAW: {
+        case Telegram_VISIT: {
             auto moveC = ( MoveComponent* ) GetParent()->GetC ( Component_MOVE );
             //  ccDrawSolidRect ( moveC->_pos + ccp ( -HP / 2, 40 ), moveC->_pos + ccp ( HP / 2, 45 ), { 255, 0, 0, 122 } );
         }
@@ -796,7 +794,7 @@ class TrailComponent : public Component {
             _rt->end();
         }
         break;
-        case Telegram_DRAW: {
+        case Telegram_VISIT: {
             _rt->visit();
         }
         break;
@@ -845,7 +843,7 @@ class WeaponComponent : public Component {
 
         }
         break;
-        case     Telegram_DRAW: {
+        case     Telegram_VISIT: {
             /*    auto moveC = (MoveComponent*)GetParent()->GetC (Component_MOVE);
 
               if (moveC)
@@ -1269,7 +1267,7 @@ class BezierCompont : public Component {
             selected_node = NULL;
         }
         break;
-        case    Telegram_DRAW: {
+        case    Telegram_VISIT: {
             CCDrawNode* node = ( CCDrawNode* ) ( int ) msg.args[0];
 
 
@@ -1397,7 +1395,7 @@ class SmoothLineCompont : public Component {
             selected_node = NULL;
         }
         break;
-        case    Telegram_DRAW: {
+        case    Telegram_VISIT: {
 
             drawNode->clear();
 
@@ -1505,7 +1503,7 @@ class SegComponent : public Component {
 
         }
         break;
-        case    Telegram_DRAW: {
+        case    Telegram_VISIT: {
 
 
             _p_draw_node->clear();
@@ -1735,7 +1733,7 @@ class DynamicTextureComponent : public Component {
 
         }
         break;
-        case    Telegram_DRAW: {
+        case    Telegram_VISIT: {
 
             _sprite->visit();
         }

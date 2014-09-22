@@ -12,7 +12,7 @@ class SpineComp : public Component , public cocos2d::CCObject {
     SpineComp();
     ~SpineComp();
 
-    spine::CCSkeletonAnimation* skeletonNode;
+    spine::CCSkeletonAnimation* _skeletonNode;
     bool HandleMessage ( const Telegram& msg );
     void animationStateEvent ( spine::CCSkeletonAnimation* node, int trackIndex, spEventType type, spEvent* event, int loopCount );
 };

@@ -74,8 +74,8 @@ bool HelloWorld::init() {
 
         DD ( planes->GetID(), Telegram_SET_POS, { double ( 200 + rand() % 30 ), double ( 200 + rand() % 30 ) } );
     }
-    wall = Component::Create ( Entity_ );
-    wall->AddC ( SpineComp::Create ( ) );
+    /* wall = Component::Create ( Entity_ );
+     wall->AddC ( SpineComp::Create ( ) );*/
 
     setTouchMode ( kCCTouchesOneByOne );
     setTouchEnabled ( true );
@@ -161,11 +161,19 @@ void HelloWorld::draw ( ) {
 
     _drawNode->clear();
 
-    DD ( Telegram_DRAW, { ( double ) ( int ) _drawNode } );
+    DD ( Telegram_VISIT, { ( double ) ( int ) _drawNode } );
 
     _drawNode->visit();
 
 }
+
+void HelloWorld::onEnter() {
+    CCLayer::onEnter();
+    wall = Component::Create ( Entity_ );
+    wall->AddC ( SpineComp::Create() );
+
+}
+
 //
 //void HelloWorld::onEnter() {
 //    CCLayer::create();

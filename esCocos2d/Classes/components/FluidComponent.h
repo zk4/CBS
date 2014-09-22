@@ -82,7 +82,7 @@ class FluidComponent : public Component {
 
         }
         break;
-        case    Telegram_DRAW: {
+        case    Telegram_VISIT: {
             CCSize winsize = CCDirector::sharedDirector()->getWinSize();
             fluid->step();
             const fluid::Line *lines = fluid->getLines();
