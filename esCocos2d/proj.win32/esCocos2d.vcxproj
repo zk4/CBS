@@ -133,6 +133,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\cocos\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\cocos\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\cocos\VisibleRect.cpp" />
+    <ClCompile Include="..\Classes\components\MagicComponent.cpp" />
     <ClCompile Include="..\Classes\components\RayComponent.cpp" />
     <ClCompile Include="..\Classes\components\SpineComp.cpp" />
     <ClCompile Include="..\Classes\components\WallComponent.cpp" />
@@ -178,6 +179,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\cocos\VisibleRect.h" />
     <ClInclude Include="..\Classes\components\Components.h" />
     <ClInclude Include="..\Classes\components\FluidComponent.h" />
+    <ClInclude Include="..\Classes\components\MagicComponent.h" />
     <ClInclude Include="..\Classes\components\RayComponent.h" />
     <ClInclude Include="..\Classes\components\SpineComp.h" />
     <ClInclude Include="..\Classes\components\WallComponent.h" />

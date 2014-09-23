@@ -138,6 +138,9 @@
     <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SlotData.c">
       <Filter>Classes\spine_runtime</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\components\MagicComponent.cpp">
+      <Filter>Classes\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\spine-runtimes\spine-c\src\spine\Json.h">
       <Filter>Classes\spine_runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\components\MagicComponent.h">
+      <Filter>Classes\components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

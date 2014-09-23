@@ -1,6 +1,7 @@
 #pragma  once
 
-enum eComponent {
+enum eComponent
+{
     Component_MOVE,
     Component_COCOS,
     Component_SPRITE,
@@ -20,12 +21,14 @@ enum eComponent {
     Component_Fluid,
     Component_Segment,
     Component_DynamicTexture,
+    Component_MAGIC,
     Entity_,
     Component_COUNT,
 
 
 };
-enum eTelegram {
+enum eTelegram
+{
     Telegram_NONE,
     Telegram_HURT,
     Telegram_DEAD,
