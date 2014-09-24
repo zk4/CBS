@@ -16,6 +16,9 @@
     <Filter Include="Classes\spine_runtime">
       <UniqueIdentifier>{d4d10b29-8ff0-47f9-918a-4f65c98944fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\math">
+      <UniqueIdentifier>{4a448c78-bd23-4eae-8c2b-bfd1debc301a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\components\MagicComponent.h">
       <Filter>Classes\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\math\zkMath.h">
+      <Filter>Classes\math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,16 +14,17 @@ SpineComp::~SpineComp() {
 
 SpineComp::SpineComp() : Component ( Component_Spine ) {
     CCSize s = CCDirector::sharedDirector()->getWinSize();
-    _skeletonNode = CCSkeletonAnimation::createWithFile ( "spineboy.json", "spineboy.atlas" );
-    _skeletonNode->setMix ( "walk", "jump", 0.2f );
-    _skeletonNode->setMix ( "jump", "walk", 0.4f );
-
+    _skeletonNode = CCSkeletonAnimation::createWithFile ( "unit_axe_orc.json", "unit_axe_orc.atlas" );
+    _skeletonNode->setMix ( "stand", "attack", 0.2f );
+    _skeletonNode->setMix ( "attack", "stand", 0.4f );
+    _skeletonNode->setSkin ( "2" );
+    _skeletonNode->setSlotsToSetupPose();
     _skeletonNode->setAnimationListener ( this, animationStateEvent_selector ( SpineComp::animationStateEvent ) );
-    _skeletonNode->setAnimation ( 0, "walk", false );
-    _skeletonNode->addAnimation ( 0, "jump", false );
-    _skeletonNode->addAnimation ( 0, "walk", true );
-    _skeletonNode->addAnimation ( 0, "jump", true, 3 );
-
+    _skeletonNode->setAnimation ( 0, "stand", false );
+    _skeletonNode->addAnimation ( 0, "attack", false );
+    _skeletonNode->addAnimation ( 0, "attack", true );
+    _skeletonNode->addAnimation ( 0, "stand", true, 3 );
+//    _skeletonNode->addAnimation ( 1, "drawOrder", true );
     _skeletonNode->debugBones = true;
     _skeletonNode->update ( 0 );
     _skeletonNode->onEnter();
@@ -71,6 +72,7 @@ bool SpineComp::HandleMessage ( const Telegram& msg ) {
     }
     break;
     case  Telegram_TOUCH_DOUBLE: {
+
     }
     break;
     case Telegram_TOUCH_MOVE: {
@@ -80,6 +82,7 @@ bool SpineComp::HandleMessage ( const Telegram& msg ) {
     case Telegram_TOUCH_BEGIN: {
         CCPoint * world_pos = reinterpret_cast<CCPoint*> ( ( int ) ( msg.args[0] ) );
         _skeletonNode->setPosition ( *world_pos );
+
     }
     break;
     case    Telegram_TOUCH_CANCEL:
