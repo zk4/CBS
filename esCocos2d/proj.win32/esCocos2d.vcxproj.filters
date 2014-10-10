@@ -19,6 +19,9 @@
     <Filter Include="Classes\math">
       <UniqueIdentifier>{4a448c78-bd23-4eae-8c2b-bfd1debc301a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\perlin_noise">
+      <UniqueIdentifier>{b11e44ae-e178-4342-824f-7d5cedba0642}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -144,6 +147,15 @@
     <ClCompile Include="..\Classes\components\MagicComponent.cpp">
       <Filter>Classes\components</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Perlin_Noise\PerlinNoise.cpp">
+      <Filter>Classes\perlin_noise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Perlin_Noise\ppm.cpp">
+      <Filter>Classes\perlin_noise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Tools.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -223,6 +235,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\math\zkMath.h">
       <Filter>Classes\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Perlin_Noise\PerlinNoise.h">
+      <Filter>Classes\perlin_noise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Perlin_Noise\ppm.h">
+      <Filter>Classes\perlin_noise</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

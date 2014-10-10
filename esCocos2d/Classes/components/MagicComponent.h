@@ -3,27 +3,26 @@
 #include "es/Component.h"
 #include "cocos2d.h"
 #include "cocos-ext.h"
+#include "Perlin_Noise/ppm.h"
 
 using namespace cocos2d;
 
-class MagicComponent : public Component
-{
+class MagicComponent : public Component {
 
-public:
+  public:
     CCRenderTexture*  _rt;
+    CCSprite*    _pBrush;
     CCParticleSystem*    _emitter;
+    ppm image;
     bool  _b_pressed;
-    MagicComponent (CCRenderTexture*  rt);
-    ~MagicComponent()
-    {
-
-    }
-    static  MagicComponent* Create (CCRenderTexture*  rt)
-    {
-        return new MagicComponent (rt);
+    CCDrawNode* _drawNode;
+    MagicComponent ( CCRenderTexture*  rt );
+    ~MagicComponent();
+    static  MagicComponent* Create ( CCRenderTexture*  rt ) {
+        return new MagicComponent ( rt );
     }
 
-    bool HandleMessage (const Telegram& msg);
+    bool HandleMessage ( const Telegram& msg );
 
 
 };

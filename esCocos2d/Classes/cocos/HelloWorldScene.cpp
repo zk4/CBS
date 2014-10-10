@@ -6,8 +6,7 @@
 #include "components/MagicComponent.h"
 USING_NS_CC;
 
-CCScene* HelloWorld::scene()
-{
+CCScene* HelloWorld::scene() {
     // 'scene' is an autorelease object
     CCScene *scene = CCScene::create();
 
@@ -22,12 +21,10 @@ CCScene* HelloWorld::scene()
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
-{
+bool HelloWorld::init() {
     //////////////////////////////
     // 1. super init first
-    if ( !CCLayer::init() )
-    {
+    if ( !CCLayer::init() ) {
         return false;
     }
 
@@ -55,8 +52,7 @@ bool HelloWorld::init()
     _rt->setPosition ( _winsize / 2 );
     _rt->retain();
 
-    for ( int i = 0; i < 0; ++i )
-    {
+    for ( int i = 0; i < 0; ++i ) {
 
         auto   planes = Component::Create ( Entity_ );
         auto sprite = CCSprite::create ( "airplane.png" );
@@ -80,7 +76,8 @@ bool HelloWorld::init()
         DD ( planes->GetID(), Telegram_SET_POS, { double ( 200 + rand() % 30 ), double ( 200 + rand() % 30 ) } );
     }
     wall = Component::Create (Entity_);
-    wall->AddC (MagicComponent::Create (_rt));
+    //wall->AddC (MagicComponent::Create (_rt));
+    wall->AddC(FluidComponent::Create( ));
     /* wall = Component::Create ( Entity_ );
      wall->AddC ( SpineComp::Create ( ) );*/
 
@@ -92,8 +89,7 @@ bool HelloWorld::init()
 }
 
 
-void HelloWorld::menuCloseCallback ( CCObject* pSender )
-{
+void HelloWorld::menuCloseCallback ( CCObject* pSender ) {
     CCDirector::sharedDirector()->end();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
@@ -102,8 +98,7 @@ void HelloWorld::menuCloseCallback ( CCObject* pSender )
 }
 
 
-bool HelloWorld::ccTouchBegan ( CCTouch *pTouch, CCEvent *pEvent )
-{
+bool HelloWorld::ccTouchBegan ( CCTouch *pTouch, CCEvent *pEvent ) {
 
     auto  target = pTouch->getLocation();
 
@@ -123,8 +118,7 @@ bool HelloWorld::ccTouchBegan ( CCTouch *pTouch, CCEvent *pEvent )
 
     nowClickTime = _dTimeNow;
     CCLOG ( "%f\n", nowClickTime - lastClicktime );
-    if ( ( nowClickTime - lastClicktime ) < 0.3 )   //double click
-    {
+    if ( ( nowClickTime - lastClicktime ) < 0.3 ) { //double click
         DD ( Telegram_TOUCH_DOUBLE, { ( double ) ( int ) ( &target ) } );
     }
     lastClicktime = _dTimeNow;
@@ -132,30 +126,26 @@ bool HelloWorld::ccTouchBegan ( CCTouch *pTouch, CCEvent *pEvent )
     return true;
 }
 
-void HelloWorld::ccTouchMoved ( CCTouch *pTouch, CCEvent *pEvent )
-{
+void HelloWorld::ccTouchMoved ( CCTouch *pTouch, CCEvent *pEvent ) {
     auto  target = pTouch->getLocation();
     DD ( Telegram_TOUCH_MOVE, { ( double ) ( int ) ( &target ) } );
 
 }
 
 
-void HelloWorld::ccTouchEnded ( CCTouch *pTouch, CCEvent *pEvent )
-{
+void HelloWorld::ccTouchEnded ( CCTouch *pTouch, CCEvent *pEvent ) {
     auto  target = pTouch->getLocation();
     DD ( Telegram_TOUCH_END, { ( double ) ( int ) ( &target ) } );
 
 }
 
-void HelloWorld::ccTouchCancelled ( CCTouch *pTouch, CCEvent *pEvent )
-{
+void HelloWorld::ccTouchCancelled ( CCTouch *pTouch, CCEvent *pEvent ) {
     auto  target = pTouch->getLocation();
     DD ( Telegram_TOUCH_CANCEL, { ( double ) ( int ) ( &target ) } );
 
 }
 
-void HelloWorld::update ( float delta )
-{
+void HelloWorld::update ( float delta ) {
     _dTimeNow += delta;
     CCLayer::update ( delta );
 
@@ -170,8 +160,7 @@ void HelloWorld::update ( float delta )
 
 }
 
-void HelloWorld::draw ( )
-{
+void HelloWorld::draw ( ) {
     CCLayer::draw();
 
     _drawNode->clear();
@@ -182,8 +171,7 @@ void HelloWorld::draw ( )
 
 }
 
-void HelloWorld::onEnter()
-{
+void HelloWorld::onEnter() {
     CCLayer::onEnter();
 
 

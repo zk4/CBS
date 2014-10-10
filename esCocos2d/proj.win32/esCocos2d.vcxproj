@@ -141,6 +141,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\es\ComponentMgr.cpp" />
     <ClCompile Include="..\Classes\fluid\fluidmodel.cpp" />
     <ClCompile Include="..\Classes\messaging\MessageDispatcher.cpp" />
+    <ClCompile Include="..\Classes\Perlin_Noise\PerlinNoise.cpp" />
+    <ClCompile Include="..\Classes\Perlin_Noise\ppm.cpp" />
     <ClCompile Include="..\Classes\Singleton.cpp" />
     <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeleton.cpp" />
     <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeletonAnimation.cpp" />
@@ -169,6 +171,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SlotData.c" />
     <ClCompile Include="..\Classes\Time\CrudeTimer.cpp" />
     <ClCompile Include="..\Classes\Time\PrecisionTimer.cpp" />
+    <ClCompile Include="..\Classes\Tools.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +193,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\math\zkMath.h" />
     <ClInclude Include="..\Classes\messaging\MessageDispatcher.h" />
     <ClInclude Include="..\Classes\messaging\Telegram.h" />
+    <ClInclude Include="..\Classes\Perlin_Noise\PerlinNoise.h" />
+    <ClInclude Include="..\Classes\Perlin_Noise\ppm.h" />
     <ClInclude Include="..\Classes\Singleton.h" />
     <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeleton.h" />
     <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeletonAnimation.h" />
