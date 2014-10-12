@@ -7,9 +7,6 @@
     <Filter Include="Classes">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\components">
-      <UniqueIdentifier>{cbb7bf28-76b2-437d-abec-0a40b4447e77}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\spine_cocos2dx">
       <UniqueIdentifier>{9919a967-c5d6-4824-8614-e75334305824}</UniqueIdentifier>
     </Filter>
@@ -18,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Singleton.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -33,9 +27,6 @@
     <ClCompile Include="..\Classes\messaging\MessageDispatcher.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\cocos\AppDelegate.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\cJSON\cJSON.c">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -45,20 +36,8 @@
     <ClCompile Include="..\Classes\es\ComponentMgr.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\cocos\VisibleRect.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\cocos\HelloWorldScene.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\fluid\fluidmodel.cpp">
       <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\components\WallComponent.cpp">
-      <Filter>Classes\components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\components\RayComponent.cpp">
-      <Filter>Classes\components</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeleton.cpp">
       <Filter>Classes\spine_cocos2dx</Filter>
@@ -68,9 +47,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\spine-cocos2dx.cpp">
       <Filter>Classes\spine_cocos2dx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\components\SpineComp.cpp">
-      <Filter>Classes\components</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\Animation.c">
       <Filter>Classes\spine_runtime</Filter>
@@ -138,14 +114,8 @@
     <ClCompile Include="..\Classes\spine-runtimes\spine-c\src\spine\SlotData.c">
       <Filter>Classes\spine_runtime</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\components\MagicComponent.cpp">
-      <Filter>Classes\components</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Configuration.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -164,12 +134,6 @@
     <ClInclude Include="..\Classes\messaging\Telegram.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\cocos\AppDelegate.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\cocos\HelloWorldScene.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\cJSON\cJSON.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -179,26 +143,11 @@
     <ClInclude Include="..\Classes\es\ComponentMgr.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\cocos\VisibleRect.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\algorithm\Path.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\fluid\fluidmodel.h">
       <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\components\Components.h">
-      <Filter>Classes\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\components\FluidComponent.h">
-      <Filter>Classes\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\components\WallComponent.h">
-      <Filter>Classes\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\components\RayComponent.h">
-      <Filter>Classes\components</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\CCSkeleton.h">
       <Filter>Classes\spine_cocos2dx</Filter>
@@ -209,14 +158,8 @@
     <ClInclude Include="..\Classes\spine-runtimes\spine-cocos2dx\src\spine\spine-cocos2dx.h">
       <Filter>Classes\spine_cocos2dx</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\components\SpineComp.h">
-      <Filter>Classes\components</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\spine-runtimes\spine-c\src\spine\Json.h">
       <Filter>Classes\spine_runtime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\components\MagicComponent.h">
-      <Filter>Classes\components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
