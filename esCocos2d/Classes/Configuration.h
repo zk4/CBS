@@ -1,12 +1,15 @@
 #pragma  once
 
-enum eComponent
-{
+enum eComponent {
     Component_MOVE,
     Component_COCOS,
     Component_SPRITE,
+    Component_POS,
     Component_HP,
     Component_WEAPON,
+    Component_GUN,
+    Component_BULLET,
+    Component_WALK,
     Component_TRAIL,
     Component_AI,
     Component_RADAR,
@@ -18,6 +21,7 @@ enum eComponent
     Component_SmoothLine,
     Component_Raytrace,
     Component_Spine,
+    Component_DrawNode,
     Component_Fluid,
     Component_Segment,
     Component_DynamicTexture,
@@ -27,18 +31,20 @@ enum eComponent
 
 
 };
-enum eTelegram
-{
+enum eTelegram {
     Telegram_NONE,
     Telegram_HURT,
     Telegram_DEAD,
     Telegram_ACTION_HURT,
     Telegram_SET_POS,
+
+    Telegram_DRAWDOT,
     Telegram_SET_ROTATION,
     Telegram_SET_SCALE,
     Telegram_SET_CONTENSIZE,
     Telegram_ARRIVE,
     Telegram_UPDATE,
+    Telegram_INTERSECT,
     Telegram_AI,
     Telegram_VISIT,
 

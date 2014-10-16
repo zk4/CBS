@@ -10,11 +10,14 @@ class  Component;
 
 #define CompMgr ComponentMgr::GetSingleton()
 
-class ComponentMgr : public Singleton<ComponentMgr>
-{
+class ComponentMgr : public Singleton<ComponentMgr> {
 
-public:
+  public:
     vector<Component*>  _ComponentMap;
+    vector<int>  _aboutToDeleteIds;
+
+    void			Update();
+    int				GetAvailableId();
     void            RegisterComponent (Component* NewComponent);
     Component*		GetComponentFromID (int id) const;
     void            RemoveComponent (int id);

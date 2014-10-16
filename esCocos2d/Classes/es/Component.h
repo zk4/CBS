@@ -12,34 +12,28 @@
 
 using namespace std;
 
-class Component
-{
+class Component {
 
-protected:
+  protected:
     Component*				_parent;
     eComponent				_name;
     int						_ID;
-    static int				s_iNextValidID;
+
     void AutoEntityID();
-public:
-    static   Component* Create (eComponent e)
-    {
+  public:
+    static   Component* Create (eComponent e) {
         return  new Component ( e);
     }
-    inline  int  GetID() const
-    {
+    inline  int  GetID() const {
         return _ID;
     }
-    inline eComponent				GetName()
-    {
+    inline eComponent				GetName() {
         return _name;
     };
-    inline Component*    GetParent() const
-    {
+    inline Component*    GetParent() const {
         return _parent;
     }
-    inline  void SetParent (Component * c)
-    {
+    inline  void SetParent (Component * c) {
         _parent = c;
     }
     virtual ~Component();
@@ -47,8 +41,7 @@ public:
     Component (eComponent id);
 
     Component* 	AddC (Component* c);
-    inline  Component*  GetC (eComponent name)
-    {
+    inline  Component*  GetC (eComponent name) {
         return components[name];
     }
 

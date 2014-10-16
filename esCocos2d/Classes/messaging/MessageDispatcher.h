@@ -4,7 +4,7 @@
 #include <string>
 #include "Singleton.h"
 #include <memory>
-
+#include "stdarg.h"
 #include "Messaging/Telegram.h"
 
 
@@ -20,17 +20,16 @@ const int    NO_ADDITIONAL_INFO   = 0;
 const int    RECEIVER_ALL = -1;
 
 
-class MessageDispatcher
-{
-public:
+class MessageDispatcher {
+  public:
 
     static std::set<Telegram> _PriorityQ;
     static void _Discharge (Component* pReceiver, const Telegram& msg);
 
     static   MessageDispatcher* getMessageDispatcher();
     static void DispatchDelayedMessages();
-    static void DispatchMessageZZ (double delay_micro_sec, int sender, int receiver, int msg, std::vector<double > list );
-    static void DispatchMessageZZ (int receiver, int msg, std::vector<double > list );
+    static void DispatchMessageZZ (double delay_micro_sec, int sender, int receiver, int msg, va_list list );
+    static void DispatchMessageZZ(int receiver, int msg, ...);
     //dispatch to all component
-    static void DispatchMessageZZ (int msg, std::vector<double > list );
+    static void DispatchMessageZZ (int msg, ... );
 };
