@@ -1,6 +1,6 @@
 CBS
 ===
-t
+
 component based system implementation
 
 this is CBS core,with some useful tools.
