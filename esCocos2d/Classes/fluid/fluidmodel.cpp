@@ -72,7 +72,7 @@ void Node::clear()
     m = d = gx = gy = u = v = ax = ay = 0.0;
     active = false;
 }
-static float aaa = 1;
+static float aaa =.5;
 
 FluidModel::FluidModel (unsigned gsizeX_,
                         unsigned gsizeY_,
